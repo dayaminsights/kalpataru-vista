@@ -221,3 +221,13 @@ ul { padding-left: 1.1em; }
 @media (max-width: 860px) {
   .amenities__grid { grid-template-columns: 1fr; }
 }
+
+/* Specifications */
+.specs__tab-list { display: flex; flex-wrap: wrap; gap: var(--space-1); margin-bottom: var(--space-3); }
+.specs__tab {
+  font-family: var(--font-mono); font-size: var(--fs-small); text-transform: uppercase;
+  background: none; border: 1px solid var(--sand-100); padding: 0.6em 1em; cursor: pointer;
+}
+.specs__tab.is-active { background: var(--fairway-700); color: var(--white); border-color: var(--fairway-700); }
+.specs__panel { display: none; }
+.specs__panel.is-active { display: block; }

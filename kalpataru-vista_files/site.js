@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
   initHeroSlideshow();
   initSiteVisitForm();
   initScrollReveal();
+  initSpecTabs();
 });
 
 function initScrollReveal() {
@@ -57,6 +58,19 @@ function initHeroSlideshow() {
     i = (i + 1) % slides.length;
     slides[i].classList.add("is-active");
   }, 5000);
+}
+
+function initSpecTabs() {
+  const tabs = document.querySelectorAll(".specs__tab");
+  const panels = document.querySelectorAll(".specs__panel");
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      tabs.forEach((t) => t.classList.remove("is-active"));
+      panels.forEach((p) => p.classList.remove("is-active"));
+      tab.classList.add("is-active");
+      document.querySelector(`.specs__panel[data-panel="${tab.dataset.tab}"]`).classList.add("is-active");
+    });
+  });
 }
 
 function initSiteVisitForm() {
