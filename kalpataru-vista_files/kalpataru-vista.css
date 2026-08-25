@@ -2,11 +2,13 @@
 
 :root {
   --fairway-900: #12261B;
+  --fairway-900-rgb: 18, 38, 27;
   --fairway-700: #1E4531;
   --fairway-500: #3D6B4C;
   --gold-500: #B08D3F;
   --gold-300: #D9BE7C;
   --sand-50: #F8F4EA;
+  --sand-50-rgb: 248, 244, 234;
   --sand-100: #F1EBDC;
   --ink-900: #1B1A15;
   --white: #FFFFFF;
@@ -117,7 +119,7 @@ ul { padding-left: 1.1em; }
   justify-content: space-between;
 }
 .header.is-scrolled {
-  background: rgba(18, 38, 27, 0.92);
+  background: rgba(var(--fairway-900-rgb), 0.92);
   backdrop-filter: blur(6px);
   box-shadow: 0 2px 12px rgba(0,0,0,0.15);
 }
@@ -161,7 +163,7 @@ ul { padding-left: 1.1em; }
 .hero__slide.is-active { opacity: 1; }
 .hero__overlay {
   position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(18,38,27,0.15) 0%, rgba(18,38,27,0.85) 90%);
+  background: linear-gradient(180deg, rgba(var(--fairway-900-rgb), 0.15) 0%, rgba(var(--fairway-900-rgb), 0.85) 90%);
 }
 .hero__inner {
   position: relative;
@@ -174,7 +176,7 @@ ul { padding-left: 1.1em; }
 .hero__copy h1 { color: var(--white); }
 .hero__rera em { font-style: normal; color: var(--gold-300); font-size: var(--fs-small); }
 .hero__form {
-  background: rgba(248, 244, 234, 0.96);
+  background: rgba(var(--sand-50-rgb), 0.96);
   color: var(--ink-900);
   padding: var(--space-3);
   border-top: 2px solid var(--gold-500);
