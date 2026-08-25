@@ -1,0 +1,29 @@
+/* kalpataru-vista-theme.css — signature decorative layer, loaded after kalpataru-vista.css */
+
+.horizon-divider {
+  position: relative;
+  height: 1px;
+  max-width: 1100px;
+  margin: var(--space-5) auto;
+  background: linear-gradient(90deg, transparent, var(--gold-500) 20%, var(--gold-500) 80%, transparent);
+}
+.horizon-divider::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gold-500);
+  transform: translate(-50%, -50%);
+}
+
+.chrome-dark {
+  background: var(--fairway-900);
+  color: var(--sand-50);
+}
+.chrome-dark h1, .chrome-dark h2, .chrome-dark h3 {
+  color: var(--sand-50);
+}
+.chrome-dark .eyebrow { color: var(--gold-300); }

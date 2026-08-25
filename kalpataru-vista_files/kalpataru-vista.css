@@ -1,0 +1,104 @@
+/* kalpataru-vista.css — tokens, reset, type system, layout */
+
+:root {
+  --fairway-900: #12261B;
+  --fairway-700: #1E4531;
+  --fairway-500: #3D6B4C;
+  --gold-500: #B08D3F;
+  --gold-300: #D9BE7C;
+  --sand-50: #F8F4EA;
+  --sand-100: #F1EBDC;
+  --ink-900: #1B1A15;
+  --white: #FFFFFF;
+
+  --font-display: "Fraunces", serif;
+  --font-body: "Archivo", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+
+  --fs-display-xl: clamp(2.75rem, 2rem + 3vw, 5rem);
+  --fs-display-lg: clamp(2rem, 1.5rem + 2vw, 3.25rem);
+  --fs-heading: clamp(1.5rem, 1.3rem + 1vw, 2.25rem);
+  --fs-body: 1rem;
+  --fs-small: 0.875rem;
+  --fs-mono: 0.95rem;
+
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2.5rem;
+  --space-5: 4rem;
+  --space-6: 6rem;
+  --space-7: 9rem;
+
+  --container-max: 1200px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--sand-50);
+  color: var(--ink-900);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  color: var(--fairway-700);
+  margin: 0 0 var(--space-2);
+  line-height: 1.1;
+}
+h1 { font-size: var(--fs-display-xl); }
+h2 { font-size: var(--fs-display-lg); }
+h3 { font-size: var(--fs-heading); }
+p { margin: 0 0 var(--space-2); }
+a { color: inherit; }
+ul { padding-left: 1.1em; }
+
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--space-3);
+}
+.section {
+  padding: var(--space-6) 0;
+}
+.section-alt {
+  background: var(--sand-100);
+}
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold-500);
+  display: block;
+  margin-bottom: var(--space-1);
+}
+.mono {
+  font-family: var(--font-mono);
+}
+.btn {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--fs-small);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 0.9em 1.8em;
+  border-radius: 2px;
+  border: 1px solid var(--gold-500);
+  color: var(--fairway-900);
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+.btn:hover { background: var(--gold-500); color: var(--white); }
+.btn-solid { background: var(--gold-500); color: var(--white); }
+.btn-solid:hover { background: var(--fairway-700); border-color: var(--fairway-700); }
+
+[data-anim] { opacity: 0; }
