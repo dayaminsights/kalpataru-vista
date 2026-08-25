@@ -20,9 +20,9 @@ function initScrollReveal() {
 
 function initHeaderScrollState() {
   const header = document.getElementById("header");
-  window.addEventListener("scroll", () => {
-    header.classList.toggle("is-scrolled", window.scrollY > 40);
-  });
+  const syncScrollState = () => header.classList.toggle("is-scrolled", window.scrollY > 40);
+  syncScrollState();
+  window.addEventListener("scroll", syncScrollState);
 }
 
 function initMobileNav() {
