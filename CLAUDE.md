@@ -82,9 +82,9 @@ the build. When a new component needs an alpha-blended version of a token color,
 (`.logo`), not a `logo.png` file.
 
 **Hero images**: `assets/hero-src/h1.webp`–`h4.webp` are user-supplied and don't exist yet (the
-folder itself is absent); the hero slideshow degrades gracefully to a solid `--fairway-900`
-background (CSS `background-image` on a missing file just doesn't paint, unlike an `<img>` which
-would show a broken-image icon) — this is expected and intentional, not a bug to fix.
+folder exists but is currently empty); the hero slideshow degrades gracefully to a solid
+`--fairway-900` background (CSS `background-image` on a missing file just doesn't paint, unlike an
+`<img>` which would show a broken-image icon) — this is expected and intentional, not a bug to fix.
 
 **CTA vs. contact routing** — easy to get backwards: the header's "Enquire Now" button and the
 footer's "Enquire Now" nav link both point to `#siteVisitForm`, which is the lead-capture form
@@ -103,8 +103,9 @@ decisions (palette choice, JS-stack choice, placeholder-vs-real-content choices)
 
 ## Known limitations (deliberate, tracked scope cuts — not oversights)
 
-- **Hero slideshow images absent**: `assets/hero-src/` doesn't exist yet; the project owner hasn't
-  dropped real photos in. The 4 resulting failed requests when opening the page are expected.
+- **Hero slideshow images absent**: `assets/hero-src/` exists but is currently empty; the project
+  owner hasn't dropped real photos in. The 4 resulting failed requests when opening the page are
+  expected.
 - **Accessibility backlog**, deferred during the build so it doesn't get silently "fixed" without
   context:
   - The mobile nav has no Escape-to-close, no focus trap, and the toggle button has no
