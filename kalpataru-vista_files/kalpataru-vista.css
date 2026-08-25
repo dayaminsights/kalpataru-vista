@@ -183,6 +183,7 @@ ul { padding-left: 1.1em; }
   border-top: 2px solid var(--gold-500);
   display: flex; flex-direction: column; gap: var(--space-1);
 }
+.hero__form h2 { font-size: var(--fs-heading); }
 .hero__form input, .hero__form textarea {
   font-family: var(--font-body);
   padding: 0.7em; border: 1px solid var(--sand-100); background: var(--white);
