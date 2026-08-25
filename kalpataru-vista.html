@@ -40,7 +40,31 @@
 </header>
 
 <main>
-<section class="hero" id="hero"><!-- Task 3 --></section>
+<section class="hero" id="hero">
+  <div class="hero__slides" id="heroSlides">
+    <div class="hero__slide is-active" style="background-image:url('assets/hero-src/h1.webp')"></div>
+    <div class="hero__slide" style="background-image:url('assets/hero-src/h2.webp')"></div>
+    <div class="hero__slide" style="background-image:url('assets/hero-src/h3.webp')"></div>
+    <div class="hero__slide" style="background-image:url('assets/hero-src/h4.webp')"></div>
+  </div>
+  <div class="hero__overlay"></div>
+  <div class="container hero__inner">
+    <div class="hero__copy">
+      <span class="eyebrow">Sector 128 · Noida Expressway</span>
+      <h1>Welcome to<br>Kalpataru Vista</h1>
+      <p class="mono hero__rera">RERA No. UPRERAPRJ00000 <em>(placeholder, portfolio project)</em></p>
+    </div>
+    <form class="hero__form" id="siteVisitForm">
+      <h3>Request a Site Visit</h3>
+      <input type="text" name="name" placeholder="Name" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="tel" name="phone" placeholder="Contact Number" required>
+      <textarea name="message" placeholder="Message"></textarea>
+      <button type="submit" class="btn btn-solid">Contact Us</button>
+      <p class="hero__form-success" hidden>Thanks — we'll be in touch shortly.</p>
+    </form>
+  </div>
+</section>
 <section class="quickfacts" id="quickfacts"><!-- Task 4 --></section>
 <section class="overview" id="overview"><!-- Task 5 --></section>
 <section class="amenities" id="amenities"><!-- Task 6 --></section>

@@ -2,6 +2,8 @@
 document.addEventListener("DOMContentLoaded", function () {
   initHeaderScrollState();
   initMobileNav();
+  initHeroSlideshow();
+  initSiteVisitForm();
   initScrollReveal();
 });
 
@@ -34,5 +36,25 @@ function initMobileNav() {
   });
   nav.querySelectorAll("a").forEach((link) => {
     link.addEventListener("click", () => nav.classList.remove("is-open"));
+  });
+}
+
+function initHeroSlideshow() {
+  const slides = document.querySelectorAll("#heroSlides .hero__slide");
+  if (slides.length < 2) return;
+  let i = 0;
+  setInterval(() => {
+    slides[i].classList.remove("is-active");
+    i = (i + 1) % slides.length;
+    slides[i].classList.add("is-active");
+  }, 5000);
+}
+
+function initSiteVisitForm() {
+  const form = document.getElementById("siteVisitForm");
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    form.querySelectorAll("input, textarea, button").forEach((el) => (el.hidden = true));
+    form.querySelector(".hero__form-success").hidden = false;
   });
 }
