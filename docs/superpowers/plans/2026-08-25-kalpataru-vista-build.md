@@ -926,6 +926,7 @@ git commit -m "feat: add specifications tabs (6 categories)"
 ```html
 <section class="unitplans section section-alt" id="floorplan">
   <div class="container">
+    <div id="price"></div>
     <span class="eyebrow">Floor Plans</span>
     <h2>Kalpataru Vista Unit Layout Plan</h2>
     <div class="horizon-divider" data-anim="element"></div>
@@ -977,7 +978,10 @@ git commit -m "feat: add specifications tabs (6 categories)"
 - [ ] **Step 3: Verify**
 
 Playwright: two unit cards side by side at 1440px, stacked at 390px, each showing its mono-styled
-area/price figures and a distinct SVG icon (3BHK vs 4BHK icons differ). No console errors.
+area/price figures and a distinct SVG icon (3BHK vs 4BHK icons differ). The header nav's "Price
+List" link (`href="#price"`) scrolls to this section (there was no `id="price"` anywhere before
+this task — Task 2's nav markup referenced it ahead of this section existing, which is expected
+since Task 2 ships before Task 8). No console errors.
 
 - [ ] **Step 4: Commit**
 
