@@ -552,9 +552,14 @@ Add both calls to the `DOMContentLoaded` listener alongside the Task 2 calls.
 
 Playwright: hero fills the viewport, slide rotates (poll `is-active` class changes after 5s+), if
 `assets/hero-src/` is still empty the slide `<div>`s render as solid `--fairway-900` (no broken-image
-icon since these are CSS backgrounds, not `<img>`) — confirm no console errors either way. Submitting
-the form with all fields filled hides the inputs and reveals the success message; no network request
-is fired (`page.on("request")` shows no POST).
+icon since these are CSS backgrounds, not `<img>`) — confirm no JavaScript/page errors (`pageerror`
+events). Note: while `assets/hero-src/` is empty, the browser will still log `net::ERR_FILE_NOT_FOUND`
+console entries for the 4 missing background-image URLs — that's an unavoidable browser network-log
+artifact of referencing a not-yet-supplied file (CSS `background-image` can't dodge it any better than
+an `<img src>` would), not a script error. Treat those as expected and acceptable; don't add
+`onerror`/existence-checking code to suppress them. Submitting the form with all fields filled hides
+the inputs and reveals the success message; no network request is fired (`page.on("request")` shows no
+POST).
 
 - [ ] **Step 5: Commit**
 
