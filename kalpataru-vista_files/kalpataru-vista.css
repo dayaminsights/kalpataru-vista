@@ -214,7 +214,8 @@ ul { padding-left: 1.1em; }
   margin-bottom: var(--space-3);
 }
 .amenity-card { background: var(--white); padding: var(--space-2); }
-.amenity-card img { width: 100%; height: 200px; object-fit: cover; margin-bottom: var(--space-2); }
+.amenity-card img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; margin-bottom: var(--space-2); }
+.amenity-card__img--bottom { object-position: bottom; }
 .amenities__building { font-size: var(--fs-small); color: var(--fairway-700); }
 
 @media (max-width: 860px) {
