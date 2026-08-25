@@ -232,3 +232,18 @@ ul { padding-left: 1.1em; }
 .specs__tab.is-active { background: var(--fairway-700); color: var(--white); border-color: var(--fairway-700); }
 .specs__panel { display: none; }
 .specs__panel.is-active { display: block; }
+
+/* Unit Plans */
+.unitplans__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+}
+.unit-card { background: var(--white); padding: var(--space-3); text-align: center; }
+.unit-card__icon { color: var(--gold-500); margin-bottom: var(--space-2); }
+.unit-card__price { color: var(--fairway-700); font-size: 1.1rem; font-weight: 500; }
+.unitplans__note { font-size: var(--fs-small); color: var(--fairway-500); margin-top: var(--space-2); }
+
+@media (max-width: 700px) {
+  .unitplans__grid { grid-template-columns: 1fr; }
+}
