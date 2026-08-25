@@ -101,4 +101,4 @@ ul { padding-left: 1.1em; }
 .btn-solid { background: var(--gold-500); color: var(--white); }
 .btn-solid:hover { background: var(--fairway-700); border-color: var(--fairway-700); }
 
-[data-anim] { opacity: 0; }
+[data-anim] { opacity: 0; transform: translateY(24px); }
