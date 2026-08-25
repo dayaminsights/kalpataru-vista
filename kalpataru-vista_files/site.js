@@ -9,6 +9,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function initScrollReveal() {
   const els = document.querySelectorAll('[data-anim="element"]');
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const gsapReady = typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined";
+  if (reduceMotion || !gsapReady) {
+    els.forEach((el) => {
+      el.style.opacity = 1;
+      el.style.transform = "none";
+    });
+    return;
+  }
   els.forEach((el) => {
     gsap.to(el, {
       opacity: 1,
