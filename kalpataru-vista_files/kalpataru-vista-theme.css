@@ -27,3 +27,22 @@
   color: var(--sand-50);
 }
 .chrome-dark .eyebrow { color: var(--gold-300); }
+
+.quickfacts__row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding: var(--space-4) 0;
+}
+.quickfacts__cell {
+  padding: 0 var(--space-3);
+  border-left: 1px solid var(--gold-500);
+  text-align: center;
+}
+.quickfacts__cell:first-child { border-left: none; }
+.quickfacts__cell .mono { font-size: 1.05rem; margin: 0; }
+
+@media (max-width: 700px) {
+  .quickfacts__row { grid-template-columns: 1fr; gap: var(--space-2); }
+  .quickfacts__cell { border-left: none; border-top: 1px solid var(--gold-500); padding-top: var(--space-2); }
+  .quickfacts__cell:first-child { border-top: none; }
+}
