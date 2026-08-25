@@ -251,6 +251,7 @@ ul { padding-left: 1.1em; }
 /* Site Layout */
 .sitelayout__plate { border: 1px solid var(--sand-100); }
 .sitelayout__download { display: block; margin: var(--space-3) auto 0; cursor: not-allowed; opacity: 0.7; }
+.sitelayout__download:hover { background: transparent; color: var(--fairway-900); }
 
 /* Location */
 .location__grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: var(--space-4); align-items: center; }
