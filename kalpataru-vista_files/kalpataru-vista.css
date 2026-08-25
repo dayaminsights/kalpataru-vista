@@ -205,3 +205,18 @@ ul { padding-left: 1.1em; }
 @media (max-width: 860px) {
   .overview__grid { grid-template-columns: 1fr; }
 }
+
+/* Amenities */
+.amenities__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+.amenity-card { background: var(--white); padding: var(--space-2); }
+.amenity-card img { width: 100%; height: 200px; object-fit: cover; margin-bottom: var(--space-2); }
+.amenities__building { font-size: var(--fs-small); color: var(--fairway-700); }
+
+@media (max-width: 860px) {
+  .amenities__grid { grid-template-columns: 1fr; }
+}
