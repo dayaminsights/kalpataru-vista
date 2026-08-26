@@ -1,9 +1,9 @@
 /* kalpataru-vista.css — tokens, reset, type system, layout */
 
 :root {
-  /* Camellias Residences' exact palette — the whole page (header + hero
-     + footer) uses this single green/gold/cream set now that only they
-     remain. Token names kept as-is to avoid touching every usage site. */
+  /* Camellias Residences' exact palette — the whole page (just header +
+     hero now) uses this single green/gold/cream set. Token names kept
+     as-is to avoid touching every usage site. */
   --fairway-900: #254441;
   --fairway-900-rgb: 37, 68, 65;
   --fairway-700: #254441;
@@ -68,18 +68,6 @@ ul { padding-left: 1.1em; }
   max-width: var(--container-max);
   margin: 0 auto;
   padding: 0 var(--space-3);
-}
-.eyebrow {
-  font-family: var(--font-mono);
-  font-size: var(--fs-small);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--gold-500);
-  display: block;
-  margin-bottom: var(--space-1);
-}
-.mono {
-  font-family: var(--font-mono);
 }
 .btn {
   display: inline-block;
@@ -165,39 +153,3 @@ ul { padding-left: 1.1em; }
 @media (min-width: 992px) {
   .hero__sequence { display: block; }
 }
-.hero__overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(var(--fairway-900-rgb), 0.15) 0%, rgba(var(--fairway-900-rgb), 0.85) 90%);
-}
-.hero__inner {
-  position: relative;
-  display: grid;
-  grid-template-columns: 1.3fr 1fr;
-  gap: var(--space-5);
-  padding-bottom: var(--space-6);
-  color: var(--white);
-}
-.hero__copy h1 { color: var(--white); }
-.hero__rera em { font-style: normal; color: var(--gold-500); font-size: var(--fs-small); }
-.hero__form {
-  background: rgba(var(--sand-50-rgb), 0.96);
-  color: var(--ink-900);
-  padding: var(--space-3);
-  border-top: 2px solid var(--gold-500);
-  display: flex; flex-direction: column; gap: var(--space-1);
-}
-.hero__form h2 { font-size: var(--fs-heading); }
-.hero__form input, .hero__form textarea {
-  font-family: var(--font-body);
-  padding: 0.7em; border: 1px solid var(--sand-100); background: var(--white);
-}
-.hero__form-success { color: var(--fairway-700); font-weight: 600; }
-
-@media (max-width: 860px) {
-  .hero__inner { grid-template-columns: 1fr; }
-}
-
-/* Footer */
-.footer { padding: var(--space-5) 0; }
-.footer__grid { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-2); }
-.footer__disclaimer { font-size: var(--fs-small); opacity: 0.7; max-width: 32em; }

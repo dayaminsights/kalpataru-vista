@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", function () {
   initMobileNav();
   initHeroSlideshow();
   initHeroSequence();
-  initSiteVisitForm();
 });
 
 function initHeaderScrollState() {
@@ -119,15 +118,5 @@ function initHeroSequence() {
       window.removeEventListener("resize", onResize);
       st.kill();
     };
-  });
-}
-
-function initSiteVisitForm() {
-  const form = document.getElementById("siteVisitForm");
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    // NOTE: keep this tag list in sync with any new form-control types added to #siteVisitForm (e.g. <select>)
-    form.querySelectorAll("input, textarea, button").forEach((el) => (el.hidden = true));
-    form.querySelector(".hero__form-success").hidden = false;
   });
 }
