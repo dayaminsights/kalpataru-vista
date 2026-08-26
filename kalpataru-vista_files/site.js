@@ -106,7 +106,7 @@ function initHeroSequence() {
     const st = ScrollTrigger.create({
       trigger: ".hero",
       start: "top top",
-      end: "+=400%",
+      end: "+=800%",
       pin: true,
       scrub: 1,
       onUpdate: (self) => {
