@@ -5,6 +5,7 @@
      hero now) uses this single green/gold/cream set. Token names kept
      as-is to avoid touching every usage site. */
   --fairway-900: #254441;
+  --fairway-900-rgb: 37, 68, 65;
   --fairway-700: #254441;
   --fairway-500: #254441;
   --gold-500: #c9a13b;
@@ -67,6 +68,18 @@ ul { padding-left: 1.1em; }
   margin: 0 auto;
   padding: 0 var(--space-3);
 }
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold-500);
+  display: block;
+  margin-bottom: var(--space-1);
+}
+.mono {
+  font-family: var(--font-mono);
+}
 .btn {
   display: inline-block;
   font-family: var(--font-body);
@@ -122,6 +135,63 @@ ul { padding-left: 1.1em; }
     align-items: flex-start; padding: var(--space-4); transition: right 0.3s ease; }
   .nav.is-open { right: 0; }
   .nav-toggle { display: block; }
+}
+
+/* Hero image (opening shot — the twin-tower exterior) */
+.hero-image {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+.hero-image__bg {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+}
+.hero-image__overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(var(--fairway-900-rgb), 0.15) 0%, rgba(var(--fairway-900-rgb), 0.75) 100%);
+}
+.hero-image__inner {
+  position: relative;
+  padding-bottom: var(--space-6);
+  color: var(--white);
+}
+.hero-image__inner h1 { color: var(--white); }
+.hero-image__rera em { font-style: normal; color: var(--gold-300); font-size: var(--fs-small); }
+
+/* Sneak peek — transition beat before the interior walkthrough scroll begins */
+.sneak-peek {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: var(--fairway-900);
+}
+.sneak-peek__inner { color: var(--white); }
+.sneak-peek__inner h2 { color: var(--white); margin-bottom: var(--space-3); }
+.sneak-peek__cue {
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold-300);
+  display: inline-block;
+  animation: sneak-peek-cue 2s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sneak-peek__cue { animation: none; }
+}
+@keyframes sneak-peek-cue {
+  0%, 100% { transform: translateY(0); opacity: 0.7; }
+  50% { transform: translateY(6px); opacity: 1; }
+}
+
+@media (max-width: 860px) {
+  .hero-image__inner { padding-bottom: var(--space-5); }
 }
 
 /* Hero */
