@@ -1,17 +1,20 @@
 /* kalpataru-vista.css — tokens, reset, type system, layout */
 
 :root {
-  --fairway-900: #12261B;
-  --fairway-900-rgb: 18, 38, 27;
-  --fairway-700: #1E4531;
-  --fairway-500: #3D6B4C;
-  --gold-500: #B08D3F;
-  --gold-500-rgb: 176, 141, 63;
-  --gold-300: #D9BE7C;
-  --sand-50: #F8F4EA;
-  --sand-50-rgb: 248, 244, 234;
-  --sand-100: #F1EBDC;
-  --ink-900: #1B1A15;
+  /* Camellias Residences' exact palette — the whole page (header + hero
+     + footer) uses this single green/gold/cream set now that only they
+     remain. Token names kept as-is to avoid touching every usage site. */
+  --fairway-900: #254441;
+  --fairway-900-rgb: 37, 68, 65;
+  --fairway-700: #254441;
+  --fairway-500: #254441;
+  --gold-500: #c9a13b;
+  --gold-500-rgb: 201, 161, 59;
+  --gold-300: #c9a13b;
+  --sand-50: #e7e1dc;
+  --sand-50-rgb: 231, 225, 220;
+  --sand-100: #e7e1dc;
+  --ink-900: #121717;
   --white: #FFFFFF;
 
   --font-display: "Fraunces", serif;
@@ -66,12 +69,6 @@ ul { padding-left: 1.1em; }
   margin: 0 auto;
   padding: 0 var(--space-3);
 }
-.section {
-  padding: var(--space-6) 0;
-}
-.section-alt {
-  background: var(--sand-100);
-}
 .eyebrow {
   font-family: var(--font-mono);
   font-size: var(--fs-small);
@@ -103,8 +100,6 @@ ul { padding-left: 1.1em; }
 .btn:hover { background: var(--gold-500); color: var(--white); }
 .btn-solid { background: var(--gold-500); color: var(--white); }
 .btn-solid:hover { background: var(--fairway-700); border-color: var(--fairway-700); }
-
-[data-anim] { opacity: 0; transform: translateY(24px); }
 
 /* Header + nav */
 .header {
@@ -147,26 +142,15 @@ ul { padding-left: 1.1em; }
   .nav-toggle { display: block; }
 }
 
-/* Hero
-   Palette here is intentionally scoped to .hero only — Camellias
-   Residences' exact hex values, not the site's shared --fairway-,
-   --gold-, --sand- tokens (see docs/superpowers/specs/2026-08-26-
-   hero-scroll-sequence-design.md). Every other section keeps using
-   the shared tokens untouched. */
+/* Hero */
 .hero {
-  --hero-green: #254441;
-  --hero-green-rgb: 37, 68, 65;
-  --hero-gold: #c9a13b;
-  --hero-cream: #e7e1dc;
-  --hero-cream-rgb: 231, 225, 220;
-  --hero-ink: #121717;
   position: relative;
   min-height: 100vh;
   display: flex;
   align-items: flex-end;
   overflow: hidden;
 }
-.hero__slides { position: absolute; inset: 0; background: var(--hero-green); }
+.hero__slides { position: absolute; inset: 0; background: var(--fairway-900); }
 .hero__slide {
   position: absolute; inset: 0;
   background-size: cover; background-position: center;
@@ -183,7 +167,7 @@ ul { padding-left: 1.1em; }
 }
 .hero__overlay {
   position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(var(--hero-green-rgb), 0.15) 0%, rgba(var(--hero-green-rgb), 0.85) 90%);
+  background: linear-gradient(180deg, rgba(var(--fairway-900-rgb), 0.15) 0%, rgba(var(--fairway-900-rgb), 0.85) 90%);
 }
 .hero__inner {
   position: relative;
@@ -194,111 +178,26 @@ ul { padding-left: 1.1em; }
   color: var(--white);
 }
 .hero__copy h1 { color: var(--white); }
-.hero__rera em { font-style: normal; color: var(--hero-gold); font-size: var(--fs-small); }
+.hero__rera em { font-style: normal; color: var(--gold-500); font-size: var(--fs-small); }
 .hero__form {
-  background: rgba(var(--hero-cream-rgb), 0.96);
-  color: var(--hero-ink);
+  background: rgba(var(--sand-50-rgb), 0.96);
+  color: var(--ink-900);
   padding: var(--space-3);
-  border-top: 2px solid var(--hero-gold);
+  border-top: 2px solid var(--gold-500);
   display: flex; flex-direction: column; gap: var(--space-1);
 }
 .hero__form h2 { font-size: var(--fs-heading); }
 .hero__form input, .hero__form textarea {
   font-family: var(--font-body);
-  padding: 0.7em; border: 1px solid var(--hero-cream); background: var(--white);
+  padding: 0.7em; border: 1px solid var(--sand-100); background: var(--white);
 }
-.hero__form-success { color: var(--hero-green); font-weight: 600; }
-.hero__form .btn-solid { background: var(--hero-gold); border-color: var(--hero-gold); }
-.hero__form .btn-solid:hover { background: var(--hero-green); border-color: var(--hero-green); }
+.hero__form-success { color: var(--fairway-700); font-weight: 600; }
 
 @media (max-width: 860px) {
   .hero__inner { grid-template-columns: 1fr; }
 }
 
-/* Overview */
-.overview__grid {
-  display: grid;
-  grid-template-columns: 1.4fr 1fr;
-  gap: var(--space-5);
-}
-.overview__credits dl { margin: 0; }
-.overview__credits dt { font-family: var(--font-mono); font-size: var(--fs-small); color: var(--gold-500); margin-top: var(--space-2); }
-.overview__credits dd { margin: 0 0 var(--space-1); }
-
-@media (max-width: 860px) {
-  .overview__grid { grid-template-columns: 1fr; }
-}
-
-/* Amenities */
-.amenities__grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-3);
-  margin-bottom: var(--space-3);
-}
-.amenity-card { background: var(--white); padding: var(--space-2); }
-.amenity-card img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; margin-bottom: var(--space-2); }
-.amenity-card__img--bottom { object-position: bottom; }
-.amenities__building { font-size: var(--fs-small); color: var(--fairway-700); }
-
-@media (max-width: 860px) {
-  .amenities__grid { grid-template-columns: 1fr; }
-}
-
-/* Specifications */
-.specs__tab-list { display: flex; flex-wrap: wrap; gap: var(--space-1); margin-bottom: var(--space-3); }
-.specs__tab {
-  font-family: var(--font-mono); font-size: var(--fs-small); text-transform: uppercase;
-  background: none; border: 1px solid var(--sand-100); padding: 0.6em 1em; cursor: pointer;
-}
-.specs__tab:hover { border-color: var(--gold-500); color: var(--fairway-700); }
-.specs__tab.is-active { background: var(--fairway-700); color: var(--white); border-color: var(--fairway-700); }
-.specs__panel { display: none; }
-.specs__panel.is-active { display: block; }
-
-/* Unit Plans */
-.unitplans__grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-3);
-}
-.unit-card { background: var(--white); padding: var(--space-3); text-align: center; }
-.unit-card__icon { color: var(--gold-500); margin-bottom: var(--space-2); }
-.unit-card__price { color: var(--fairway-700); font-size: 1.1rem; font-weight: 500; }
-.unitplans__note { font-size: var(--fs-small); color: var(--fairway-500); margin-top: var(--space-2); }
-
-@media (max-width: 700px) {
-  .unitplans__grid { grid-template-columns: 1fr; }
-}
-
-/* Site Layout */
-.sitelayout__plate { border: 1px solid var(--sand-100); }
-.sitelayout__download { display: block; margin: var(--space-3) auto 0; cursor: not-allowed; opacity: 0.7; }
-.sitelayout__download:hover { background: transparent; color: var(--fairway-900); }
-
-/* Location */
-.location__grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: var(--space-4); align-items: center; }
-.location__list { list-style: none; padding: 0; display: grid; gap: var(--space-1); }
-.location__map { max-width: 320px; margin: 0 auto; }
-
-@media (max-width: 860px) {
-  .location__grid { grid-template-columns: 1fr; }
-}
-
-/* Virtual Tour */
-.virtualtour__poster { position: relative; max-width: 800px; margin: 0 auto; aspect-ratio: 16/9; }
-.virtualtour__play {
-  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-  width: 64px; height: 64px; border-radius: 50%; border: 1px solid var(--gold-500);
-  background: rgba(var(--gold-500-rgb), 0.25); display: flex; align-items: center; justify-content: center;
-  cursor: not-allowed;
-}
-
 /* Footer */
 .footer { padding: var(--space-5) 0; }
-.footer__grid { display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-3); }
-.footer__contact { margin-top: var(--space-2); }
+.footer__grid { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-2); }
 .footer__disclaimer { font-size: var(--fs-small); opacity: 0.7; max-width: 32em; }
-.footer__nav { display: flex; flex-direction: column; gap: var(--space-1); }
-.footer__nav a { color: var(--sand-50); text-decoration: none; }
-.footer__nav a:hover { color: var(--gold-300); }

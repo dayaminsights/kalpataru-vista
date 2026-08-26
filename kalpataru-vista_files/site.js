@@ -5,31 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
   initHeroSlideshow();
   initHeroSequence();
   initSiteVisitForm();
-  initScrollReveal();
-  initSpecTabs();
 });
-
-function initScrollReveal() {
-  const els = document.querySelectorAll('[data-anim="element"]');
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const gsapReady = typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined";
-  if (reduceMotion || !gsapReady) {
-    els.forEach((el) => {
-      el.style.opacity = 1;
-      el.style.transform = "none";
-    });
-    return;
-  }
-  els.forEach((el) => {
-    gsap.to(el, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      ease: "power2.out",
-      scrollTrigger: { trigger: el, start: "top 85%" },
-    });
-  });
-}
 
 function initHeaderScrollState() {
   const header = document.getElementById("header");
@@ -143,19 +119,6 @@ function initHeroSequence() {
       window.removeEventListener("resize", onResize);
       st.kill();
     };
-  });
-}
-
-function initSpecTabs() {
-  const tabs = document.querySelectorAll(".specs__tab");
-  const panels = document.querySelectorAll(".specs__panel");
-  tabs.forEach((tab) => {
-    tab.addEventListener("click", () => {
-      tabs.forEach((t) => t.classList.remove("is-active"));
-      panels.forEach((p) => p.classList.remove("is-active"));
-      tab.classList.add("is-active");
-      document.querySelector(`.specs__panel[data-panel="${tab.dataset.tab}"]`).classList.add("is-active");
-    });
   });
 }
 
