@@ -147,24 +147,43 @@ ul { padding-left: 1.1em; }
   .nav-toggle { display: block; }
 }
 
-/* Hero */
+/* Hero
+   Palette here is intentionally scoped to .hero only — Camellias
+   Residences' exact hex values, not the site's shared --fairway-,
+   --gold-, --sand- tokens (see docs/superpowers/specs/2026-08-26-
+   hero-scroll-sequence-design.md). Every other section keeps using
+   the shared tokens untouched. */
 .hero {
+  --hero-green: #254441;
+  --hero-green-rgb: 37, 68, 65;
+  --hero-gold: #c9a13b;
+  --hero-cream: #e7e1dc;
+  --hero-cream-rgb: 231, 225, 220;
+  --hero-ink: #121717;
   position: relative;
   min-height: 100vh;
   display: flex;
   align-items: flex-end;
   overflow: hidden;
 }
-.hero__slides { position: absolute; inset: 0; background: var(--fairway-900); }
+.hero__slides { position: absolute; inset: 0; background: var(--hero-green); }
 .hero__slide {
   position: absolute; inset: 0;
   background-size: cover; background-position: center;
   opacity: 0; transition: opacity 1.2s ease;
 }
 .hero__slide.is-active { opacity: 1; }
+.hero__sequence {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  display: none;
+}
+@media (min-width: 992px) {
+  .hero__sequence { display: block; }
+}
 .hero__overlay {
   position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(var(--fairway-900-rgb), 0.15) 0%, rgba(var(--fairway-900-rgb), 0.85) 90%);
+  background: linear-gradient(180deg, rgba(var(--hero-green-rgb), 0.15) 0%, rgba(var(--hero-green-rgb), 0.85) 90%);
 }
 .hero__inner {
   position: relative;
@@ -175,20 +194,22 @@ ul { padding-left: 1.1em; }
   color: var(--white);
 }
 .hero__copy h1 { color: var(--white); }
-.hero__rera em { font-style: normal; color: var(--gold-300); font-size: var(--fs-small); }
+.hero__rera em { font-style: normal; color: var(--hero-gold); font-size: var(--fs-small); }
 .hero__form {
-  background: rgba(var(--sand-50-rgb), 0.96);
-  color: var(--ink-900);
+  background: rgba(var(--hero-cream-rgb), 0.96);
+  color: var(--hero-ink);
   padding: var(--space-3);
-  border-top: 2px solid var(--gold-500);
+  border-top: 2px solid var(--hero-gold);
   display: flex; flex-direction: column; gap: var(--space-1);
 }
 .hero__form h2 { font-size: var(--fs-heading); }
 .hero__form input, .hero__form textarea {
   font-family: var(--font-body);
-  padding: 0.7em; border: 1px solid var(--sand-100); background: var(--white);
+  padding: 0.7em; border: 1px solid var(--hero-cream); background: var(--white);
 }
-.hero__form-success { color: var(--fairway-700); font-weight: 600; }
+.hero__form-success { color: var(--hero-green); font-weight: 600; }
+.hero__form .btn-solid { background: var(--hero-gold); }
+.hero__form .btn-solid:hover { background: var(--hero-green); }
 
 @media (max-width: 860px) {
   .hero__inner { grid-template-columns: 1fr; }
