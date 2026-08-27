@@ -49,3 +49,11 @@ section:not([class]),
 .kv-overview__stat dt{font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:rgba(21,23,23,.5);margin:0 0 .35rem}
 .kv-overview__stat dd{font-size:1.15rem;font-weight:600;color:#151717;margin:0}
 @media(min-width:768px){.kv-overview{padding:9rem 0}.kv-overview__stats{grid-template-columns:repeat(4,1fr)}}
+
+/* --- kv-benefits --- */
+.kv-benefits{padding:6rem 0;background:#f1f1ef}
+.kv-benefits__grid{list-style:none;display:grid;grid-template-columns:1fr;gap:2.5rem;margin:0;padding:0}
+.kv-benefits__item{display:flex;gap:1.25rem;align-items:flex-start;border-top:1px solid rgba(21,23,23,.12);padding-top:1.5rem}
+.kv-benefits__num{font-size:.85rem;font-weight:600;color:rgba(21,23,23,.4);letter-spacing:.05em;flex-shrink:0;padding-top:.2rem}
+.kv-benefits__item p{margin:0;font-size:1.3rem;font-weight:500;line-height:1.4;color:#151717;max-width:36ch}
+@media(min-width:768px){.kv-benefits{padding:8rem 0}.kv-benefits__grid{grid-template-columns:repeat(2,1fr);gap:3rem 4rem}}
