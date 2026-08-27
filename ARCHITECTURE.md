@@ -121,18 +121,20 @@ inject them with a small inline `<script>` right before `</body>` that runs on p
 Since hydration never sees the extra node in the initial DOM, there's no mismatch and
 nothing to clean up.
 
-As of commit `c09ea84`, this lives as a single shared mechanism (not one script per
-section) — both `index.html` and the FIND-named HTML file end with:
+As of the completed content-sections plan, this lives as a single shared mechanism (not
+one script per section) — both `index.html` and the FIND-named HTML file end with a
+7-entry `KV_SECTIONS` array:
 
 ```js
 (function(){
   var KV_SECTIONS=[
-    {id:'kv-overview', anchor:'.why-us_root__aGsFp', pos:'beforebegin', html:`<section class="kv-overview" ...>...</section>`}
-    // Tasks 4-7 each append ONE more entry here, e.g.:
-    // ,{id:'kv-benefits', anchor:'.why-us_root__aGsFp', pos:'beforebegin', html:`...`}
-    // ,{id:'kv-cta', anchor:'.why-us_root__aGsFp', pos:'beforebegin', html:`...`}
-    // ,{id:'kv-rera', anchor:'.footer_copyright-container__yt1ht', pos:'beforebegin', html:`...`}
-    // ,{id:'kv-nav-links', anchor:'.header_nav__if_jI', pos:'afterbegin', html:`...`}
+    {id:'kv-overview', anchor:'.why-us_root__aGsFp', pos:'beforebegin', html:`...`},
+    {id:'kv-benefits', anchor:'.why-us_root__aGsFp', pos:'beforebegin', html:`...`},
+    {id:'kv-amenities', anchor:'.why-us_root__aGsFp', pos:'beforebegin', html:`...`},
+    {id:'kv-cta', anchor:'.why-us_root__aGsFp', pos:'beforebegin', html:`...`},
+    {id:'kv-rera', anchor:'.footer_copyright-container__yt1ht', pos:'beforebegin', html:`...`},
+    {id:'kv-nav-links', anchor:'.header_nav__if_jI', pos:'afterbegin', html:`<span id="kv-nav-links" style="display:contents">...</span>`},
+    {id:'kv-burger-nav-links', anchor:'.burger-menu_nav__dAhwA', pos:'afterbegin', html:`<div id="kv-burger-nav-links" ...>...</div>...`}
   ];
   function ensure(){
     KV_SECTIONS.forEach(function(s){
@@ -149,29 +151,44 @@ section) — both `index.html` and the FIND-named HTML file end with:
 })();
 ```
 
-**Do not add a new `<script>` block per section.** Tasks 4-7 each add exactly one entry
-to the existing `KV_SECTIONS` array (same find/replace-anchor-on-the-previous-entry's-
-closing-`}` pattern this repo already uses for exact-string surgery), not a new IIFE.
-Two things to know before adding an entry:
+**Don't add a new `<script>` block per section — extend this array.** Same find/replace-
+anchor-on-the-previous-entry's-closing-`}` pattern this repo already uses for exact-string
+surgery. Things to know before adding an entry:
 
 - **Use backtick template literals for `html`, never single/double-quoted strings.** Real
   estate marketing copy contains apostrophes (e.g. "Kids' Play Area" in the Amenities
   list) that would prematurely terminate a quoted string. Backticks only break on a
-  literal backtick or `${`, neither of which appears in any of this project's copy.
-- **Every entry's `html` root element needs an `id` matching `s.id`.** The dedup check
-  (`document.getElementById(s.id)`) is what stops `ensure()` from double-inserting on
-  every MutationObserver callback — an entry whose markup doesn't carry that `id` will
-  re-insert itself repeatedly. This is why the nav-links entry (Task 7) needs an `id` on
-  its wrapping element even though the plan's original nav markup didn't call for one —
-  add e.g. `id="kv-nav-links"` on an outer wrapper around the two link `<div>`s.
-- **`pos` is `'beforebegin'` for every section built so far** (insert immediately before
-  the anchor). Task 7's nav links use `'afterbegin'` instead (insert as the anchor's
-  first child) since there's no existing sibling node to insert "before" — the anchor
-  *is* the container being inserted into, not a sibling to insert next to.
+  literal backtick or `${`, neither of which appears in any of this project's copy — if a
+  future entry's copy ever needs one of those (e.g. a price string with a template-like
+  format), escape it explicitly (`` \` `` / `\${`) rather than switching delimiters.
+- **Every entry's `html` needs an element carrying `id` matching `s.id`, somewhere.** The
+  dedup check (`document.getElementById(s.id)`) is what stops `ensure()` from
+  double-inserting on every `MutationObserver` callback. Two valid patterns, pick
+  whichever fits:
+  - **Root element already exists and just needs the id** (most sections): put it
+    directly on the section/div itself, e.g. `<section class="kv-cta" id="kv-cta">`.
+  - **Multiple sibling elements with no natural single root** (both nav-link entries):
+    either wrap them in a non-rendering wrapper — `<span id="..." style="display:contents">`
+    (`kv-nav-links`, needed here because the anchor is a `display:flex` container, so a
+    plain `<span>` would get flex-blockified and stack its children vertically instead of
+    inline — verified via `getBoundingClientRect`, don't assume) — **or**, simpler when
+    the anchor's flex/grid layout doesn't require preserving each child as a direct flex
+    item, put the id on the *first* sibling directly and skip the wrapper entirely
+    (`kv-burger-nav-links`). Prefer the no-wrapper form when it works; only reach for
+    `display:contents` if a wrapper is unavoidable and flex/grid child semantics matter.
+- **`pos` is `'beforebegin'` for every section** (insert immediately before the anchor).
+  The two nav-link entries use `'afterbegin'` instead (insert as the anchor's first
+  child) since there's no existing sibling to insert "before" — the anchor *is* the
+  container being inserted into, not a sibling to insert next to.
 - Insertion order is safe: repeated `insertAdjacentHTML(anchor, 'beforebegin', ...)`
   calls against the *same* anchor, processed in array order, land in declaration order
   immediately before the anchor — so array order `[overview, benefits, amenities, cta]`
   produces exactly that visual order without needing separate anchors per entry.
+- **The header nav (`.header_nav__if_jI`) and the mobile burger menu
+  (`.burger-menu_nav__dAhwA`) are two separate DOM subtrees**, not one nav that reflows —
+  the header nav is `display:none` below the 768px breakpoint, the burger menu is the
+  actual mobile nav. Any new nav-link entry needs a matching entry for *both*, or it'll be
+  invisible on phone-width viewports (missed on the first pass, caught in code review).
 
 ## Asset pipeline notes
 
