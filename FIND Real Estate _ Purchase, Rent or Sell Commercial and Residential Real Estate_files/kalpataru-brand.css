@@ -63,3 +63,14 @@ section:not([class]),
 .kv-amenities__list{list-style:none;display:flex;flex-wrap:wrap;gap:.75rem;margin:2.5rem 0 0;padding:0}
 .kv-amenities__list li{border:1px solid rgba(21,23,23,.18);border-radius:100px;padding:.65rem 1.35rem;font-size:.95rem;color:#151717;white-space:nowrap}
 @media(min-width:768px){.kv-amenities{padding:8rem 0}}
+
+/* --- kv-cta --- */
+.kv-cta{padding:7rem 0;background:#151717;color:#fff}
+.kv-section__eyebrow--light{color:rgba(255,255,255,.55)}
+.kv-cta__heading{font-size:clamp(2rem,4vw,3.25rem);font-weight:700;letter-spacing:-0.02em;line-height:1.15;color:#fff;margin:0 0 1.25rem;max-width:26ch;font-family:"Instrument Sans","Instrument Sans Fallback"}
+.kv-cta__body{font-size:1.1rem;line-height:1.6;color:rgba(255,255,255,.75);max-width:48ch;margin:0 0 2.5rem}
+@media(min-width:768px){.kv-cta{padding:9rem 0}}
+
+/* --- footer RERA disclosure --- */
+.kv-rera{font-size:.8rem;line-height:1.5;color:rgba(255,255,255,.55);max-width:60ch;padding:1.5rem 0 0}
+.kv-rera a{color:inherit;text-decoration:underline}
