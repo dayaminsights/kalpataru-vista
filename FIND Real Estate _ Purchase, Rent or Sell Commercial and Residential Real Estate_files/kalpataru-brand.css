@@ -57,3 +57,9 @@ section:not([class]),
 .kv-benefits__num{font-size:.85rem;font-weight:600;color:rgba(21,23,23,.4);letter-spacing:.05em;flex-shrink:0;padding-top:.2rem}
 .kv-benefits__item p{margin:0;font-size:1.3rem;font-weight:500;line-height:1.4;color:#151717;max-width:36ch}
 @media(min-width:768px){.kv-benefits{padding:8rem 0}.kv-benefits__grid{grid-template-columns:repeat(2,1fr);gap:3rem 4rem}}
+
+/* --- kv-amenities --- */
+.kv-amenities{padding:6rem 0;background:#fff}
+.kv-amenities__list{list-style:none;display:flex;flex-wrap:wrap;gap:.75rem;margin:2.5rem 0 0;padding:0}
+.kv-amenities__list li{border:1px solid rgba(21,23,23,.18);border-radius:100px;padding:.65rem 1.35rem;font-size:.95rem;color:#151717;white-space:nowrap}
+@media(min-width:768px){.kv-amenities{padding:8rem 0}}
