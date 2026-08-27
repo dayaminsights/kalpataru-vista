@@ -203,19 +203,30 @@ EOF
 - Modify: `FIND Real Estate _ Purchase, Rent or Sell Commercial and Residential Real Estate.html`
 - Modify: `FIND Real Estate _ Purchase, Rent or Sell Commercial and Residential Real Estate_files/kalpataru-brand.css`
 
-- [ ] **Step 1: Insert the Key Benefits section markup**
+- [ ] **Step 1: Append a Key Benefits entry to the shared `KV_SECTIONS` array**
 
-In both HTML files, find (now unique after Task 3's edit):
+**Do not use a literal HTML splice — it gets wiped by React hydration.** As of commit
+`c09ea84` (Task 3's follow-up refactor), new sections are added by appending one entry to
+the `KV_SECTIONS` array in the injection script at the end of `<body>`, in both
+`index.html` and the FIND-named `.html` file. See `ARCHITECTURE.md`'s "New sections"
+section for the full mechanism if anything below is unclear.
+
+In both HTML files, find this exact substring (the end of the current one-entry array,
+appears once in each file):
 
 ```
-<section class="why-us_root__aGsFp">
+</section>`}];function ensure()
 ```
 
-Replace with:
+Replace with (inserting a new array entry before the closing `];`):
 
 ```
-<section class="kv-benefits" id="kv-benefits"><div class="container_container__v5gtR"><div class="kv-section__eyebrow">02 — Key Benefits</div><ul class="kv-benefits__grid"><li class="kv-benefits__item"><span class="kv-benefits__num">01</span><p>Landscaped open spaces with ample recreational facilities</p></li><li class="kv-benefits__item"><span class="kv-benefits__num">02</span><p>Expansive views from your infinity pool</p></li><li class="kv-benefits__item"><span class="kv-benefits__num">03</span><p>Island kitchen design</p></li><li class="kv-benefits__item"><span class="kv-benefits__num">04</span><p>Large Sundecks with panoramic views of the Golf Course</p></li></ul></div></section><section class="why-us_root__aGsFp">
+</section>`},{id:'kv-benefits',anchor:'.why-us_root__aGsFp',pos:'beforebegin',html:`<section class="kv-benefits" id="kv-benefits"><div class="container_container__v5gtR"><div class="kv-section__eyebrow">02 — Key Benefits</div><ul class="kv-benefits__grid"><li class="kv-benefits__item"><span class="kv-benefits__num">01</span><p>Landscaped open spaces with ample recreational facilities</p></li><li class="kv-benefits__item"><span class="kv-benefits__num">02</span><p>Expansive views from your infinity pool</p></li><li class="kv-benefits__item"><span class="kv-benefits__num">03</span><p>Island kitchen design</p></li><li class="kv-benefits__item"><span class="kv-benefits__num">04</span><p>Large Sundecks with panoramic views of the Golf Course</p></li></ul></div></section>`}];function ensure()
 ```
+
+(Note the new entry's `html` uses backtick delimiters like the existing entry — never
+single/double quotes, this project's copy can contain apostrophes. This entry has none,
+but Task 5's does, so stay consistent.)
 
 - [ ] **Step 2: Append the Key Benefits section CSS**
 
@@ -253,19 +264,27 @@ EOF
 - Modify: `FIND Real Estate _ Purchase, Rent or Sell Commercial and Residential Real Estate.html`
 - Modify: `FIND Real Estate _ Purchase, Rent or Sell Commercial and Residential Real Estate_files/kalpataru-brand.css`
 
-- [ ] **Step 1: Insert the Amenities section markup**
+- [ ] **Step 1: Append an Amenities entry to the shared `KV_SECTIONS` array**
 
-In both HTML files, find:
+**Do not use a literal HTML splice — it gets wiped by React hydration.** Same mechanism
+as Task 4 — see `ARCHITECTURE.md`'s "New sections" section.
+
+In both HTML files, find this exact substring (the end of the array — this pattern
+matches the *last* entry regardless of what Task 4 added, since it's always at the end):
 
 ```
-<section class="why-us_root__aGsFp">
+</section>`}];function ensure()
 ```
 
 Replace with:
 
 ```
-<section class="kv-amenities" id="kv-amenities"><div class="container_container__v5gtR"><div class="kv-section__eyebrow">03 — Amenities</div><h2 class="kv-section__heading">Everything a day could ask for</h2><ul class="kv-amenities__list"><li>Swimming Pool</li><li>Gymnasium</li><li>Multi-Purpose Hall</li><li>Squash Court</li><li>Community Centre</li><li>Creche</li><li>Business Lounge</li><li>Kids' Play Area</li><li>Fitness Zone</li><li>Games Room</li><li>Jogging Path</li><li>Landscaped Podium for Walking</li><li>Library and TV Lounge</li><li>Lounge Area</li><li>Spa</li><li>Sundecks</li><li>Waiting Niche</li></ul></div></section><section class="why-us_root__aGsFp">
+</section>`},{id:'kv-amenities',anchor:'.why-us_root__aGsFp',pos:'beforebegin',html:`<section class="kv-amenities" id="kv-amenities"><div class="container_container__v5gtR"><div class="kv-section__eyebrow">03 — Amenities</div><h2 class="kv-section__heading">Everything a day could ask for</h2><ul class="kv-amenities__list"><li>Swimming Pool</li><li>Gymnasium</li><li>Multi-Purpose Hall</li><li>Squash Court</li><li>Community Centre</li><li>Creche</li><li>Business Lounge</li><li>Kids' Play Area</li><li>Fitness Zone</li><li>Games Room</li><li>Jogging Path</li><li>Landscaped Podium for Walking</li><li>Library and TV Lounge</li><li>Lounge Area</li><li>Spa</li><li>Sundecks</li><li>Waiting Niche</li></ul></div></section>`}];function ensure()
 ```
+
+**This entry's copy contains a literal apostrophe** (`Kids' Play Area`) — this is exactly
+why the array uses backtick delimiters, not single-quoted strings. Double-check the
+backticks are what actually got written, not straight quotes.
 
 - [ ] **Step 2: Append the Amenities section CSS**
 
@@ -301,33 +320,47 @@ EOF
 - Modify: `FIND Real Estate _ Purchase, Rent or Sell Commercial and Residential Real Estate.html`
 - Modify: `FIND Real Estate _ Purchase, Rent or Sell Commercial and Residential Real Estate_files/kalpataru-brand.css`
 
-- [ ] **Step 1: Insert the CTA section markup**
+- [ ] **Step 1: Append a CTA entry to the shared `KV_SECTIONS` array**
 
-In both HTML files, find:
+**Do not use a literal HTML splice — it gets wiped by React hydration.** Same mechanism
+as Tasks 4-5 — see `ARCHITECTURE.md`'s "New sections" section.
 
-```
-<section class="why-us_root__aGsFp">
-```
-
-Replace with:
+In both HTML files, find this exact substring (end of the array):
 
 ```
-<section class="kv-cta" id="kv-cta"><div class="container_container__v5gtR"><div class="kv-section__eyebrow kv-section__eyebrow--light">04 — Get in Touch</div><h2 class="kv-cta__heading">Book your residence at Kalpataru Vista</h2><p class="kv-cta__body">Twin towers. 3 &amp; 4 bed apartments and duplexes. A 110-acre golf course setting in Sector 128, Noida.</p><div class="kv-cta__actions"><a class="button_button-round__TFjlU button_color-primary__JJ7Hh button_inversed__slQcI" href="tel:+912230643065"><div class="button_content__6Zh3n"><div class="button_button-round-text__IEwW5"><span data-text="Book Now">Book Now</span></div></div></a></div></div></section><section class="why-us_root__aGsFp">
-```
-
-- [ ] **Step 2: Insert the footer RERA disclosure**
-
-In both HTML files, find this exact substring (appears once in each file):
-
-```
-<div class="footer_copyright-container__yt1ht">
+</section>`}];function ensure()
 ```
 
 Replace with:
 
 ```
-<div class="kv-rera">RERA Reg. No. UPRERAPRJ14980. For details, please refer <a href="http://up-rera.in/" target="_blank" rel="noopener">up-rera.in</a>.</div><div class="footer_copyright-container__yt1ht">
+</section>`},{id:'kv-cta',anchor:'.why-us_root__aGsFp',pos:'beforebegin',html:`<section class="kv-cta" id="kv-cta"><div class="container_container__v5gtR"><div class="kv-section__eyebrow kv-section__eyebrow--light">04 — Get in Touch</div><h2 class="kv-cta__heading">Book your residence at Kalpataru Vista</h2><p class="kv-cta__body">Twin towers. 3 &amp; 4 bed apartments and duplexes. A 110-acre golf course setting in Sector 128, Noida.</p><div class="kv-cta__actions"><a class="button_button-round__TFjlU button_color-primary__JJ7Hh button_inversed__slQcI" href="tel:+912230643065"><div class="button_content__6Zh3n"><div class="button_button-round-text__IEwW5"><span data-text="Book Now">Book Now</span></div></div></a></div></div></section>`}];function ensure()
 ```
+
+- [ ] **Step 2: Append a footer-RERA entry to the same array**
+
+This is a *second, separate* array entry — different `id`, different `anchor`, but the
+same array and the same mechanism (the footer's own child list is also React-owned, so
+this needs script injection too, not a static splice — confirmed during Task 3's
+investigation that the reconciliation isn't scoped to just `<main>`).
+
+Find the exact substring again (now ending in the `kv-cta` entry you just added in Step 1):
+
+```
+</div></section>`}];function ensure()
+```
+
+Replace with (note: this closing pattern is `</div></section>` because the CTA entry's
+markup ends that way — match against your actual Step 1 result, then insert the new
+entry before `];`):
+
+```
+</div></section>`},{id:'kv-rera',anchor:'.footer_copyright-container__yt1ht',pos:'beforebegin',html:`<div class="kv-rera" id="kv-rera">RERA Reg. No. UPRERAPRJ14980. For details, please refer <a href="http://up-rera.in/" target="_blank" rel="noopener">up-rera.in</a>.</div>`}];function ensure()
+```
+
+Note the `kv-rera` div now carries `id="kv-rera"` (in addition to the `class="kv-rera"`
+the CSS in Step 3 targets) — the array's dedup check needs `document.getElementById(s.id)`
+to find it, that's a hard requirement for every entry, not just this one.
 
 - [ ] **Step 3: Append the CTA and RERA CSS**
 
@@ -373,19 +406,39 @@ EOF
 
 **Scope note:** the existing header nav still has leftover FIND items (Search / Agents / Join, and a Sign In button linking to `app.findrealestate.com`). Those are a pre-existing issue out of scope for this plan (not part of the approved spec, and changing them may hit the same hydration-revert risk the hero text did — needs its own investigation). This task only *adds* two new links; it does not touch the existing ones.
 
-- [ ] **Step 1: Insert the anchor links**
+- [ ] **Step 1: Append a nav-links entry to the shared `KV_SECTIONS` array**
 
-In both HTML files, find this exact substring (appears once in each file):
+**Do not use a literal HTML splice — it gets wiped by React hydration.** The header nav's
+child list is React-owned (dropdown menus, burger-menu state) just like the section list
+and the footer were — same mechanism as Tasks 4-6, see `ARCHITECTURE.md`.
+
+This entry differs from the others in two ways: it uses `pos:'afterbegin'` (insert as the
+anchor's *first child*, since we're inserting into a container, not before a sibling) and
+its `html` needs a wrapping element carrying `id="kv-nav-links"` so the array's dedup
+check (`document.getElementById(s.id)`) has something to find — the two nav-item `<div>`s
+on their own have no natural id to check against.
+
+Find the exact substring (end of the array, now ending in whatever Task 6 added):
 
 ```
-<nav class="header_nav__if_jI">
+`}];function ensure()
 ```
 
 Replace with:
 
 ```
-<nav class="header_nav__if_jI"><div class="header_nav-item__Wn05d"><a href="#kv-overview"><span data-text="Overview">Overview</span></a></div><div class="header_nav-item__Wn05d"><a href="#kv-amenities"><span data-text="Amenities">Amenities</span></a></div>
+`},{id:'kv-nav-links',anchor:'.header_nav__if_jI',pos:'afterbegin',html:`<span id="kv-nav-links"><div class="header_nav-item__Wn05d"><a href="#kv-overview"><span data-text="Overview">Overview</span></a></div><div class="header_nav-item__Wn05d"><a href="#kv-amenities"><span data-text="Amenities">Amenities</span></a></div></span>`}];function ensure()
 ```
+
+(The wrapping `<span>` is a plain inline element purely to carry the dedup `id` — it adds
+no visual box since the two `header_nav-item__Wn05d` divs inside it are block-level flex
+children of `header_nav__if_jI` regardless of the span; if the probe or a manual check
+shows unwanted layout shift from the wrapper, switch it to a non-rendering wrapper
+approach instead, but try this first.)
+
+**Scope note still applies:** the existing header nav items (Search / Agents / Join, and
+the Sign In button linking to `app.findrealestate.com`) are pre-existing, out of scope —
+this task only adds the two new links via the array, it does not touch the others.
 
 - [ ] **Step 2: Restart the dev server, run the probe**
 
@@ -439,9 +492,19 @@ Expected at every depth: all seven leftover-section keys `none`, `bare-sections`
 
 - [ ] **Step 2: If anything regresses, fix it and re-run before proceeding** (no code changes expected in the normal case — this step exists to catch a scroll-driven inline style from the GSAP hero timeline leaking onto the new sections, per the project's documented history of "looks right on load, breaks on scroll" bugs)
 
-- [ ] **Step 3: Final review — read both HTML files' diffs against git history to confirm they're still identical**
+- [ ] **Step 3: Final review — confirm both HTML files are still content-identical**
+
+`index.html` uses CRLF line endings and the FIND-named file uses LF (pre-existing,
+harmless — confirmed during Task 3). A plain `diff` will report them as different for
+that reason alone, so compare with line endings normalized:
 
 ```bash
-diff index.html "FIND Real Estate _ Purchase, Rent or Sell Commercial and Residential Real Estate.html" && echo IDENTICAL
+node -e "
+const fs=require('fs');
+const norm=s=>s.replace(/\r\n/g,'\n');
+const a=norm(fs.readFileSync('index.html','utf8'));
+const b=norm(fs.readFileSync('FIND Real Estate _ Purchase, Rent or Sell Commercial and Residential Real Estate.html','utf8'));
+console.log(a===b?'IDENTICAL':'DIVERGED');
+"
 ```
-Expected: `IDENTICAL`. If not, find where they diverged (likely a missed find/replace in one of Tasks 3–7) and fix it.
+Expected: `IDENTICAL`. If `DIVERGED`, find where the two files' content (not line endings) actually differs and fix it — likely a missed find/replace in one of Tasks 3-7.
