@@ -39,3 +39,13 @@ section:not([class]),
 .features_root__CCic6,
 .latest-posts_root__W0OHF,
 .outro_root__stMHm{display:none}
+
+/* --- kv-overview --- */
+.kv-overview{padding:6rem 0;background:#fff}
+.kv-section__eyebrow{font-size:.875rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:rgba(21,23,23,.55);margin-bottom:1rem}
+.kv-section__heading{font-size:clamp(2rem,4vw,3.5rem);font-weight:700;letter-spacing:-0.02em;line-height:1.1;color:#151717;margin:0 0 1.5rem;max-width:32ch;font-family:"Instrument Sans","Instrument Sans Fallback"}
+.kv-overview__body{font-size:1.125rem;line-height:1.6;color:rgba(21,23,23,.8);max-width:60ch;margin:0 0 3rem}
+.kv-overview__stats{display:grid;grid-template-columns:repeat(2,1fr);gap:2rem;margin:0;padding-top:2rem;border-top:1px solid rgba(21,23,23,.12)}
+.kv-overview__stat dt{font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:rgba(21,23,23,.5);margin:0 0 .35rem}
+.kv-overview__stat dd{font-size:1.15rem;font-weight:600;color:#151717;margin:0}
+@media(min-width:768px){.kv-overview{padding:9rem 0}.kv-overview__stats{grid-template-columns:repeat(4,1fr)}}
