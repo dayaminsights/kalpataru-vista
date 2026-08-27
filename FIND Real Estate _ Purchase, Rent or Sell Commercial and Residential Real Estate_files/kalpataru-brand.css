@@ -40,6 +40,15 @@ section:not([class]),
 .latest-posts_root__W0OHF,
 .outro_root__stMHm{display:none}
 
+/* content sections sit visually below the hero in document order, but the hero's
+   building photo (.hero_house__aJy7p) is absolutely positioned with z-index:1/2 and
+   forced opacity:1!important (see hero rules above), so its 2000px+ box otherwise
+   paints over every section below it for the whole scroll range the hero's sticky
+   pin spans. Lifting these into their own stacking context above the hero's highest
+   layer (hero_clouds at z-index:2) fixes it -- confirmed via elementFromPoint, not
+   just by reading z-index values. */
+.kv-overview,.kv-benefits,.kv-amenities,.kv-cta{position:relative;z-index:3}
+
 /* --- kv-overview --- */
 .kv-overview{padding:6rem 0;background:#fff}
 .kv-section__eyebrow{font-size:.875rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:rgba(21,23,23,.55);margin-bottom:1rem}
