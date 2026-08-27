@@ -117,15 +117,61 @@ though `curl`/`grep`/view-source show it present. Confirmed by probing at
 `--virtual-time-budget=1`: the node is already gone.
 
 **Working fix**: don't put new sections in the server-rendered HTML at all. Instead,
-inject them with a small inline `<script>` right before `</body>` that runs on parse,
-finds the anchor node (`.why-us_root__aGsFp`), and does `insertAdjacentHTML('beforebegin', ...)`.
+inject them with a small inline `<script>` right before `</body>` that runs on parse.
 Since hydration never sees the extra node in the initial DOM, there's no mismatch and
-nothing to clean up. A `MutationObserver` on `document.body` re-runs the insert if
-anything removes it later (defensive; disconnects after 8s). This is the pattern used for
-`kv-overview` (Task 3) and should be reused for the remaining `kv-*` sections (Tasks 4-7)
-— do not repeat the "insert `<section class="kv-...">...` directly before
-`why-us_root__aGsFp`" literal HTML-splice instructions as originally written in the plan
-without adapting them to this script-injection approach.
+nothing to clean up.
+
+As of commit `c09ea84`, this lives as a single shared mechanism (not one script per
+section) — both `index.html` and the FIND-named HTML file end with:
+
+```js
+(function(){
+  var KV_SECTIONS=[
+    {id:'kv-overview', anchor:'.why-us_root__aGsFp', pos:'beforebegin', html:`<section class="kv-overview" ...>...</section>`}
+    // Tasks 4-7 each append ONE more entry here, e.g.:
+    // ,{id:'kv-benefits', anchor:'.why-us_root__aGsFp', pos:'beforebegin', html:`...`}
+    // ,{id:'kv-cta', anchor:'.why-us_root__aGsFp', pos:'beforebegin', html:`...`}
+    // ,{id:'kv-rera', anchor:'.footer_copyright-container__yt1ht', pos:'beforebegin', html:`...`}
+    // ,{id:'kv-nav-links', anchor:'.header_nav__if_jI', pos:'afterbegin', html:`...`}
+  ];
+  function ensure(){
+    KV_SECTIONS.forEach(function(s){
+      if(document.getElementById(s.id))return; // dedup: only insert once
+      var t=document.querySelector(s.anchor);
+      if(!t)return;
+      t.insertAdjacentHTML(s.pos,s.html); // 8000ms below is < the project's 10s probe --virtual-time-budget
+    });
+  }
+  ensure();
+  var mo=new MutationObserver(ensure); // re-inserts if something later removes a section
+  mo.observe(document.body,{childList:true,subtree:true});
+  setTimeout(function(){mo.disconnect();},8000);
+})();
+```
+
+**Do not add a new `<script>` block per section.** Tasks 4-7 each add exactly one entry
+to the existing `KV_SECTIONS` array (same find/replace-anchor-on-the-previous-entry's-
+closing-`}` pattern this repo already uses for exact-string surgery), not a new IIFE.
+Two things to know before adding an entry:
+
+- **Use backtick template literals for `html`, never single/double-quoted strings.** Real
+  estate marketing copy contains apostrophes (e.g. "Kids' Play Area" in the Amenities
+  list) that would prematurely terminate a quoted string. Backticks only break on a
+  literal backtick or `${`, neither of which appears in any of this project's copy.
+- **Every entry's `html` root element needs an `id` matching `s.id`.** The dedup check
+  (`document.getElementById(s.id)`) is what stops `ensure()` from double-inserting on
+  every MutationObserver callback — an entry whose markup doesn't carry that `id` will
+  re-insert itself repeatedly. This is why the nav-links entry (Task 7) needs an `id` on
+  its wrapping element even though the plan's original nav markup didn't call for one —
+  add e.g. `id="kv-nav-links"` on an outer wrapper around the two link `<div>`s.
+- **`pos` is `'beforebegin'` for every section built so far** (insert immediately before
+  the anchor). Task 7's nav links use `'afterbegin'` instead (insert as the anchor's
+  first child) since there's no existing sibling node to insert "before" — the anchor
+  *is* the container being inserted into, not a sibling to insert next to.
+- Insertion order is safe: repeated `insertAdjacentHTML(anchor, 'beforebegin', ...)`
+  calls against the *same* anchor, processed in array order, land in declaration order
+  immediately before the anchor — so array order `[overview, benefits, amenities, cta]`
+  produces exactly that visual order without needing separate anchors per entry.
 
 ## Asset pipeline notes
 
