@@ -607,30 +607,56 @@ const server = http.createServer((req, res) => {
       if(expandCards.length===3&&prevArrow&&nextArrow){
         try{
         var expandGolfCard=expandCards[1];
-        expandGolfCard.dispatchEvent(new MouseEvent('mouseenter',{bubbles:false}));
-        out.overviewExpand.expandedRightAfterHover=expandGolfCard.classList.contains('is-expanded');
-        out.overviewExpand.lightboxOpenRightAfterHover=document.body.classList.contains('kv-overview-lightbox-open');
+        // Settle first: earlier probe blocks (golf slideshow, location video, the
+        // contact-modal Escape test) dispatch real mouseenter/mouseleave/Escape on
+        // these same shared .kv-overview__card elements / document for their own
+        // unrelated purposes -- which also (correctly, by this feature's design)
+        // triggers hover-expand/close here too. That can leave a deferred close
+        // in flight (collapseToGrid's closeRequested queuing when called mid-
+        // animation) which would otherwise unwind this test's own state out from
+        // under it moments after starting. Force a close and wait out the worst
+        // case (one FLIP_MS for the queued close to fire, another FLIP_MS for its
+        // own reverse-FLIP to finish) before starting the real assertions below.
+        document.dispatchEvent(new MouseEvent('mouseleave',{bubbles:false}));
         probeWaits.push(new Promise(function(resolveExpandWait){
           setTimeout(function(){
             try{
-            var r=expandGolfCard.getBoundingClientRect();
-            out.overviewExpand.rectAfterFlip={top:Math.round(r.top),left:Math.round(r.left),width:Math.round(r.width),height:Math.round(r.height)};
-            out.overviewExpand.arrowOpacityAfterHover=getComputedStyle(prevArrow).opacity;
-            nextArrow.dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true}));
-            out.overviewExpand.residencesExpandedAfterNextClick=expandCards[2].classList.contains('is-expanded');
-            out.overviewExpand.golfStillExpandedAfterNextClick=expandGolfCard.classList.contains('is-expanded');
-            document.dispatchEvent(new MouseEvent('mouseleave',{bubbles:false}));
+            expandGolfCard.dispatchEvent(new MouseEvent('mouseenter',{bubbles:false}));
+            out.overviewExpand.expandedRightAfterHover=expandGolfCard.classList.contains('is-expanded');
+            out.overviewExpand.lightboxOpenRightAfterHover=document.body.classList.contains('kv-overview-lightbox-open');
             setTimeout(function(){
               try{
-              out.overviewExpand.anyExpandedAfterDocLeave=document.querySelector('#kv-overview .kv-overview__card.is-expanded')!==null;
-              out.overviewExpand.lightboxOpenAfterDocLeave=document.body.classList.contains('kv-overview-lightbox-open');
-              }catch(innerErr){out.overviewExpandErr=(innerErr&&innerErr.stack)?innerErr.stack:String(innerErr);}
-              finally{
-              resolveExpandWait();
-              }
-            },550);
-            }catch(outerErr){out.overviewExpandErr=(outerErr&&outerErr.stack)?outerErr.stack:String(outerErr);resolveExpandWait();}
-          },500);
+              var r=expandGolfCard.getBoundingClientRect();
+              out.overviewExpand.rectAfterFlip={top:Math.round(r.top),left:Math.round(r.left),width:Math.round(r.width),height:Math.round(r.height)};
+              out.overviewExpand.arrowOpacityAfterHover=getComputedStyle(prevArrow).opacity;
+              nextArrow.dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true}));
+              out.overviewExpand.residencesExpandedAfterNextClick=expandCards[2].classList.contains('is-expanded');
+              out.overviewExpand.golfStillExpandedAfterNextClick=expandGolfCard.classList.contains('is-expanded');
+              // switchTo() (invoked by the arrow click above) sets its own
+              // animating=true for FADE_MS (300ms). Dispatching the doc-leave
+              // immediately would hit that guard in collapseToGrid and defer the
+              // close via closeRequested, pushing is-expanded's removal out past
+              // FLIP_MS+FADE_MS instead of just FLIP_MS -- wait out FADE_MS first
+              // so collapseToGrid actually runs immediately below, matching the
+              // FLIP_MS-only wait after it.
+              setTimeout(function(){
+              try{
+              document.dispatchEvent(new MouseEvent('mouseleave',{bubbles:false}));
+              setTimeout(function(){
+                try{
+                out.overviewExpand.anyExpandedAfterDocLeave=document.querySelector('#kv-overview .kv-overview__card.is-expanded')!==null;
+                out.overviewExpand.lightboxOpenAfterDocLeave=document.body.classList.contains('kv-overview-lightbox-open');
+                }catch(innerErr){out.overviewExpandErr=(innerErr&&innerErr.stack)?innerErr.stack:String(innerErr);}
+                finally{
+                resolveExpandWait();
+                }
+              },550);
+              }catch(leaveErr){out.overviewExpandErr=(leaveErr&&leaveErr.stack)?leaveErr.stack:String(leaveErr);resolveExpandWait();}
+              },350);
+              }catch(outerErr){out.overviewExpandErr=(outerErr&&outerErr.stack)?outerErr.stack:String(outerErr);resolveExpandWait();}
+            },500);
+            }catch(settleErr){out.overviewExpandErr=(settleErr&&settleErr.stack)?settleErr.stack:String(settleErr);resolveExpandWait();}
+          },1000);
         }));
         }catch(expandErr){out.overviewExpandErr=(expandErr&&expandErr.stack)?expandErr.stack:String(expandErr);}
       }
