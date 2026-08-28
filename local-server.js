@@ -233,11 +233,17 @@ const server = http.createServer((req, res) => {
       out.amenities.allSeventeenPresent=['Swimming Pool','Gymnasium','Multi-Purpose Hall','Squash Court','Community Centre','Creche','Business Lounge',"Kids' Play Area",'Fitness Zone','Games Room','Jogging Path','Landscaped Podium for Walking','Library and TV Lounge','Lounge Area','Spa','Sundecks','Waiting Niche'].every(function(name){return amenText.indexOf(name)>-1;});
       var overviewCards=document.querySelectorAll('#kv-overview .kv-overview__card');
       out.overview={cardCount:overviewCards.length};
+      out.overview.statsRemoved=!document.querySelector('#kv-overview .kv-overview__stats');
+      out.overview.ctaFound=!!document.querySelector('#kv-overview .kv-overview__intro .button_button-round__TFjlU');
+      out.overview.bg=document.getElementById('kv-overview')?getComputedStyle(document.getElementById('kv-overview')).backgroundColor:'n/a';
       out.overview.cards=Array.prototype.map.call(overviewCards,function(c){
         var img=c.querySelector('.kv-overview__card-media img');
-        var h3=c.querySelector('.kv-overview__card-title h3');
+        var h3=c.querySelector('.kv-overview__card-overlay h3');
+        var btn=c.querySelector('.kv-overview__card-overlay .button_button-round__TFjlU');
         return {
           heading:h3?h3.textContent:'NO H3',
+          hasButton:!!btn,
+          buttonHref:btn?btn.getAttribute('href'):null,
           imgSrc:img?img.getAttribute('src').split('/').pop():'NO IMG',
           imgNaturalSize:img?(img.naturalWidth+'x'+img.naturalHeight):'n/a',
           mediaHeight:img?Math.round(img.getBoundingClientRect().height):0
