@@ -80,10 +80,11 @@ Each panel:
 ## Assets
 
 `enjoy.webp`, `meet.webp`, `relax.webp` currently exist only in `assets/` (source), not
-yet in either `..._files/` served folder. Copy all 3 into both:
-- `..._files/` (short name, next to `hero-building.webp`)
-- `FIND Real Estate _ Purchase, Rent or Sell Commercial and Residential Real
-  Estate_files/` (long name, mirrors the short one)
+yet in the served folder. Copy all 3 into `FIND Real Estate _ Purchase, Rent or Sell
+Commercial and Residential Real Estate_files/` — there is exactly one served assets
+folder (confirmed against `index.html`'s own `<link>`/`<video src>` references, which
+point at this same long-named folder even from `index.html` itself), not two, so no
+duplication is needed.
 
 No resizing/recompression pass planned — same asset-pipeline limitation noted in
 `ARCHITECTURE.md` (no ImageMagick/cwebp/pngquant available); revisit only if these ship
