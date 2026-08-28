@@ -128,9 +128,9 @@ section:not([class]),
 [data-amenities-anim="big-image"].is-first{mask-image:none!important;-webkit-mask-image:none!important;transition:unset}
 @media(min-width:768px){
   .kv-amenities-wrap{flex-flow:row;gap:5rem;padding:0}
-  .kv-amenities-images{width:56%;height:75%}
+  .kv-amenities-images{width:56%;height:75%;order:1}
   .kv-amenities-images-small{width:14rem;height:16.5rem;right:auto;left:-6rem;bottom:-3rem}
-  .kv-amenities-texts{width:44%;max-width:none;padding-left:3rem}
+  .kv-amenities-texts{width:44%;max-width:none;padding-left:0;order:0}
 }
 
 /* --- kv-cta --- */

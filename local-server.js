@@ -91,6 +91,8 @@ const server = http.createServer((req, res) => {
     const html = fs.readFileSync(path.join(ROOT, "index.html"), "utf8");
     const scrollY = parseInt(url.parse(reqUrl, true).query.scrollY || "0", 10);
     const probe = `<script>
+      window.__jsErrors=[];
+      window.addEventListener('error',function(e){window.__jsErrors.push((e.error&&e.error.stack)?e.error.stack:e.message);});
       window.scrollTo(0, ${scrollY});
       if(typeof ScrollTrigger!=='undefined'){ScrollTrigger.update();}
       setTimeout(function(){
@@ -280,6 +282,15 @@ const server = http.createServer((req, res) => {
         out.amenitiesAnim.smallImages=Array.prototype.map.call(smallImgs,function(img,i){
           var s=getComputedStyle(img);
           return {index:i,clipPath:s.clipPath};
+        });
+        out.amenitiesAnim.jsErrors=window.__jsErrors;
+        out.amenitiesAnim.h3Debug=Array.prototype.map.call(slideBoxes,function(box,i){
+          var h3=box.querySelector('[data-amenities-anim="title"]');
+          if(!h3)return {index:i,found:false};
+          var lines=h3.querySelectorAll('div,span');
+          var innermost=lines[lines.length-1];
+          var deep=getComputedStyle(innermost);
+          return {index:i,offsetHeight:h3.offsetHeight,childCount:lines.length,h3Opacity:getComputedStyle(h3).opacity,textContent:h3.textContent,innermostTransform:deep.transform,innermostOpacity:deep.opacity,innermostColor:deep.color,innermostFontSize:deep.fontSize};
         });
         out.amenitiesAnim.slideBoxStates=Array.prototype.map.call(slideBoxes,function(box,i){
           var s=getComputedStyle(box);
