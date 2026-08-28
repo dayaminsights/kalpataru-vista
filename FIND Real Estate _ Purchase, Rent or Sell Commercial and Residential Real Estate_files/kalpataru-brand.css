@@ -11,11 +11,11 @@
 
 /* nav wordmark */
 .header_logo__LO_Jk svg{display:none}
-.header_logo__LO_Jk>a{display:block;width:9.1rem;height:2.6rem;background:url("./FIND Real Estate _ Purchase, Rent or Sell Commercial and Residential Real Estate_files/kalpataru-vista-logo.svg") no-repeat left center;background-size:contain}
+.header_logo__LO_Jk>a{display:block;width:13rem;height:5.6rem;background:url("./kalpataru-vista-logo.svg") no-repeat left center;background-size:contain}
 
 /* footer wordmark */
 .footer_logo__5ncK8 svg{display:none}
-.footer_logo__5ncK8{width:100%;height:9rem;background:url("./FIND Real Estate _ Purchase, Rent or Sell Commercial and Residential Real Estate_files/kalpataru-vista-logo.svg") no-repeat center;background-size:contain}
+.footer_logo__5ncK8{width:100%;height:9rem;background:url("./kalpataru-vista-logo.svg") no-repeat center;background-size:contain}
 @media(min-width:768px){.footer_logo__5ncK8{width:97.5rem;max-width:100%;height:28rem;background-position:left center}}
 
 /* anchor the wide render to the top of its (tall) box instead of centering */
@@ -27,6 +27,44 @@
 
 /* keep the building visible through the whole scroll, no fade-out */
 .hero_house__aJy7p{opacity:1!important;visibility:visible!important}
+
+/* wordmark ("KALPATARU VISTA NOIDA") crossfades in via GSAP scroll-scrub as
+   the "Live Above The Ordinary" headline scrolls away -- opacity 0 at rest
+   is correct sequencing, NOT the bug (forcing it on unconditionally made
+   both hero moments render at once, garbling the headline/CTA with the
+   wordmark). The actual bug: once revealed, the wordmark sits below the
+   cloud/smoke atmosphere layers (z-index 2/3 vs its 1), washing it out.
+   Only raise stacking order -- leave the animated opacity alone. */
+.hero_composite__3blHB,
+.hero_logo__FxgRj{z-index:5}
+
+/* soft white glow behind the wordmark: even above the atmosphere layers, the
+   dark stroke/fill still loses contrast against the photo's dark window
+   mullions/tree lines. hero_bg is already position:absolute (confirmed via
+   probe, not assumed) so this pseudo needs no positioning changes to its
+   parent. Sized off logoRect (~24%-76% of hero_bg both axes at every
+   breakpoint checked, since it's percentage-anchored, not px) with a little
+   extra room for soft falloff. Sits above clouds/smoke (z 2/3), below the
+   wordmark itself (bumped to 5 above).
+   Opacity is NOT static -- it was washing out the "Live Above The Ordinary"
+   headline that plays before the wordmark. --kv-wordmark-opacity is a CSS
+   var synced by a gsap.ticker listener at the end of <body> to the squared
+   opacity of the composite/solid-fill layer alone (GSAP writes that as an
+   inline style, unreachable from CSS directly). So the halo stays out of
+   the headline phase AND the stroke-outline phase, then eases in with the
+   black fill -- see that script for why it's squared rather than linear. */
+.hero_bg__S_r_n::before{
+  content:"";
+  position:absolute;
+  top:15%;
+  bottom:15%;
+  left:12%;
+  right:12%;
+  z-index:4;
+  pointer-events:none;
+  opacity:var(--kv-wordmark-opacity,0);
+  background:radial-gradient(ellipse at center,rgba(255,255,255,.9) 0%,rgba(255,255,255,.6) 45%,rgba(255,255,255,0) 75%);
+}
 
 /* hide leftover FIND React sections below the hero — replaced by static
    kv-* sections built in this plan. These are React-owned components; do
@@ -47,7 +85,7 @@ section:not([class]),
    pin spans. Lifting these into their own stacking context above the hero's highest
    layer (hero_clouds at z-index:2) fixes it -- confirmed via elementFromPoint, not
    just by reading z-index values. */
-.kv-video,.kv-overview,.kv-benefits,.kv-amenities,.kv-cta{position:relative;z-index:3}
+.kv-video,.kv-overview,.kv-amenities,.kv-plans,.kv-cta{position:relative;z-index:3}
 
 /* --- kv-overview: dark, mirrors FIND's original features_root ("Support Beyond
    Buying and Selling") -- two-col heading/intro top block + full-bleed photo cards
@@ -70,20 +108,19 @@ section:not([class]),
 .kv-overview__card-overlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;gap:1.25rem;padding:1.75rem;background:linear-gradient(to top,rgba(10,11,11,.75) 0%,rgba(10,11,11,.15) 55%,rgba(10,11,11,0) 80%)}
 .kv-overview__card-overlay h3{font-size:1.4rem;font-weight:700;letter-spacing:-0.01em;line-height:1.2;color:#fff;margin:0;font-family:"Instrument Sans","Instrument Sans Fallback"}
 .kv-overview__card-overlay .button_button-round__TFjlU{align-self:flex-start}
+.kv-overview__card-video{position:absolute;inset:0;z-index:5;border-radius:1rem;overflow:hidden;background:#000;opacity:0}
+.kv-overview__card-video.is-active{opacity:1}
+.kv-overview__card-video-el{display:block;width:100%;height:100%;object-fit:cover}
+.kv-overview__card{transition:transform .35s ease,box-shadow .35s ease}
+.kv-overview__card:hover{transform:scale(1.08);z-index:10;box-shadow:0 1.5rem 3rem rgba(0,0,0,.4)}
+.kv-overview__card-slide{position:absolute;inset:0;opacity:0;transition:opacity .45s ease}
+.kv-overview__card-slide.is-active{opacity:1}
 @media(min-width:768px){
   .kv-overview{padding:9rem 0}
   .kv-overview__top{grid-template-columns:1fr 1fr;gap:4rem;align-items:start;margin-bottom:4rem}
   .kv-overview__cards{grid-template-columns:repeat(3,1fr);gap:2rem}
   .kv-overview__card-overlay h3{font-size:1.6rem}
 }
-
-/* --- kv-benefits --- */
-.kv-benefits{padding:6rem 0;background:#f1f1ef}
-.kv-benefits__grid{list-style:none;display:grid;grid-template-columns:1fr;gap:2.5rem;margin:0;padding:0}
-.kv-benefits__item{display:flex;gap:1.25rem;align-items:flex-start;border-top:1px solid rgba(21,23,23,.12);padding-top:1.5rem}
-.kv-benefits__num{font-size:.85rem;font-weight:600;color:rgba(21,23,23,.4);letter-spacing:.05em;flex-shrink:0;padding-top:.2rem}
-.kv-benefits__item p{margin:0;font-size:1.3rem;font-weight:500;line-height:1.4;color:#151717;max-width:36ch}
-@media(min-width:768px){.kv-benefits{padding:8rem 0}.kv-benefits__grid{grid-template-columns:repeat(2,1fr);gap:3rem 4rem}}
 
 /* --- kv-amenities: pinned scroll sequence, ported from the Camellias Residences
    reference's GSAP ScrollTrigger + SplitText animation (see the inline script at
@@ -140,6 +177,92 @@ section:not([class]),
   .kv-amenities-progress{display:block;position:absolute;left:-4.4rem;top:.2rem;width:.15rem;height:calc(100% - .4rem);background:rgba(44,21,18,.15)}
   .kv-amenities-slide-box{left:0}
   .kv-amenities-tags{justify-content:flex-start}
+}
+
+/* --- kv-plans: site layout (sticky image, left) + specifications (right).
+   Content sourced from kalpataruvista.org.in -- the official kalpataru.com
+   capture this repo otherwise mirrors has no site-layout/specifications
+   content, this separate microsite does. Sticky-sidebar pattern: the grid's
+   default align-items:stretch makes .kv-plans__site match the taller specs
+   column's height, giving .kv-plans__site-inner (the actual sticky element)
+   room to travel as the specs list scrolls past. Divider-line list styling
+   reused from the removed kv-benefits section. */
+.kv-plans{padding:6rem 0;background:#f1f1ef}
+.kv-plans__grid{display:grid;grid-template-columns:1fr;gap:3rem}
+.kv-plans__site-media{border-radius:1rem;overflow:hidden;aspect-ratio:1754/1241;background:#2a2c2c}
+.kv-plans__site-media img{display:block;width:100%;height:100%;object-fit:cover}
+.kv-plans__site-caption{margin:1rem 0 0;font-size:.95rem;line-height:1.5;color:rgba(21,23,23,.65);max-width:44ch}
+.kv-plans__specs{display:grid;grid-template-columns:1fr;gap:2rem}
+.kv-plans__spec-group{border-top:1px solid rgba(21,23,23,.12);padding-top:1.25rem}
+.kv-plans__spec-group h3{margin:0 0 .85rem;font-size:.85rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:rgba(21,23,23,.55)}
+.kv-plans__spec-group ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.6rem}
+.kv-plans__spec-group li{font-size:1rem;line-height:1.5;color:#151717;padding-left:1.1rem;position:relative}
+.kv-plans__spec-group li::before{content:'';position:absolute;left:0;top:.55em;width:.4rem;height:.4rem;border-radius:50%;background:#151717}
+@media(min-width:768px){
+  .kv-plans{padding:8rem 0}
+  .kv-plans__grid{grid-template-columns:1fr 1fr;gap:4rem}
+  .kv-plans__site-inner{position:sticky;top:7rem}
+  .kv-plans__specs{grid-template-columns:repeat(2,1fr);gap:2rem 2.5rem;align-content:start}
+}
+
+/* --- kv-why: "Why Choose Kalpataru Vista" -- design-team credits + legacy
+   stats + key benefits, sourced from kalpataruvista.org.in's own "Why Choose
+   Kalpataru Vista" / "Key Benefits" sections (that microsite has this content,
+   the kalpataru.com capture this repo otherwise mirrors doesn't). Photos are
+   real Kalpataru Vista material: the tower exterior is the same render used
+   in the hero (assets/hero-cutout-optimized.png, re-composited onto a sky
+   gradient since the hero's transparent PNG has no backdrop of its own out
+   of context), and the interior/lighting shots are frames pulled from the
+   unused 428-frame show-apartment walkthrough sequence in assets/ (see
+   CLAUDE.md "Raw/unused assets" -- this is that footage finally used).
+   Signature interaction: each credit is a button, not a label -- hovering or
+   tapping "Interior Design" swaps the viewer photo to the actual show
+   apartment Studio HBA designed, same for the architect/landscape/lighting
+   credits. Zero clicks needed on desktop (hover suffices); exactly one tap
+   on touch. The first credit's photo is shown by default so nothing here is
+   hover-gated -- satisfies the "no hover-only content" rule even though the
+   hover *interaction* is the section's whole point. White bg deliberately
+   breaks the dark/cream/gray/dark rhythm of the sections above and below it
+   before the closing dark kv-cta. */
+.kv-why{padding:6rem 0;background:#fff}
+.kv-why__grid{display:grid;grid-template-columns:1fr;gap:2.5rem;margin-bottom:3.5rem}
+.kv-why__intro h3{font-size:1.4rem;font-weight:700;letter-spacing:-0.01em;line-height:1.25;color:#151717;margin:0 0 .85rem;font-family:"Instrument Sans","Instrument Sans Fallback"}
+.kv-why__intro p{font-size:1.05rem;line-height:1.6;color:rgba(21,23,23,.7);max-width:48ch;margin:0 0 1.75rem}
+.kv-why__credits{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0}
+.kv-why__credit{all:unset;box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;gap:1rem;width:100%;cursor:pointer;border-top:1px solid rgba(21,23,23,.12);padding:1rem .25rem;transition:padding-left .3s ease,background-color .3s ease}
+.kv-why__credits li:last-child .kv-why__credit{border-bottom:1px solid rgba(21,23,23,.12)}
+.kv-why__credit-role{font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(21,23,23,.45);display:block;margin-bottom:.3rem}
+.kv-why__credit-name{font-size:1.1rem;font-weight:600;letter-spacing:-0.01em;color:#151717;font-family:"Instrument Sans","Instrument Sans Fallback"}
+.kv-why__credit-arrow{flex-shrink:0;width:1.1rem;height:1.1rem;color:rgba(21,23,23,.25);transition:transform .3s ease,color .3s ease}
+.kv-why__credit:hover,.kv-why__credit:focus-visible{padding-left:.75rem;background-color:rgba(21,23,23,.035)}
+.kv-why__credit:focus-visible{outline:2px solid #151717;outline-offset:-2px}
+.kv-why__credit.is-active .kv-why__credit-role{color:rgba(21,23,23,.65)}
+.kv-why__credit.is-active .kv-why__credit-arrow{color:#151717;transform:translateX(.2rem)}
+.kv-why__viewer{position:relative}
+.kv-why__viewer-frame{position:relative;aspect-ratio:5/4;border-radius:1rem;overflow:hidden;background:#e9ebeb}
+.kv-why__viewer-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .5s ease}
+.kv-why__viewer-img.is-active{opacity:1}
+.kv-why__viewer-caption{font-size:.9rem;line-height:1.5;color:rgba(21,23,23,.6);margin:1rem 0 0;min-height:2.7em}
+.kv-why__stats{display:grid;grid-template-columns:repeat(2,1fr);gap:2rem 1.5rem;align-content:start;padding:2.5rem 0;margin-bottom:3.5rem;border-top:1px solid rgba(21,23,23,.12);border-bottom:1px solid rgba(21,23,23,.12)}
+.kv-why__stat-num{display:block;font-size:clamp(2.25rem,5vw,3.25rem);font-weight:700;letter-spacing:-0.02em;line-height:1;color:#151717;font-family:"Instrument Sans","Instrument Sans Fallback";font-variant-numeric:tabular-nums}
+.kv-why__stat-label{display:block;font-size:.9rem;line-height:1.4;color:rgba(21,23,23,.6);margin-top:.5rem}
+.kv-why__benefits{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
+.kv-why__benefit{position:relative;aspect-ratio:3/4;border-radius:.85rem;overflow:hidden;background-size:cover;background-position:center;transition:transform .4s ease,box-shadow .4s ease}
+.kv-why__benefit::before{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(10,11,11,.8) 0%,rgba(10,11,11,.25) 45%,rgba(10,11,11,.05) 70%)}
+.kv-why__benefit p{position:relative;z-index:1;margin:0;padding:1.1rem;font-size:.95rem;font-weight:600;line-height:1.35;color:#fff;letter-spacing:-0.005em}
+.kv-why__benefit:hover,.kv-why__benefit:focus-visible{transform:translateY(-.3rem);box-shadow:0 1.25rem 2.5rem rgba(21,23,23,.22)}
+.kv-why__disclaimer{font-size:.8rem;line-height:1.5;color:rgba(21,23,23,.5);margin:1.75rem 0 0}
+@media(min-width:768px){
+  .kv-why{padding:8rem 0}
+  .kv-why__grid{grid-template-columns:1fr 1.1fr;gap:5rem;align-items:center;margin-bottom:4rem}
+  .kv-why__viewer-frame{aspect-ratio:4/3}
+  .kv-why__stats{grid-template-columns:repeat(4,1fr)}
+  .kv-why__benefits{grid-template-columns:repeat(4,1fr);gap:1.5rem}
+  .kv-why__benefit{aspect-ratio:3/4}
+}
+@media(prefers-reduced-motion:reduce){
+  .kv-why__viewer-img{transition:none}
+  .kv-why__credit,.kv-why__credit-arrow,.kv-why__benefit{transition:none}
 }
 
 /* --- kv-cta --- */
