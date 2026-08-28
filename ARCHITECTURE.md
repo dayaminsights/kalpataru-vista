@@ -105,7 +105,8 @@ state):
 
 ## New sections: React strips extra static siblings on hydration
 
-The "content sections" plan (Overview / Key Benefits / Amenities / CTA, stacked above
+The "content sections" plan (Overview / Amenities / Site Layout & Specifications / CTA,
+stacked above
 the hidden `why-us_root__aGsFp` etc.) originally assumed a brand-new `<section>` with no
 matching React component couldn't be reverted by hydration, since no component owns it.
 **That assumption is false.** The container that lists `why-us_root__aGsFp` and its
@@ -123,15 +124,17 @@ nothing to clean up.
 
 As of the completed content-sections plan, this lives as a single shared mechanism (not
 one script per section) — both `index.html` and the FIND-named HTML file end with a
-7-entry `KV_SECTIONS` array:
+9-entry `KV_SECTIONS` array:
 
 ```js
 (function(){
   var KV_SECTIONS=[
+    {id:'kv-video', anchor:'.why-us_root__aGsFp', pos:'beforebegin', html:`...`},
     {id:'kv-overview', anchor:'.why-us_root__aGsFp', pos:'beforebegin', html:`...`},
-    {id:'kv-benefits', anchor:'.why-us_root__aGsFp', pos:'beforebegin', html:`...`},
     {id:'kv-amenities', anchor:'.why-us_root__aGsFp', pos:'beforebegin', html:`...`},
+    {id:'kv-plans', anchor:'.why-us_root__aGsFp', pos:'beforebegin', html:`...`},
     {id:'kv-cta', anchor:'.why-us_root__aGsFp', pos:'beforebegin', html:`...`},
+    {id:'kv-layouts-modal', anchor:'.why-us_root__aGsFp', pos:'beforebegin', html:`...`},
     {id:'kv-rera', anchor:'.footer_copyright-container__yt1ht', pos:'beforebegin', html:`...`},
     {id:'kv-nav-links', anchor:'.header_nav__if_jI', pos:'afterbegin', html:`<span id="kv-nav-links" style="display:contents">...</span>`},
     {id:'kv-burger-nav-links', anchor:'.burger-menu_nav__dAhwA', pos:'afterbegin', html:`<div id="kv-burger-nav-links" ...>...</div>...`}
