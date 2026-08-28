@@ -231,10 +231,10 @@ mo.observe(document.body,{childList:true,subtree:true});setTimeout(function(){mo
 
 - [ ] **Step 3: Syntax-check both files' new script parses**
 
-Run:
+Run (note: the match must include the `(function(){` IIFE opener, not just start at `function openKvModal` — a lazy match starting mid-IIFE captures the closing `})();` without its opener and throws `Unexpected token '}'`, a defect caught during implementation, not a real syntax error in the inserted code):
 ```bash
-node -e "new Function(require('fs').readFileSync('index.html','utf8').match(/function openKvModal[\s\S]*?form\.reset\(\);\s*\}\);\s*\}\)\(\);/)[0])"
-node -e "new Function(require('fs').readFileSync('FIND Real Estate _ Purchase, Rent or Sell Commercial and Residential Real Estate.html','utf8').match(/function openKvModal[\s\S]*?form\.reset\(\);\s*\}\);\s*\}\)\(\);/)[0])"
+node -e "new Function(require('fs').readFileSync('index.html','utf8').match(/\(function\(\)\{\s*function openKvModal[\s\S]*?form\.reset\(\);\s*\}\);\s*\}\)\(\);/)[0])"
+node -e "new Function(require('fs').readFileSync('FIND Real Estate _ Purchase, Rent or Sell Commercial and Residential Real Estate.html','utf8').match(/\(function\(\)\{\s*function openKvModal[\s\S]*?form\.reset\(\);\s*\}\);\s*\}\)\(\);/)[0])"
 ```
 Expected: no output, exit code 0.
 
