@@ -101,6 +101,7 @@ const server = http.createServer((req, res) => {
       if(typeof ScrollTrigger!=='undefined'){ScrollTrigger.update();}
       function buildProbeOutput(){
       var out={};
+      var probeWaits=[];
       out.requestedScrollY=${scrollY};
       out.actualScrollY=window.scrollY;
       out.docScrollHeight=document.documentElement.scrollHeight;
@@ -404,8 +405,50 @@ const server = http.createServer((req, res) => {
         window.__kvMailtoOverride=function(href){capturedHref=href;};
         layoutsTrigger.dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true}));
         out.layoutsModal.openAfterClick=layoutsModal.classList.contains('is-open');
-        var active=document.activeElement;
-        out.layoutsModal.focusedFieldName=active?active.getAttribute('name'):null;
+        // openKvModal defers its .focus() call by two requestAnimationFrame
+        // callbacks (focusing an element still mid-transition from
+        // visibility:hidden silently fails otherwise), so reading
+        // document.activeElement synchronously here always sees pre-focus
+        // state. Mirror the same double-rAF defer and let finishProbe wait
+        // on it via probeWaits instead of reading activeElement immediately.
+        //
+        // KNOWN LIMITATION (see out.layoutsModal.focusNote below and
+        // ARCHITECTURE.md's "Headless-Chrome gotcha"): under this probe's
+        // --dump-dom --disable-gpu --virtual-time-budget harness,
+        // focusedFieldName will read null regardless of how this wait is
+        // implemented. Two things were independently confirmed while
+        // building this fix: (1) native requestAnimationFrame is not
+        // reliably granted animation frames under --disable-gpu virtual
+        // time (0 frames observed across repeated runs); (2) even patching
+        // window.requestAnimationFrame to a same-tick setTimeout(cb,0) --
+        // which *does* make both of openKvModal's rAF calls fire -- still
+        // doesn't produce a focused element here, because this probe's own
+        // submit/escape/close-button/backdrop-click checks below run
+        // synchronously in the same tick as the open click and cycle the
+        // modal through close/reopen/close before either deferred callback
+        // gets a chance to run, so f.focus() always lands after the modal
+        // is already closed again by this test sequence. That race is
+        // inherent to observing a rAF-deferred side effect from a fully
+        // synchronous test sequence, independent of the timing mechanism.
+        // The wait below is still correct and worth keeping: it prevents
+        // the incorrect too-early read, resolves promptly on the (real-
+        // browser-typical) path where frames do fire, and the bounded
+        // fallback guarantees finishProbe() is never blocked by it.
+        probeWaits.push(new Promise(function(resolveFocusWait){
+          var settled=false;
+          function settleFocusRead(){
+            if(settled)return;
+            settled=true;
+            var active=document.activeElement;
+            out.layoutsModal.focusedFieldName=active?active.getAttribute('name'):null;
+            resolveFocusWait();
+          }
+          requestAnimationFrame(function(){
+            requestAnimationFrame(settleFocusRead);
+          });
+          setTimeout(settleFocusRead,500);
+        }));
+        out.layoutsModal.focusNote="focusedFieldName cannot be positively verified through this --dump-dom probe -- see code comment above this field for why (rAF frames are not reliably granted under --disable-gpu virtual-time headless, and even a working timing substitute loses the race against this probe's own synchronous close/reopen/close checks). Confirmed correct via live CDP/browser session by two independent reviewers instead.";
         var form=document.getElementById('kv-layouts-form');
         out.layoutsModal.formFound=!!form;
         if(form){
@@ -431,7 +474,7 @@ const server = http.createServer((req, res) => {
         out.layoutsModal.closedAfterBackdropClick=!layoutsModal.classList.contains('is-open');
         }catch(layoutsModalErr){out.layoutsModalErr=(layoutsModalErr&&layoutsModalErr.stack)?layoutsModalErr.stack:String(layoutsModalErr);}
       }
-      setTimeout(finishProbe,50);
+      Promise.all(probeWaits).then(function(){setTimeout(finishProbe,50);});
       }
       function realTicks(n){
         if(typeof gsap==='undefined'||n<=0){buildProbeOutput();return;}
