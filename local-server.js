@@ -600,6 +600,35 @@ const server = http.createServer((req, res) => {
         out.layoutsModal.closedAfterBackdropClick=!layoutsModal.classList.contains('is-open');
         }catch(layoutsModalErr){out.layoutsModalErr=(layoutsModalErr&&layoutsModalErr.stack)?layoutsModalErr.stack:String(layoutsModalErr);}
       }
+      var expandCards=document.querySelectorAll('#kv-overview .kv-overview__card');
+      var prevArrow=document.querySelector('#kv-overview .kv-overview__arrow--prev');
+      var nextArrow=document.querySelector('#kv-overview .kv-overview__arrow--next');
+      out.overviewExpand={cardCount:expandCards.length,prevArrowFound:!!prevArrow,nextArrowFound:!!nextArrow};
+      if(expandCards.length===3&&prevArrow&&nextArrow){
+        try{
+        var golfCard=expandCards[1];
+        golfCard.dispatchEvent(new MouseEvent('mouseenter',{bubbles:false}));
+        void golfCard.offsetWidth;
+        out.overviewExpand.expandedRightAfterHover=golfCard.classList.contains('is-expanded');
+        out.overviewExpand.lightboxOpenRightAfterHover=document.body.classList.contains('kv-overview-lightbox-open');
+        probeWaits.push(new Promise(function(resolveExpandWait){
+          setTimeout(function(){
+            var r=golfCard.getBoundingClientRect();
+            out.overviewExpand.rectAfterFlip={top:Math.round(r.top),left:Math.round(r.left),width:Math.round(r.width),height:Math.round(r.height)};
+            out.overviewExpand.arrowOpacityAfterHover=getComputedStyle(prevArrow).opacity;
+            nextArrow.dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true}));
+            out.overviewExpand.residencesExpandedAfterNextClick=expandCards[2].classList.contains('is-expanded');
+            out.overviewExpand.golfStillExpandedAfterNextClick=golfCard.classList.contains('is-expanded');
+            document.dispatchEvent(new MouseEvent('mouseleave',{bubbles:false}));
+            setTimeout(function(){
+              out.overviewExpand.anyExpandedAfterDocLeave=document.querySelector('#kv-overview .kv-overview__card.is-expanded')!==null;
+              out.overviewExpand.lightboxOpenAfterDocLeave=document.body.classList.contains('kv-overview-lightbox-open');
+              resolveExpandWait();
+            },550);
+          },500);
+        }));
+        }catch(expandErr){out.overviewExpandErr=(expandErr&&expandErr.stack)?expandErr.stack:String(expandErr);}
+      }
       Promise.all(probeWaits).then(function(){setTimeout(finishProbe,50);});
       }
       function realTicks(n){
