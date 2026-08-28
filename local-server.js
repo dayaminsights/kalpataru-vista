@@ -253,6 +253,33 @@ const server = http.createServer((req, res) => {
       });
       var cardsGrid=document.querySelector('#kv-overview .kv-overview__cards');
       out.overview.gridColumns=cardsGrid?getComputedStyle(cardsGrid).gridTemplateColumns.split(' ').length:0;
+      try{
+      var golfCard=document.querySelector('.kv-overview__card--golf');
+      if(golfCard){
+        var golfSlides=golfCard.querySelectorAll('.kv-overview__card-slide');
+        out.golf={
+          slideCount:golfSlides.length,
+          activeIndexBefore:Array.prototype.findIndex.call(golfSlides,function(s){return s.classList.contains('is-active');}),
+          inited:golfCard.dataset.kvGolfInited==='1',
+          slideSrcs:Array.prototype.map.call(golfSlides,function(s){return s.src.split('/').pop();})
+        };
+        var golfHoverRuleFound=false;
+        Array.prototype.forEach.call(document.styleSheets,function(ss){
+          try{
+            Array.prototype.forEach.call(ss.cssRules||[],function(r){
+              if(r.selectorText==='.kv-overview__card--golf:hover'&&/scale\\(/.test(r.style.transform))golfHoverRuleFound=true;
+            });
+          }catch(e){}
+        });
+        out.golf.hoverScaleRuleFound=golfHoverRuleFound;
+        golfCard.dispatchEvent(new MouseEvent('mouseenter',{bubbles:true}));
+        out.golf.activeIndexRightAfterMouseenter=Array.prototype.findIndex.call(golfSlides,function(s){return s.classList.contains('is-active');});
+        golfCard.dispatchEvent(new MouseEvent('mouseleave',{bubbles:true}));
+        out.golf.activeIndexAfterMouseleave=Array.prototype.findIndex.call(golfSlides,function(s){return s.classList.contains('is-active');});
+      } else {
+        out.golf='NO .kv-overview__card--golf ELEMENT';
+      }
+      }catch(golfErr){out.golfErr=(golfErr&&golfErr.stack)?golfErr.stack:String(golfErr);}
       out.amenitiesAnim={
         gsapLoaded:typeof gsap!=='undefined',
         scrollTriggerLoaded:typeof ScrollTrigger!=='undefined',
@@ -315,7 +342,96 @@ const server = http.createServer((req, res) => {
       } else {
         out.amenitiesAnim.rootFound=false;
       }
-      document.title='PROBE::'+JSON.stringify(out);
+      var locCard=document.getElementById('kv-location-card');
+      function finishProbe(){document.title='PROBE::'+JSON.stringify(out);}
+      if(locCard){
+        var locBox=locCard.querySelector('.kv-overview__card-video');
+        var locVideo=locBox?locBox.querySelector('.kv-overview__card-video-el'):null;
+        out.locationVideo={
+          cardFound:true,
+          boxFound:!!locBox,
+          videoFound:!!locVideo,
+          videoSrc:locVideo?locVideo.currentSrc.split('/').pop():null,
+          autoplay:locVideo?locVideo.autoplay:null,
+          muted:locVideo?locVideo.muted:null,
+          loop:locVideo?locVideo.loop:null,
+          paused:locVideo?locVideo.paused:null,
+          readyState:locVideo?locVideo.readyState:null,
+          // paused may read true this soon after the section is injected --
+          // autoplay's own play() call can lag a tick behind insertion. play()
+          // resolving cleanly (no NotAllowedError) is the real signal that
+          // muted autoplay is permitted here.
+          paused:locVideo?locVideo.paused:null,
+          activeBeforeHover:locBox?locBox.classList.contains('is-active'):null
+        };
+        if(locVideo){
+          var playResult=locVideo.play();
+          if(playResult&&playResult.then){
+            playResult.then(function(){out.locationVideo.playResult='resolved';},function(err){out.locationVideo.playResult='rejected: '+err.name+' '+err.message;});
+          }
+          // getComputedStyle mid-CSS-transition is unreliable under headless
+          // --virtual-time-budget (compositor timeline doesn't tick with virtual
+          // time), so verify the cascade result with transitions bypassed rather
+          // than reading an animated value.
+          locBox.style.transition='none';
+          locBox.classList.add('is-active');
+          void locBox.offsetHeight;
+          out.locationVideo.activeOpacity=getComputedStyle(locBox).opacity;
+          out.locationVideo.activePointerEvents=getComputedStyle(locBox).pointerEvents;
+          out.locationVideo.activeVisibility=getComputedStyle(locBox).visibility;
+          locBox.classList.remove('is-active');
+          locBox.style.transition='';
+          locCard.dispatchEvent(new MouseEvent('mouseenter',{bubbles:false}));
+          out.locationVideo.activeAfterHover=locBox.classList.contains('is-active');
+          locCard.dispatchEvent(new MouseEvent('mouseleave',{bubbles:false}));
+          out.locationVideo.activeAfterLeave=locBox.classList.contains('is-active');
+        }
+      } else {
+        out.locationVideo={cardFound:false};
+      }
+      var layoutsModal=document.getElementById('kv-layouts-modal');
+      var layoutsTrigger=document.querySelector('.kv-layouts-trigger');
+      out.layoutsModal={
+        modalFound:!!layoutsModal,
+        openOnLoad:layoutsModal?layoutsModal.classList.contains('is-open'):null,
+        triggerFound:!!layoutsTrigger,
+        triggerText:layoutsTrigger?layoutsTrigger.textContent.trim():null,
+        triggerHref:layoutsTrigger?layoutsTrigger.getAttribute('href'):null
+      };
+      if(layoutsModal&&layoutsTrigger){
+        try{
+        var capturedHref=null;
+        window.__kvMailtoOverride=function(href){capturedHref=href;};
+        layoutsTrigger.dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true}));
+        out.layoutsModal.openAfterClick=layoutsModal.classList.contains('is-open');
+        var active=document.activeElement;
+        out.layoutsModal.focusedFieldName=active?active.getAttribute('name'):null;
+        var form=document.getElementById('kv-layouts-form');
+        out.layoutsModal.formFound=!!form;
+        if(form){
+          form.querySelector('[name="name"]').value='Test User';
+          form.querySelector('[name="phone"]').value='9999999999';
+          form.querySelector('[name="email"]').value='test@example.com';
+          form.dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}));
+        }
+        out.layoutsModal.mailtoHref=capturedHref;
+        out.layoutsModal.closedAfterSubmit=!layoutsModal.classList.contains('is-open');
+        layoutsModal.classList.add('is-open');
+        document.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
+        out.layoutsModal.closedAfterEscape=!layoutsModal.classList.contains('is-open');
+        layoutsModal.classList.add('is-open');
+        var closeBtn=layoutsModal.querySelector('.kv-modal__close');
+        if(closeBtn)closeBtn.dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true}));
+        out.layoutsModal.closeButtonFound=!!closeBtn;
+        out.layoutsModal.closedAfterCloseButton=!layoutsModal.classList.contains('is-open');
+        layoutsModal.classList.add('is-open');
+        var backdrop=layoutsModal.querySelector('.kv-modal__backdrop');
+        if(backdrop)backdrop.dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true}));
+        out.layoutsModal.backdropFound=!!backdrop;
+        out.layoutsModal.closedAfterBackdropClick=!layoutsModal.classList.contains('is-open');
+        }catch(layoutsModalErr){out.layoutsModalErr=(layoutsModalErr&&layoutsModalErr.stack)?layoutsModalErr.stack:String(layoutsModalErr);}
+      }
+      setTimeout(finishProbe,50);
       }
       function realTicks(n){
         if(typeof gsap==='undefined'||n<=0){buildProbeOutput();return;}
