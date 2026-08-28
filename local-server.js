@@ -207,6 +207,25 @@ const server = http.createServer((req, res) => {
       out.sections['kv-rera']=rera?'found':'NOT FOUND';
       var navOverview=document.querySelector('a[href="#kv-overview"]');
       out.sections['nav-overview-link']=navOverview?'found':'NOT FOUND';
+      var navAmenities=document.querySelector('a[href="#kv-amenities"]');
+      out.sections['nav-amenities-link']=navAmenities?'found':'NOT FOUND';
+      var amenPanels=document.querySelectorAll('#kv-amenities .kv-amenities__panel');
+      out.amenities={panelCount:amenPanels.length};
+      out.amenities.panels=Array.prototype.map.call(amenPanels,function(p){
+        var img=p.querySelector('.kv-amenities__media img');
+        var h3=p.querySelector('.kv-amenities__copy h3');
+        var tags=p.querySelectorAll('.kv-amenities__tags li');
+        return {
+          heading:h3?h3.textContent:'NO H3',
+          imgSrc:img?img.getAttribute('src').split('/').pop():'NO IMG',
+          imgNaturalSize:img?(img.naturalWidth+'x'+img.naturalHeight):'n/a',
+          tagCount:tags.length
+        };
+      });
+      var oldList=document.querySelector('#kv-amenities .kv-amenities__list');
+      out.amenities.oldFlatListPresent=!!oldList;
+      var amenText=document.getElementById('kv-amenities')?document.getElementById('kv-amenities').textContent:'';
+      out.amenities.allSeventeenPresent=['Swimming Pool','Gymnasium','Multi-Purpose Hall','Squash Court','Community Centre','Creche','Business Lounge',"Kids' Play Area",'Fitness Zone','Games Room','Jogging Path','Landscaped Podium for Walking','Library and TV Lounge','Lounge Area','Spa','Sundecks','Waiting Niche'].every(function(name){return amenText.indexOf(name)>-1;});
       document.title='PROBE::'+JSON.stringify(out);
     },5000)</script></body>`;
     const patched = html.replace("</body>", probe);
