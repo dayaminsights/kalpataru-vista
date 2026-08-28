@@ -191,6 +191,135 @@ kvGolfMo.observe(document.body,{childList:true,subtree:true});
 setTimeout(function(){kvGolfMo.disconnect();},8000);
 })();</script>
 <script>(function(){
+function initKvOverviewExpand(){
+var section=document.getElementById('kv-overview');
+if(!section||section.dataset.kvExpandInited==='1')return;
+var cardsWrap=section.querySelector('.kv-overview__cards');
+var cards=cardsWrap?Array.prototype.slice.call(cardsWrap.querySelectorAll('.kv-overview__card')):[];
+var prevBtn=section.querySelector('.kv-overview__arrow--prev');
+var nextBtn=section.querySelector('.kv-overview__arrow--next');
+if(!cardsWrap||cards.length!==3||!prevBtn||!nextBtn)return;
+section.dataset.kvExpandInited='1';
+if(!window.matchMedia('(hover:hover) and (pointer:fine)').matches)return;
+var current=-1;
+var animating=false;
+var FLIP_MS=450;
+var FADE_MS=300;
+function fireSynthetic(card,type){
+card.dispatchEvent(new MouseEvent(type,{bubbles:false}));
+}
+function expandFromGrid(card){
+if(animating||current!==-1)return;
+var i=cards.indexOf(card);
+if(i===-1)return;
+animating=true;
+current=i;
+var r=card.getBoundingClientRect();
+card.style.transition='none';
+card.style.position='fixed';
+card.style.margin='0';
+card.style.top=r.top+'px';
+card.style.left=r.left+'px';
+card.style.width=r.width+'px';
+card.style.height=r.height+'px';
+card.classList.add('is-expanded');
+document.body.classList.add('kv-overview-lightbox-open');
+void card.offsetWidth;
+card.style.transition='top '+FLIP_MS+'ms ease,left '+FLIP_MS+'ms ease,width '+FLIP_MS+'ms ease,height '+FLIP_MS+'ms ease';
+requestAnimationFrame(function(){
+card.style.top='0px';
+card.style.left='0px';
+card.style.width='100vw';
+card.style.height='100vh';
+});
+setTimeout(function(){animating=false;},FLIP_MS);
+}
+function switchTo(nextIndex){
+if(animating||current===-1||nextIndex===current)return;
+animating=true;
+var oldCard=cards[current];
+var newCard=cards[nextIndex];
+fireSynthetic(oldCard,'mouseleave');
+oldCard.classList.remove('is-expanded');
+oldCard.style.cssText='';
+newCard.style.transition='none';
+newCard.style.position='fixed';
+newCard.style.margin='0';
+newCard.style.top='0px';
+newCard.style.left='0px';
+newCard.style.width='100vw';
+newCard.style.height='100vh';
+newCard.style.opacity='0';
+newCard.classList.add('is-expanded');
+void newCard.offsetWidth;
+newCard.style.transition='opacity '+FADE_MS+'ms ease';
+requestAnimationFrame(function(){
+newCard.style.opacity='1';
+});
+fireSynthetic(newCard,'mouseenter');
+current=nextIndex;
+setTimeout(function(){animating=false;},FADE_MS);
+}
+function collapseToGrid(){
+if(current===-1||animating)return;
+animating=true;
+var card=cards[current];
+current=-1;
+fireSynthetic(card,'mouseleave');
+document.body.classList.remove('kv-overview-lightbox-open');
+card.style.transition='none';
+card.style.position='';
+card.style.top='';
+card.style.left='';
+card.style.width='';
+card.style.height='';
+card.style.margin='';
+var r=card.getBoundingClientRect();
+card.style.position='fixed';
+card.style.top='0px';
+card.style.left='0px';
+card.style.width='100vw';
+card.style.height='100vh';
+void card.offsetWidth;
+card.style.transition='top '+FLIP_MS+'ms ease,left '+FLIP_MS+'ms ease,width '+FLIP_MS+'ms ease,height '+FLIP_MS+'ms ease';
+requestAnimationFrame(function(){
+card.style.top=r.top+'px';
+card.style.left=r.left+'px';
+card.style.width=r.width+'px';
+card.style.height=r.height+'px';
+});
+setTimeout(function(){
+card.classList.remove('is-expanded');
+card.style.cssText='';
+animating=false;
+},FLIP_MS);
+}
+cards.forEach(function(card){
+card.addEventListener('mouseenter',function(){expandFromGrid(card);});
+});
+prevBtn.addEventListener('click',function(e){
+e.preventDefault();
+if(current===-1)return;
+switchTo((current-1+cards.length)%cards.length);
+});
+nextBtn.addEventListener('click',function(e){
+e.preventDefault();
+if(current===-1)return;
+switchTo((current+1)%cards.length);
+});
+document.addEventListener('mouseleave',function(){
+collapseToGrid();
+});
+document.addEventListener('keydown',function(e){
+if(e.key==='Escape')collapseToGrid();
+});
+}
+initKvOverviewExpand();
+var kvExpandMo=new MutationObserver(initKvOverviewExpand);
+kvExpandMo.observe(document.body,{childList:true,subtree:true});
+setTimeout(function(){kvExpandMo.disconnect();},8000);
+})();</script>
+<script>(function(){
 function initKvWhyGallery(){
 var root=document.querySelector(".kv-why");
 if(!root||root.dataset.kvWhyInited==="1")return;
