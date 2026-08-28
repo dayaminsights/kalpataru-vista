@@ -72,24 +72,52 @@ section:not([class]),
 .kv-benefits__item p{margin:0;font-size:1.3rem;font-weight:500;line-height:1.4;color:#151717;max-width:36ch}
 @media(min-width:768px){.kv-benefits{padding:8rem 0}.kv-benefits__grid{grid-template-columns:repeat(2,1fr);gap:3rem 4rem}}
 
-/* --- kv-amenities: 3 photo-led category panels, alternating media/copy sides.
-   Single photo per panel (not the Camellias reference's big+small pair) --
-   only 1 placeholder photo exists per category right now, see design spec. */
-.kv-amenities{padding:6rem 0;background:#fff}
-.kv-amenities__panels{display:flex;flex-direction:column;gap:4rem;margin-top:3rem}
-.kv-amenities__panel{display:grid;grid-template-columns:1fr;grid-template-areas:"media" "copy";gap:1.5rem;align-items:center}
-.kv-amenities__media{grid-area:media;aspect-ratio:4/5;border-radius:1.25rem;overflow:hidden;background:#f1f1ef}
-.kv-amenities__media img{display:block;width:100%;height:100%;object-fit:cover}
-.kv-amenities__copy{grid-area:copy}
-.kv-amenities__num{display:block;font-size:.85rem;font-weight:600;color:rgba(21,23,23,.4);letter-spacing:.05em;margin-bottom:1rem}
-.kv-amenities__copy h3{font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;letter-spacing:-0.02em;line-height:1.15;color:#151717;margin:0 0 1rem;font-family:"Instrument Sans","Instrument Sans Fallback"}
-.kv-amenities__copy p{font-size:1.05rem;line-height:1.6;color:rgba(21,23,23,.75);max-width:42ch;margin:0 0 1.5rem}
-.kv-amenities__tags{list-style:none;display:flex;flex-wrap:wrap;gap:.6rem;margin:0;padding:0}
-.kv-amenities__tags li{border:1px solid rgba(21,23,23,.18);border-radius:100px;padding:.5rem 1.1rem;font-size:.85rem;color:#151717;white-space:nowrap}
+/* --- kv-amenities: pinned scroll sequence, ported from the Camellias Residences
+   reference's GSAP ScrollTrigger + SplitText animation (see the inline script at
+   the end of <body>, initKvAmenitiesAnimation). Structural rem values are the
+   reference's own values * 0.625 -- both this page and the reference use a
+   viewport-fluid rem system (html{font-size} scales with 100vw against a 1920px
+   design width, confirmed live via ?probe=1), just at different base multipliers
+   (this page: 10px @ 1920px; reference: 16px @ 1920px). Percentages/vh transfer
+   directly, only literal rem offsets needed the conversion. Mobile-first, unlike
+   the reference (desktop-first with max-width overrides) -- inverted here to
+   match every other kv-* section in this file. Exact overlap geometry of the
+   small inset photo is a simplified approximation of the reference, not a pixel
+   clone -- the animation mechanism (mask-gradient wipe, clip-path reveal,
+   line-mask text) is what's ported faithfully. */
+.kv-amenities{position:relative;background:#fff}
+.kv-amenities-track{position:relative;height:340vh}
+.kv-amenities-wrap{display:flex;flex-flow:column;align-items:center;justify-content:center;gap:2rem;height:100vh;padding:2rem 0;position:sticky;top:0}
+.kv-amenities-images{position:relative;width:100%;height:45%;flex-shrink:0}
+.kv-amenities-images-big{position:relative;width:100%;height:100%}
+.kv-amenities-slide-imgs{position:absolute;inset:0;transform-origin:50% 100%;transition:transform 1s}
+.kv-amenities-slide-imgs.is-first{position:relative}
+.kv-amenities-slide-imgs img{display:block;width:100%;height:100%;object-fit:cover;border-radius:1rem}
+.kv-amenities-images-small{position:absolute;width:7rem;height:8.5rem;right:1rem;bottom:-2rem;z-index:2}
+.kv-amenities-slide-img-inner{position:absolute;inset:0}
+.kv-amenities-slide-img-inner.is-first{position:static}
+.kv-amenities-slide-img-inner img{display:block;width:100%;height:100%;object-fit:cover;border-radius:.75rem;border:.25rem solid #fff;box-shadow:0 .5rem 1.5rem rgba(21,23,23,.15)}
+.kv-amenities-texts{position:relative;width:100%;max-width:32rem;padding-left:1.5rem}
+.kv-amenities-progress{position:absolute;left:0;top:.2rem;width:.15rem;height:calc(100% - .4rem);background:rgba(21,23,23,.12)}
+.kv-amenities-progress-line{width:100%;height:0%;background:#151717}
+.kv-amenities-slide-box{width:100%;position:absolute;top:0;left:1.5rem}
+.kv-amenities-slide-box.is-first{position:relative}
+.kv-amenities-num{display:block;font-size:.85rem;font-weight:600;color:rgba(21,23,23,.4);letter-spacing:.05em;margin-bottom:.75rem}
+.kv-amenities-slide-box h3{font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;letter-spacing:-0.02em;line-height:1.15;color:#151717;margin:0 0 1rem;font-family:"Instrument Sans","Instrument Sans Fallback";overflow:hidden}
+.kv-amenities-slide-text{max-width:26rem;overflow:hidden}
+.kv-amenities-slide-text p{font-size:1.05rem;line-height:1.6;color:rgba(21,23,23,.75);margin:0 0 1.25rem}
+.kv-amenities-tags{list-style:none;display:flex;flex-wrap:wrap;gap:.6rem;margin:0;padding:0}
+.kv-amenities-tags li{border:1px solid rgba(21,23,23,.18);border-radius:100px;padding:.5rem 1.1rem;font-size:.85rem;color:#151717;white-space:nowrap}
+.kv-amenities-triggers{position:absolute;inset:0;width:100%;height:100%;display:flex;flex-flow:column;pointer-events:none}
+.kv-amenities-trigger{width:100%;height:100vh}
+.kv-amenities-trigger.is-last{height:50vh}
+[data-amenities-anim="big-image"]{mask-image:var(--mask-gradient);-webkit-mask-image:var(--mask-gradient)}
+[data-amenities-anim="big-image"].is-first{mask-image:none!important;-webkit-mask-image:none!important;transition:unset}
 @media(min-width:768px){
-  .kv-amenities{padding:8rem 0}
-  .kv-amenities__panel{grid-template-columns:1fr 1fr;grid-template-areas:"media copy";gap:4rem}
-  .kv-amenities__panel--reverse{grid-template-areas:"copy media"}
+  .kv-amenities-wrap{flex-flow:row;gap:5rem;padding:0}
+  .kv-amenities-images{width:56%;height:75%}
+  .kv-amenities-images-small{width:14rem;height:16.5rem;right:auto;left:-6rem;bottom:-3rem}
+  .kv-amenities-texts{width:44%;max-width:none;padding-left:3rem}
 }
 
 /* --- kv-cta --- */

@@ -205,3 +205,50 @@ image-related was done with tools already on the machine:
 - **Headless verification**: Chrome for Windows, `--headless --disable-gpu --dump-dom`.
   `--screenshot` does not work here (sandboxed file write); dump-dom + injected probe
   script does.
+
+## kv-amenities: GSAP-powered pinned scroll sequence
+
+Unlike every other `kv-*` section (plain static HTML/CSS), `kv-amenities` is a genuine
+scroll-pinned crossfade — 3 categories (Play & Unwind / Connect & Work / Relax & Recharge),
+each with a big photo (mask-gradient wipe reveal) + a small overlapping photo (clip-path
+reveal) + line-masked text (SplitText), advancing as the user scrolls through a tall
+(`340vh`) track. Ported from a Camellias Residences reference project's own
+`initAmenitiesAnimation()` (see that project's `site.js`) — GSAP + ScrollTrigger +
+SplitText, none of which were previously loaded on this page. Library files and the 6
+`amenities-{1,2,3}--{big,small}.avif` photos live in the served `_files/` folder; the
+adapted init function is a new inline `<script>` appended after the existing `KV_SECTIONS`
+script (needs the section's DOM nodes to already exist, which `KV_SECTIONS.ensure()`
+guarantees by running synchronously first).
+
+**Deliberately dropped from the port**: the reference's header-hide-on-enter behavior and
+its `#book-a-visit` anchor-autoscroll-cancel logic — both couple the animation to that
+project's own nav/CTA behavior, not to "the amenities section" itself, and neither has an
+equivalent need here.
+
+**Dimensions are the reference's own values × 0.625, not copied verbatim.** Both this page
+and the reference use a viewport-fluid rem system (`html{font-size}` scales with `100vw`
+against a 1920px design width — confirmed live via `?probe=1`, not assumed), just at
+different base multipliers: this page is 10px @ 1920px, the reference is 16px @ 1920px.
+Percentages and `vh` values transfer directly; only literal `rem` offsets needed the
+conversion. The small-photo overlap geometry is a simplified approximation of the
+reference's exact positioning, not a pixel clone — worth revisiting if this section gets a
+second design pass.
+
+**Headless-Chrome gotcha: GSAP's `requestAnimationFrame` ticker does not advance during
+`--headless --disable-gpu` runs of this probe**, even across a full 5-second real-time
+`setTimeout` wait. `ScrollTrigger.refresh()`/`.update()` still work fine — they're pure
+scroll-position math, so `st.progress` on each `ScrollTrigger` instance is a reliable,
+ticker-independent ground truth for "did this trigger correctly fire at this scroll depth."
+But anything relying on GSAP's ticker to *interpolate* over time — every `.to()`/timeline
+tween, and critically `scrub:1`'s catch-up smoothing — visually freezes at its start value
+no matter how long the real-time wait or the `--virtual-time-budget` is set. Calling
+`gsap.ticker.tick()` in a **tight synchronous loop is nearly a no-op**: each call computes
+its delta from `Date.now()`/`performance.now()`, and a tight loop executes many iterations
+within the same real millisecond, so only the first call contributes any elapsed time.
+**Fix**: a genuinely-delayed recursive tick loop (`gsap.ticker.tick()` then a real
+`setTimeout(...,16)` before the next one, ~120 iterations ≈ 2 real seconds) — see
+`buildProbeOutput`/`realTicks` in `local-server.js`'s `/?probe=1` handler. With that in
+place, rendered CSS (mask-image, clip-path, opacity) reaches full completion and matches
+`st.progress`, not just the progress math alone. This costs the probe ~2 extra real seconds
+per request — a startup-check tradeoff, not a production concern (real browsers tick rAF
+normally for actual visitors).

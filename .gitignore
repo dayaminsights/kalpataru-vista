@@ -8,6 +8,14 @@ assets/
 Kalpataru Vista - Buy 3 & 4 BHK Flats in Noida by Kalpataru.html
 Kalpataru Vista - Buy 3 & 4 BHK Flats in Noida by Kalpataru_files/
 
+# Camellias Residences reference (animation/design inspiration for kv-amenities'
+# pinned scroll sequence, see ARCHITECTURE.md) -- not part of the site itself.
+# The specific assets we actually use (gsap/ScrollTrigger/SplitText libs, the
+# amenities-*--big/small.avif photo pairs) are copied into the served
+# "FIND Real Estate ..._files/" folder and tracked normally there.
+Camellias Residences.html
+Camellias Residences_files/
+
 # Dev server logs / ad-hoc debug/probe output
 server.log
 *.log

@@ -92,7 +92,12 @@ const server = http.createServer((req, res) => {
     const scrollY = parseInt(url.parse(reqUrl, true).query.scrollY || "0", 10);
     const probe = `<script>
       window.scrollTo(0, ${scrollY});
+      if(typeof ScrollTrigger!=='undefined'){ScrollTrigger.update();}
       setTimeout(function(){
+      if(typeof ScrollTrigger!=='undefined'){ScrollTrigger.refresh();}
+      window.scrollTo(0, ${scrollY});
+      if(typeof ScrollTrigger!=='undefined'){ScrollTrigger.update();}
+      function buildProbeOutput(){
       var out={};
       out.requestedScrollY=${scrollY};
       out.actualScrollY=window.scrollY;
@@ -240,7 +245,58 @@ const server = http.createServer((req, res) => {
       });
       var cardsGrid=document.querySelector('#kv-overview .kv-overview__cards');
       out.overview.gridColumns=cardsGrid?getComputedStyle(cardsGrid).gridTemplateColumns.split(' ').length:0;
+      out.amenitiesAnim={
+        gsapLoaded:typeof gsap!=='undefined',
+        scrollTriggerLoaded:typeof ScrollTrigger!=='undefined',
+        splitTextLoaded:typeof SplitText!=='undefined',
+        scrollTriggerInstanceCount:(typeof ScrollTrigger!=='undefined')?ScrollTrigger.getAll().length:0
+      };
+      var amenRoot=document.getElementById('kv-amenities');
+      if(amenRoot){
+        var bigImgs=amenRoot.querySelectorAll('[data-amenities-anim="big-image"]');
+        var smallImgs=amenRoot.querySelectorAll('[data-amenities-anim="small-image"]');
+        var slideBoxes=amenRoot.querySelectorAll('.kv-amenities-slide-box');
+        var amenTriggers=amenRoot.querySelectorAll('[data-amenities-anim="trigger"]');
+        out.amenitiesAnim.bigImageCount=bigImgs.length;
+        out.amenitiesAnim.smallImageCount=smallImgs.length;
+        out.amenitiesAnim.slideBoxCount=slideBoxes.length;
+        out.amenitiesAnim.triggerCount=amenTriggers.length;
+        out.amenitiesAnim.inited=amenRoot.dataset.kvAmenInited==='1';
+        var amenTriggerProgresses=amenTriggers.length?Array.prototype.map.call(amenTriggers,function(trig,i){
+          var st=ScrollTrigger.getAll().find(function(s){return s.trigger===trig;});
+          return {index:i,progress:st?Math.round(st.progress*1000)/1000:null};
+        }):[];
+        out.amenitiesAnim.triggerProgresses=amenTriggerProgresses;
+        out.amenitiesAnim.bigImages=Array.prototype.map.call(bigImgs,function(img,i){
+          var s=getComputedStyle(img);
+          return {index:i,isFirst:img.classList.contains('is-first'),maskImage:(s.maskImage||s.webkitMaskImage||'').slice(0,30),opacity:getComputedStyle(img).opacity,transform:s.transform==='none'?'none':'set'};
+        });
+        out.amenitiesAnim.smallImages=Array.prototype.map.call(smallImgs,function(img,i){
+          var s=getComputedStyle(img);
+          return {index:i,clipPath:s.clipPath};
+        });
+        out.amenitiesAnim.slideBoxStates=Array.prototype.map.call(slideBoxes,function(box,i){
+          var s=getComputedStyle(box);
+          var h3=box.querySelector('[data-amenities-anim="title"]');
+          return {index:i,opacity:s.opacity,visibility:s.visibility,heading:h3?h3.textContent.trim():'NO H3'};
+        });
+        var track=amenRoot.querySelector('.kv-amenities-track');
+        out.amenitiesAnim.trackHeight=track?Math.round(track.getBoundingClientRect().height):0;
+        out.amenitiesAnim.trackTop=track?Math.round(track.getBoundingClientRect().top+window.scrollY):0;
+        var progressLine=amenRoot.querySelector('.kv-amenities-progress-line');
+        out.amenitiesAnim.progressLineHeight=progressLine?getComputedStyle(progressLine).height:'NOT FOUND';
+      } else {
+        out.amenitiesAnim.rootFound=false;
+      }
       document.title='PROBE::'+JSON.stringify(out);
+      }
+      function realTicks(n){
+        if(typeof gsap==='undefined'||n<=0){buildProbeOutput();return;}
+        gsap.ticker.tick();
+        if(typeof ScrollTrigger!=='undefined'){ScrollTrigger.update();}
+        setTimeout(function(){realTicks(n-1);},16);
+      }
+      realTicks(120);
     },5000)</script></body>`;
     const patched = html.replace("</body>", probe);
     res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
