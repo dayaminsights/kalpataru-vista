@@ -160,7 +160,13 @@
    wellness-themed accent distinct from the rest of the page's ink-on-white
    system -- confirmed against repeated user feedback that a full match
    (not just structural) was wanted here. */
-.kv-amenities{position:relative;background:#FBF1EA}
+/* overflow-x:clip, not hidden: the first big image starts life at gsap x:100
+   (its entry offset, see initKvAmenitiesAnimation) and at phone widths that
+   pushed it ~14px past the viewport, making the whole document scroll
+   sideways until the trigger fired. `hidden` would fix it too but turns this
+   into a scroll container, which breaks the position:sticky pin below —
+   `clip` contains the overhang without that side effect. */
+.kv-amenities{position:relative;background:#FBF1EA;overflow-x:clip}
 .kv-amenities-track{position:relative;height:340vh}
 .kv-amenities-wrap{display:flex;flex-flow:column;align-items:center;justify-content:center;gap:3rem;height:auto;min-height:100vh;padding:4rem 0;position:sticky;top:0}
 .kv-amenities-images{position:relative;width:75%;max-width:32rem;aspect-ratio:4/5;flex-shrink:0}
