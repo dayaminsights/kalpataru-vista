@@ -67,11 +67,27 @@ section:not([class]),
 .kv-benefits__item p{margin:0;font-size:1.3rem;font-weight:500;line-height:1.4;color:#151717;max-width:36ch}
 @media(min-width:768px){.kv-benefits{padding:8rem 0}.kv-benefits__grid{grid-template-columns:repeat(2,1fr);gap:3rem 4rem}}
 
-/* --- kv-amenities --- */
+/* --- kv-amenities: 3 photo-led category panels, alternating media/copy sides.
+   Single photo per panel (not the Camellias reference's big+small pair) --
+   only 1 placeholder photo exists per category right now, see design spec. */
 .kv-amenities{padding:6rem 0;background:#fff}
+.kv-amenities__panels{display:flex;flex-direction:column;gap:4rem;margin-top:3rem}
+.kv-amenities__panel{display:grid;grid-template-columns:1fr;grid-template-areas:"media" "copy";gap:1.5rem;align-items:center}
+.kv-amenities__media{grid-area:media;aspect-ratio:4/5;border-radius:1.25rem;overflow:hidden;background:#f1f1ef}
+.kv-amenities__media img{display:block;width:100%;height:100%;object-fit:cover}
+.kv-amenities__copy{grid-area:copy}
+.kv-amenities__num{display:block;font-size:.85rem;font-weight:600;color:rgba(21,23,23,.4);letter-spacing:.05em;margin-bottom:1rem}
+.kv-amenities__copy h3{font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;letter-spacing:-0.02em;line-height:1.15;color:#151717;margin:0 0 1rem;font-family:"Instrument Sans","Instrument Sans Fallback"}
+.kv-amenities__copy p{font-size:1.05rem;line-height:1.6;color:rgba(21,23,23,.75);max-width:42ch;margin:0 0 1.5rem}
+.kv-amenities__tags{list-style:none;display:flex;flex-wrap:wrap;gap:.6rem;margin:0;padding:0}
+.kv-amenities__tags li{border:1px solid rgba(21,23,23,.18);border-radius:100px;padding:.5rem 1.1rem;font-size:.85rem;color:#151717;white-space:nowrap}
 .kv-amenities__list{list-style:none;display:flex;flex-wrap:wrap;gap:.75rem;margin:2.5rem 0 0;padding:0}
 .kv-amenities__list li{border:1px solid rgba(21,23,23,.18);border-radius:100px;padding:.65rem 1.35rem;font-size:.95rem;color:#151717;white-space:nowrap}
-@media(min-width:768px){.kv-amenities{padding:8rem 0}}
+@media(min-width:768px){
+  .kv-amenities{padding:8rem 0}
+  .kv-amenities__panel{grid-template-columns:1fr 1fr;grid-template-areas:"media copy";gap:4rem}
+  .kv-amenities__panel--reverse{grid-template-areas:"copy media"}
+}
 
 /* --- kv-cta --- */
 .kv-cta{padding:7rem 0;background:#151717;color:#fff}
