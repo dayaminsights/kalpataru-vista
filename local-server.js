@@ -20,6 +20,7 @@ const MIME = {
   ".ico": "image/x-icon",
   ".woff2": "font/woff2",
   ".json": "application/json",
+  ".mp4": "video/mp4",
 };
 
 function send(res, filePath) {
@@ -169,12 +170,39 @@ const server = http.createServer((req, res) => {
       });
       var bareSections=document.querySelectorAll('section:not([class])');
       out.sections['bare-sections']=bareSections.length?Array.prototype.map.call(bareSections,function(s){return getComputedStyle(s).display}).join(','):'none present';
-      ['kv-overview','kv-benefits','kv-amenities','kv-cta'].forEach(function(id){
+      ['kv-video','kv-overview','kv-benefits','kv-amenities','kv-cta'].forEach(function(id){
         var el=document.getElementById(id);
         if(!el){out.sections[id]='NOT FOUND';return;}
         var r=el.getBoundingClientRect();
         out.sections[id]=getComputedStyle(el).display+' height='+Math.round(r.height);
       });
+      var kvVideo=document.getElementById('kv-video');
+      if(kvVideo){
+        var vr=kvVideo.getBoundingClientRect();
+        var vid=kvVideo.querySelector('video');
+        out.kvVideo={
+          top:Math.round(vr.top),bottom:Math.round(vr.bottom),width:Math.round(vr.width),height:Math.round(vr.height),
+          videoFound:!!vid,
+          src:vid?vid.currentSrc.split('/').pop():null,
+          autoplay:vid?vid.autoplay:null,
+          muted:vid?vid.muted:null,
+          loop:vid?vid.loop:null,
+          paused:vid?vid.paused:null,
+          readyState:vid?vid.readyState:null,
+          videoNaturalSize:vid?(vid.videoWidth+'x'+vid.videoHeight):null,
+          objectFit:vid?getComputedStyle(vid).objectFit:null,
+          zIndex:getComputedStyle(kvVideo).zIndex,
+          coveredByHero:(function(){
+            var cx=Math.round(vr.left+vr.width/2), cy=Math.round(vr.top+vr.height/2);
+            if(cy<0||cy>window.innerHeight)return 'offscreen-vertically, skip';
+            var top=document.elementFromPoint(cx,cy);
+            if(!top)return 'no element at point';
+            return top===vid||kvVideo.contains(top)?'no (video/overlay on top)':'YES, covered by: '+top.className;
+          })()
+        };
+        var ov=document.getElementById('kv-overview');
+        if(ov)out.kvVideo.overviewTop=Math.round(ov.getBoundingClientRect().top);
+      } else out.kvVideo='kv-video element NOT FOUND';
       var rera=document.querySelector('.kv-rera');
       out.sections['kv-rera']=rera?'found':'NOT FOUND';
       var navOverview=document.querySelector('a[href="#kv-overview"]');

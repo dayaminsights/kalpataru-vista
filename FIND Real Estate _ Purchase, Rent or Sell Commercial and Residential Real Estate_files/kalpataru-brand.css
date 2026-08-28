@@ -47,7 +47,7 @@ section:not([class]),
    pin spans. Lifting these into their own stacking context above the hero's highest
    layer (hero_clouds at z-index:2) fixes it -- confirmed via elementFromPoint, not
    just by reading z-index values. */
-.kv-overview,.kv-benefits,.kv-amenities,.kv-cta{position:relative;z-index:3}
+.kv-video,.kv-overview,.kv-benefits,.kv-amenities,.kv-cta{position:relative;z-index:3}
 
 /* --- kv-overview --- */
 .kv-overview{padding:6rem 0;background:#fff}
@@ -83,3 +83,21 @@ section:not([class]),
 /* --- footer RERA disclosure --- */
 .kv-rera{font-size:.8rem;line-height:1.5;color:rgba(255,255,255,.55);max-width:60ch;padding:1.5rem 0 0}
 .kv-rera a{color:inherit;text-decoration:underline}
+
+/* --- kv-video: mirrors FIND's original why-us_root layout exactly (padding,
+   grid, type scale, em color, preview aspect-ratio/height) -- reskinned with
+   Kalpataru copy and the show-apartment video instead of rebuilding a new
+   pattern, per the reference screenshot of the original section. */
+.kv-video{padding:6rem 0;background:#fff}
+.kv-video__grid{display:grid;margin:0 0 6rem}
+.kv-video__title h2{font-weight:600;font-size:2rem;line-height:140%;margin:0}
+.kv-video__text{font-weight:500;font-size:3rem;line-height:115%;letter-spacing:-.01em;margin:0;color:#151717}
+.kv-video__text .em{color:#b3b3b3}
+.kv-video__preview{margin:0 -2rem;aspect-ratio:365/450;overflow:hidden}
+.kv-video__preview video{display:block;width:100%;height:100%;object-fit:cover}
+@media(min-width:768px){
+  .kv-video{padding:15rem 0}
+  .kv-video__grid{grid-template-columns:auto 97.6rem;margin:0 0 10rem}
+  .kv-video__text{font-size:5.6rem;letter-spacing:-.03em}
+  .kv-video__preview{margin:0;aspect-ratio:auto;height:97.6rem}
+}
