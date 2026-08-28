@@ -235,7 +235,7 @@ const server = http.createServer((req, res) => {
       });
       var bareSections=document.querySelectorAll('section:not([class])');
       out.sections['bare-sections']=bareSections.length?Array.prototype.map.call(bareSections,function(s){return getComputedStyle(s).display}).join(','):'none present';
-      ['kv-video','kv-overview','kv-amenities','kv-plans','kv-why','kv-cta'].forEach(function(id){
+      ['kv-video','kv-overview','kv-amenities','kv-unit-layout','kv-plans','kv-why','kv-cta'].forEach(function(id){
         var el=document.getElementById(id);
         if(!el){out.sections[id]='NOT FOUND';return;}
         var r=el.getBoundingClientRect();
@@ -299,6 +299,24 @@ const server = http.createServer((req, res) => {
         var ov=document.getElementById('kv-overview');
         if(ov)out.kvVideo.overviewTop=Math.round(ov.getBoundingClientRect().top);
       } else out.kvVideo='kv-video element NOT FOUND';
+      var kvUnitLayout=document.getElementById('kv-unit-layout');
+      if(kvUnitLayout){
+        var ulCards=kvUnitLayout.querySelectorAll('.kv-unit-layout__card');
+        var ulGrid=kvUnitLayout.querySelector('.kv-unit-layout__grid');
+        var ulTriggers=kvUnitLayout.querySelectorAll('.kv-layouts-trigger');
+        out.kvUnitLayout={
+          gridColumns:ulGrid?getComputedStyle(ulGrid).gridTemplateColumns:null,
+          cardCount:ulCards.length,
+          cardHeadings:Array.prototype.map.call(ulCards,function(c){return (c.querySelector('h3')||{}).textContent;}),
+          cardSpecs:Array.prototype.map.call(ulCards,function(c){return Array.prototype.map.call(c.querySelectorAll('li'),function(li){return li.textContent;});}),
+          triggerCount:ulTriggers.length,
+          noteText:(kvUnitLayout.querySelector('.kv-unit-layout__note')||{}).textContent,
+          domOrder:{
+            afterAmenities:!!(document.getElementById('kv-amenities')&&document.getElementById('kv-amenities').compareDocumentPosition(kvUnitLayout)&Node.DOCUMENT_POSITION_FOLLOWING),
+            beforePlans:!!(document.getElementById('kv-plans')&&kvUnitLayout.compareDocumentPosition(document.getElementById('kv-plans'))&Node.DOCUMENT_POSITION_FOLLOWING)
+          }
+        };
+      } else out.kvUnitLayout='kv-unit-layout element NOT FOUND';
       var kvPlans=document.getElementById('kv-plans');
       if(kvPlans){
         var siteImg=kvPlans.querySelector('.kv-plans__site-media img');
