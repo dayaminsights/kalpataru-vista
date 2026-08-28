@@ -302,6 +302,16 @@ const server = http.createServer((req, res) => {
         out.amenitiesAnim.trackTop=track?Math.round(track.getBoundingClientRect().top+window.scrollY):0;
         var progressLine=amenRoot.querySelector('.kv-amenities-progress-line');
         out.amenitiesAnim.progressLineHeight=progressLine?getComputedStyle(progressLine).height:'NOT FOUND';
+        var imagesEl=amenRoot.querySelector('.kv-amenities-images');
+        var textsEl=amenRoot.querySelector('.kv-amenities-texts');
+        var smallEl=amenRoot.querySelector('.kv-amenities-images-small');
+        var h3El=amenRoot.querySelector('.kv-amenities-slide-box.is-first h3, .kv-amenities-slide-box[style*="opacity: 1"] h3')||amenRoot.querySelector('[data-amenities-anim="title"]');
+        out.amenitiesAnim.rects={
+          images:imagesEl?imagesEl.getBoundingClientRect().toJSON():null,
+          texts:textsEl?textsEl.getBoundingClientRect().toJSON():null,
+          small:smallEl?smallEl.getBoundingClientRect().toJSON():null,
+          h3FontSize:h3El?getComputedStyle(h3El).fontSize:null
+        };
       } else {
         out.amenitiesAnim.rootFound=false;
       }

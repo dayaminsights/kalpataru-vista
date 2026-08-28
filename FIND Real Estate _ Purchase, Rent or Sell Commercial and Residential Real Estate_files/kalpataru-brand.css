@@ -98,27 +98,27 @@ section:not([class]),
    small inset photo is a simplified approximation of the reference, not a pixel
    clone -- the animation mechanism (mask-gradient wipe, clip-path reveal,
    line-mask text) is what's ported faithfully. */
-.kv-amenities{position:relative;background:#fff}
+.kv-amenities{position:relative;background:#f1f1ef}
 .kv-amenities-track{position:relative;height:340vh}
-.kv-amenities-wrap{display:flex;flex-flow:column;align-items:center;justify-content:center;gap:2rem;height:100vh;padding:2rem 0;position:sticky;top:0}
-.kv-amenities-images{position:relative;width:100%;height:45%;flex-shrink:0}
+.kv-amenities-wrap{display:flex;flex-flow:column;align-items:center;justify-content:center;gap:4.8rem;height:100vh;padding:2rem 0;position:sticky;top:0}
+.kv-amenities-images{position:relative;width:100%;max-width:44rem;height:40rem;flex-shrink:0}
 .kv-amenities-images-big{position:relative;width:100%;height:100%}
 .kv-amenities-slide-imgs{position:absolute;inset:0;transform-origin:50% 100%;transition:transform 1s}
 .kv-amenities-slide-imgs.is-first{position:relative}
-.kv-amenities-slide-imgs img{display:block;width:100%;height:100%;object-fit:cover;border-radius:1rem}
-.kv-amenities-images-small{position:absolute;width:7rem;height:8.5rem;right:1rem;bottom:-2rem;z-index:2}
+.kv-amenities-slide-imgs img{display:block;width:100%;height:100%;object-fit:cover}
+.kv-amenities-images-small{position:absolute;width:20.7rem;height:24.7rem;left:-2rem;top:20%;z-index:2}
 .kv-amenities-slide-img-inner{position:absolute;inset:0}
 .kv-amenities-slide-img-inner.is-first{position:static}
-.kv-amenities-slide-img-inner img{display:block;width:100%;height:100%;object-fit:cover;border-radius:.75rem;border:.25rem solid #fff;box-shadow:0 .5rem 1.5rem rgba(21,23,23,.15)}
-.kv-amenities-texts{position:relative;width:100%;max-width:32rem;padding-left:1.5rem}
+.kv-amenities-slide-img-inner img{display:block;width:100%;height:100%;object-fit:cover}
+.kv-amenities-texts{position:relative;width:100%;max-width:38rem}
 .kv-amenities-progress{position:absolute;left:0;top:.2rem;width:.15rem;height:calc(100% - .4rem);background:rgba(21,23,23,.12)}
 .kv-amenities-progress-line{width:100%;height:0%;background:#151717}
 .kv-amenities-slide-box{width:100%;position:absolute;top:0;left:1.5rem}
 .kv-amenities-slide-box.is-first{position:relative}
 .kv-amenities-num{display:block;font-size:.85rem;font-weight:600;color:rgba(21,23,23,.4);letter-spacing:.05em;margin-bottom:.75rem}
-.kv-amenities-slide-box h3{font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;letter-spacing:-0.02em;line-height:1.15;color:#151717;margin:0 0 1rem;font-family:"Instrument Sans","Instrument Sans Fallback";overflow:hidden}
-.kv-amenities-slide-text{max-width:26rem;overflow:hidden}
-.kv-amenities-slide-text p{font-size:1.05rem;line-height:1.6;color:rgba(21,23,23,.75);margin:0 0 1.25rem}
+.kv-amenities-slide-box h3{font-size:clamp(2rem,4vw,3.25rem);font-weight:700;letter-spacing:-0.02em;line-height:1.05;color:#151717;margin:0 0 1.5rem;font-family:"Instrument Sans","Instrument Sans Fallback";overflow:hidden}
+.kv-amenities-slide-text{max-width:34rem;overflow:hidden}
+.kv-amenities-slide-text p{font-size:1.05rem;line-height:1.6;color:rgba(21,23,23,.75);margin:0 0 1.5rem}
 .kv-amenities-tags{list-style:none;display:flex;flex-wrap:wrap;gap:.6rem;margin:0;padding:0}
 .kv-amenities-tags li{border:1px solid rgba(21,23,23,.18);border-radius:100px;padding:.5rem 1.1rem;font-size:.85rem;color:#151717;white-space:nowrap}
 .kv-amenities-triggers{position:absolute;inset:0;width:100%;height:100%;display:flex;flex-flow:column;pointer-events:none}
@@ -127,10 +127,10 @@ section:not([class]),
 [data-amenities-anim="big-image"]{mask-image:var(--mask-gradient);-webkit-mask-image:var(--mask-gradient)}
 [data-amenities-anim="big-image"].is-first{mask-image:none!important;-webkit-mask-image:none!important;transition:unset}
 @media(min-width:768px){
-  .kv-amenities-wrap{flex-flow:row;gap:5rem;padding:0}
-  .kv-amenities-images{width:56%;height:75%;order:1}
-  .kv-amenities-images-small{width:14rem;height:16.5rem;right:auto;left:-6rem;bottom:-3rem}
-  .kv-amenities-texts{width:44%;max-width:none;padding-left:0;order:0}
+  .kv-amenities-wrap{flex-flow:row;justify-content:center;gap:8rem;padding:0}
+  .kv-amenities-images{width:53%;max-width:62rem;height:75%;order:1;flex-shrink:0}
+  .kv-amenities-images-small{width:22.4rem;height:26.4rem;left:-9.6rem;top:20%}
+  .kv-amenities-texts{width:auto;max-width:42rem;order:0;flex-shrink:0}
 }
 
 /* --- kv-cta --- */
