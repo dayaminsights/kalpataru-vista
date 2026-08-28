@@ -87,50 +87,59 @@ section:not([class]),
 
 /* --- kv-amenities: pinned scroll sequence, ported from the Camellias Residences
    reference's GSAP ScrollTrigger + SplitText animation (see the inline script at
-   the end of <body>, initKvAmenitiesAnimation). Structural rem values are the
-   reference's own values * 0.625 -- both this page and the reference use a
-   viewport-fluid rem system (html{font-size} scales with 100vw against a 1920px
-   design width, confirmed live via ?probe=1), just at different base multipliers
-   (this page: 10px @ 1920px; reference: 16px @ 1920px). Percentages/vh transfer
-   directly, only literal rem offsets needed the conversion. Mobile-first, unlike
-   the reference (desktop-first with max-width overrides) -- inverted here to
-   match every other kv-* section in this file. Exact overlap geometry of the
-   small inset photo is a simplified approximation of the reference, not a pixel
-   clone -- the animation mechanism (mask-gradient wipe, clip-path reveal,
-   line-mask text) is what's ported faithfully. */
-.kv-amenities{position:relative;background:#f1f1ef}
+   the end of <body>, initKvAmenitiesAnimation). Every dimension/color/font below
+   was measured directly off the live reference file via headless Chrome at a
+   matched 1884px viewport (not eyeballed, not re-derived from CSS source --
+   see the amenities-photo-panels plan history for the measurement script if
+   this needs re-verification). Pixel values converted to this page's own
+   fluid-rem system (1rem=10px @ 1920px design width, vs the reference's
+   1rem=16px @ 1920px) by dividing the measured px by 9.8125 (this page's
+   measured px-per-rem at the same 1884px viewport) -- NOT by re-applying the
+   reference's own rem numbers with a conversion factor, which is what produced
+   two rounds of wrong sizing earlier. Percentage-based values (small photo
+   size/position relative to the big photo) are used wherever the reference
+   itself used percentages, since those are viewport-proof by construction.
+   Cream background/dark-brown ink/Fraunces display serif are the reference's
+   actual measured values, adopted deliberately for this one section as a
+   wellness-themed accent distinct from the rest of the page's ink-on-white
+   system -- confirmed against repeated user feedback that a full match
+   (not just structural) was wanted here. */
+.kv-amenities{position:relative;background:#FBF1EA}
 .kv-amenities-track{position:relative;height:340vh}
-.kv-amenities-wrap{display:flex;flex-flow:column;align-items:center;justify-content:center;gap:4.8rem;height:100vh;padding:2rem 0;position:sticky;top:0}
-.kv-amenities-images{position:relative;width:100%;max-width:44rem;height:40rem;flex-shrink:0}
+.kv-amenities-wrap{display:flex;flex-flow:column;align-items:center;justify-content:center;gap:3rem;height:auto;min-height:100vh;padding:4rem 0;position:sticky;top:0}
+.kv-amenities-images{position:relative;width:75%;max-width:32rem;aspect-ratio:4/5;flex-shrink:0}
 .kv-amenities-images-big{position:relative;width:100%;height:100%}
 .kv-amenities-slide-imgs{position:absolute;inset:0;transform-origin:50% 100%;transition:transform 1s}
 .kv-amenities-slide-imgs.is-first{position:relative}
 .kv-amenities-slide-imgs img{display:block;width:100%;height:100%;object-fit:cover}
-.kv-amenities-images-small{position:absolute;width:20.7rem;height:24.7rem;left:-2rem;top:20%;z-index:2}
+.kv-amenities-images-small{position:absolute;width:55%;height:50%;right:0;left:auto;bottom:-8%;top:auto;z-index:2}
 .kv-amenities-slide-img-inner{position:absolute;inset:0}
 .kv-amenities-slide-img-inner.is-first{position:static}
 .kv-amenities-slide-img-inner img{display:block;width:100%;height:100%;object-fit:cover}
-.kv-amenities-texts{position:relative;width:100%;max-width:38rem}
-.kv-amenities-progress{position:absolute;left:0;top:.2rem;width:.15rem;height:calc(100% - .4rem);background:rgba(21,23,23,.12)}
-.kv-amenities-progress-line{width:100%;height:0%;background:#151717}
-.kv-amenities-slide-box{width:100%;position:absolute;top:0;left:1.5rem}
+.kv-amenities-texts{position:relative;width:100%;max-width:38rem;text-align:center}
+.kv-amenities-progress{display:none}
+.kv-amenities-progress-line{width:100%;height:0%;background:#2c1512}
+.kv-amenities-slide-box{width:100%;position:absolute;top:0;left:0}
 .kv-amenities-slide-box.is-first{position:relative}
-.kv-amenities-num{display:block;font-size:.85rem;font-weight:600;color:rgba(21,23,23,.4);letter-spacing:.05em;margin-bottom:.75rem}
-.kv-amenities-slide-box h3{font-size:clamp(2rem,4vw,3.25rem);font-weight:700;letter-spacing:-0.02em;line-height:1.05;color:#151717;margin:0 0 1.5rem;font-family:"Instrument Sans","Instrument Sans Fallback";overflow:hidden}
-.kv-amenities-slide-text{max-width:34rem;overflow:hidden}
-.kv-amenities-slide-text p{font-size:1.05rem;line-height:1.6;color:rgba(21,23,23,.75);margin:0 0 1.5rem}
-.kv-amenities-tags{list-style:none;display:flex;flex-wrap:wrap;gap:.6rem;margin:0;padding:0}
-.kv-amenities-tags li{border:1px solid rgba(21,23,23,.18);border-radius:100px;padding:.5rem 1.1rem;font-size:.85rem;color:#151717;white-space:nowrap}
+.kv-amenities-num{display:none}
+.kv-amenities-slide-box h3{font-family:"Fraunces","Georgia",serif;font-size:clamp(2.6rem,9vw,7.6rem);font-weight:300;letter-spacing:-0.03em;line-height:1.1;text-transform:uppercase;color:#2c1512;margin:0 0 1.5rem;overflow:hidden}
+.kv-amenities-slide-text{max-width:34.6rem;margin:0 auto;overflow:hidden}
+.kv-amenities-slide-text p{font-size:1.6rem;line-height:1.5;color:#2c1512;margin:0 0 1.5rem}
+.kv-amenities-tags{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:.6rem;margin:0;padding:0}
+.kv-amenities-tags li{border:1px solid rgba(44,21,18,.25);border-radius:100px;padding:.5rem 1.1rem;font-size:.85rem;color:#2c1512;white-space:nowrap}
 .kv-amenities-triggers{position:absolute;inset:0;width:100%;height:100%;display:flex;flex-flow:column;pointer-events:none}
 .kv-amenities-trigger{width:100%;height:100vh}
 .kv-amenities-trigger.is-last{height:50vh}
 [data-amenities-anim="big-image"]{mask-image:var(--mask-gradient);-webkit-mask-image:var(--mask-gradient)}
 [data-amenities-anim="big-image"].is-first{mask-image:none!important;-webkit-mask-image:none!important;transition:unset}
 @media(min-width:768px){
-  .kv-amenities-wrap{flex-flow:row;justify-content:center;gap:8rem;padding:0}
-  .kv-amenities-images{width:53%;max-width:62rem;height:75%;order:1;flex-shrink:0}
-  .kv-amenities-images-small{width:22.4rem;height:26.4rem;left:-9.6rem;top:20%}
-  .kv-amenities-texts{width:auto;max-width:42rem;order:0;flex-shrink:0}
+  .kv-amenities-wrap{flex-flow:row;justify-content:center;align-items:center;gap:37.4rem;height:100vh;min-height:0;padding:0}
+  .kv-amenities-images{width:auto;max-width:none;height:84%;aspect-ratio:4/5;order:1;flex-shrink:0}
+  .kv-amenities-images-small{width:61.9%;height:59.5%;right:auto;left:-43.8%;bottom:auto;top:20.2%}
+  .kv-amenities-texts{width:auto;max-width:42.2rem;order:0;flex-shrink:0;text-align:left}
+  .kv-amenities-progress{display:block;position:absolute;left:-4.4rem;top:.2rem;width:.15rem;height:calc(100% - .4rem);background:rgba(44,21,18,.15)}
+  .kv-amenities-slide-box{left:0}
+  .kv-amenities-tags{justify-content:flex-start}
 }
 
 /* --- kv-cta --- */
