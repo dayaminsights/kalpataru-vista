@@ -205,6 +205,7 @@ var current=-1;
 var animating=false;
 var FLIP_MS=450;
 var FADE_MS=300;
+var closeRequested=false;
 function fireSynthetic(card,type){
 card.dispatchEvent(new MouseEvent(type,{bubbles:false}));
 }
@@ -232,7 +233,13 @@ card.style.left='0px';
 card.style.width='100vw';
 card.style.height='100vh';
 });
-setTimeout(function(){animating=false;},FLIP_MS);
+setTimeout(function(){
+animating=false;
+if(closeRequested){
+closeRequested=false;
+collapseToGrid();
+}
+},FLIP_MS);
 }
 function switchTo(nextIndex){
 if(animating||current===-1||nextIndex===current)return;
@@ -258,10 +265,20 @@ newCard.style.opacity='1';
 });
 fireSynthetic(newCard,'mouseenter');
 current=nextIndex;
-setTimeout(function(){animating=false;},FADE_MS);
+setTimeout(function(){
+animating=false;
+if(closeRequested){
+closeRequested=false;
+collapseToGrid();
+}
+},FADE_MS);
 }
 function collapseToGrid(){
-if(current===-1||animating)return;
+if(current===-1)return;
+if(animating){
+closeRequested=true;
+return;
+}
 animating=true;
 var card=cards[current];
 current=-1;
