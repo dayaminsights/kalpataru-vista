@@ -34,7 +34,9 @@
 .footer_links__vib46{grid-area:nav;margin-top:0!important;justify-content:flex-start;gap:3rem}
 @media(min-width:768px){.footer_links__vib46{justify-content:flex-end}}
 .footer_nav__XkBHY{flex-direction:row;flex-wrap:wrap;gap:1.75rem 2.5rem}
-.footer_nav-link__LFUNG{font-size:1rem!important;font-weight:500;color:rgba(255,255,255,.75)}
+/* inline-block + vertical padding: these were 40x11px hit areas, well under
+   the 44px minimum. The row gap absorbs the extra height. */
+.footer_nav-link__LFUNG{font-size:1.5rem!important;font-weight:500;color:rgba(255,255,255,.75);display:inline-block;padding:1.1rem 0}
 .footer_nav-link__LFUNG:hover{color:#fff}
 .footer_socials__4JfcA{display:none}
 
@@ -42,6 +44,14 @@
 
 .footer_copyright-container__yt1ht{grid-area:copyright;justify-content:space-between;gap:.75rem;margin-top:0}
 .footer_sublinks__Pj_ed{display:none}
+
+/* .button_button-round__TFjlU sets padding and radius but no display — it
+   relied on <button>'s inline-block default. The hero CTA is now an <a>
+   (it used to open FIND's search modal), and an inline anchor ignores the
+   vertical padding, collapsing the hit area to the 12px line box. The other
+   kv-* button anchors happen to sit in flex containers, which blockifies
+   them; this makes it correct regardless of parent. */
+a.button_button-round__TFjlU{display:inline-flex;align-items:center}
 
 /* anchor the wide render to the top of its (tall) box instead of centering */
 .hero_house__aJy7p img{object-position:top center}
@@ -112,20 +122,20 @@
    screenshot of the original section. Landscape 6:5 card aspect matches the
    original's 1107x940 source images. */
 .kv-overview{padding:6rem 0;background:#151717}
-.kv-section__eyebrow{font-size:.875rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:rgba(21,23,23,.55);margin-bottom:1rem}
+.kv-section__eyebrow{font-size:1.32rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:rgba(21,23,23,.55);margin-bottom:1rem}
 .kv-section__eyebrow--light{color:rgba(255,255,255,.55)}
-.kv-section__heading{font-size:clamp(2rem,4vw,3.5rem);font-weight:700;letter-spacing:-0.02em;line-height:1.1;color:#151717;margin:0 0 1.5rem;max-width:32ch;font-family:"Instrument Sans","Instrument Sans Fallback"}
+.kv-section__heading{font-size:clamp(2.2rem,4vw,4.6rem);font-weight:700;letter-spacing:-0.02em;line-height:1.1;color:#151717;margin:0 0 1.5rem;max-width:32ch;font-family:"Instrument Sans","Instrument Sans Fallback"}
 .kv-overview .kv-section__heading{color:#fff}
 .kv-overview .kv-section__heading .em{color:#8a8d8d}
 .kv-overview__top{display:grid;grid-template-columns:1fr;gap:2rem;margin-bottom:3rem}
-.kv-overview__body{font-size:1.1rem;line-height:1.6;color:rgba(255,255,255,.85);max-width:52ch;margin:0 0 2rem}
+.kv-overview__body{font-size:1.9rem;line-height:1.6;color:rgba(255,255,255,.85);max-width:52ch;margin:0 0 2rem}
 .kv-overview__body .em{color:rgba(255,255,255,.55)}
 .kv-overview__cards{display:grid;grid-template-columns:1fr;gap:1.5rem}
 .kv-overview__card{position:relative}
 .kv-overview__card-media{position:relative;aspect-ratio:6/5;border-radius:1rem;overflow:hidden;background:#2a2c2c}
 .kv-overview__card-media img{display:block;width:100%;height:100%;object-fit:cover}
 .kv-overview__card-overlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;gap:1.25rem;padding:1.75rem;background:linear-gradient(to top,rgba(10,11,11,.75) 0%,rgba(10,11,11,.15) 55%,rgba(10,11,11,0) 80%)}
-.kv-overview__card-overlay h3{font-size:1.4rem;font-weight:700;letter-spacing:-0.01em;line-height:1.2;color:#fff;margin:0;font-family:"Instrument Sans","Instrument Sans Fallback"}
+.kv-overview__card-overlay h3{font-size:2rem;font-weight:700;letter-spacing:-0.01em;line-height:1.2;color:#fff;margin:0;font-family:"Instrument Sans","Instrument Sans Fallback"}
 .kv-overview__card-overlay .button_button-round__TFjlU{align-self:flex-start}
 .kv-overview__card-video{position:absolute;inset:0;z-index:5;border-radius:1rem;overflow:hidden;background:#000;opacity:0}
 .kv-overview__card-video.is-active{opacity:1}
@@ -138,7 +148,7 @@
   .kv-overview{padding:9rem 0}
   .kv-overview__top{grid-template-columns:1fr 1fr;gap:4rem;align-items:start;margin-bottom:4rem}
   .kv-overview__cards{grid-template-columns:repeat(3,1fr);gap:2rem}
-  .kv-overview__card-overlay h3{font-size:1.6rem}
+  .kv-overview__card-overlay h3{font-size:2.45rem}
 }
 
 /* --- kv-amenities: pinned scroll sequence, ported from the Camellias Residences
@@ -188,7 +198,7 @@
 .kv-amenities-slide-text{max-width:34.6rem;margin:0 auto;overflow:hidden}
 .kv-amenities-slide-text p{font-size:1.6rem;line-height:1.5;color:#2c1512;margin:0 0 1.5rem}
 .kv-amenities-tags{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:.6rem;margin:0;padding:0}
-.kv-amenities-tags li{border:1px solid rgba(44,21,18,.25);border-radius:100px;padding:.5rem 1.1rem;font-size:.85rem;color:#2c1512;white-space:nowrap}
+.kv-amenities-tags li{border:1px solid rgba(44,21,18,.25);border-radius:100px;padding:.7rem 1.5rem;font-size:1.43rem;color:#2c1512;white-space:nowrap}
 .kv-amenities-triggers{position:absolute;inset:0;width:100%;height:100%;display:flex;flex-flow:column;pointer-events:none}
 .kv-amenities-trigger{width:100%;height:100vh}
 .kv-amenities-trigger.is-last{height:50vh}
@@ -216,12 +226,12 @@
 .kv-plans__grid{display:grid;grid-template-columns:1fr;gap:3rem}
 .kv-plans__site-media{border-radius:1rem;overflow:hidden;aspect-ratio:1754/1241;background:#2a2c2c}
 .kv-plans__site-media img{display:block;width:100%;height:100%;object-fit:cover}
-.kv-plans__site-caption{margin:1rem 0 0;font-size:.95rem;line-height:1.5;color:rgba(21,23,23,.65);max-width:44ch}
+.kv-plans__site-caption{margin:1rem 0 0;font-size:1.5rem;line-height:1.5;color:rgba(21,23,23,.65);max-width:44ch}
 .kv-plans__specs{display:grid;grid-template-columns:1fr;gap:2rem}
 .kv-plans__spec-group{border-top:1px solid rgba(21,23,23,.12);padding-top:1.25rem}
-.kv-plans__spec-group h3{margin:0 0 .85rem;font-size:.85rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:rgba(21,23,23,.55)}
+.kv-plans__spec-group h3{margin:0 0 .85rem;font-size:1.32rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:rgba(21,23,23,.55)}
 .kv-plans__spec-group ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.6rem}
-.kv-plans__spec-group li{font-size:1rem;line-height:1.5;color:#151717;padding-left:1.1rem;position:relative}
+.kv-plans__spec-group li{font-size:1.73rem;line-height:1.5;color:#151717;padding-left:1.8rem;position:relative}
 .kv-plans__spec-group li::before{content:'';position:absolute;left:0;top:.55em;width:.4rem;height:.4rem;border-radius:50%;background:#151717}
 @media(min-width:768px){
   .kv-plans{padding:8rem 0}
@@ -251,13 +261,13 @@
    before the closing dark kv-cta. */
 .kv-why{padding:6rem 0;background:#fff}
 .kv-why__grid{display:grid;grid-template-columns:1fr;gap:2.5rem;margin-bottom:3.5rem}
-.kv-why__intro h3{font-size:1.4rem;font-weight:700;letter-spacing:-0.01em;line-height:1.25;color:#151717;margin:0 0 .85rem;font-family:"Instrument Sans","Instrument Sans Fallback"}
-.kv-why__intro p{font-size:1.05rem;line-height:1.6;color:rgba(21,23,23,.7);max-width:48ch;margin:0 0 1.75rem}
+.kv-why__intro h3{font-size:2.45rem;font-weight:700;letter-spacing:-0.01em;line-height:1.25;color:#151717;margin:0 0 .85rem;font-family:"Instrument Sans","Instrument Sans Fallback"}
+.kv-why__intro p{font-size:1.73rem;line-height:1.6;color:rgba(21,23,23,.7);max-width:48ch;margin:0 0 1.75rem}
 .kv-why__credits{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0}
 .kv-why__credit{all:unset;box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;gap:1rem;width:100%;cursor:pointer;border-top:1px solid rgba(21,23,23,.12);padding:1rem .25rem;transition:padding-left .3s ease,background-color .3s ease}
 .kv-why__credits li:last-child .kv-why__credit{border-bottom:1px solid rgba(21,23,23,.12)}
-.kv-why__credit-role{font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(21,23,23,.45);display:block;margin-bottom:.3rem}
-.kv-why__credit-name{font-size:1.1rem;font-weight:600;letter-spacing:-0.01em;color:#151717;font-family:"Instrument Sans","Instrument Sans Fallback"}
+.kv-why__credit-role{font-size:1.22rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(21,23,23,.45);display:block;margin-bottom:.3rem}
+.kv-why__credit-name{font-size:1.9rem;font-weight:600;letter-spacing:-0.01em;color:#151717;font-family:"Instrument Sans","Instrument Sans Fallback"}
 .kv-why__credit-arrow{flex-shrink:0;width:1.1rem;height:1.1rem;color:rgba(21,23,23,.25);transition:transform .3s ease,color .3s ease}
 .kv-why__credit:hover,.kv-why__credit:focus-visible{padding-left:.75rem;background-color:rgba(21,23,23,.035)}
 .kv-why__credit:focus-visible{outline:2px solid #151717;outline-offset:-2px}
@@ -267,16 +277,16 @@
 .kv-why__viewer-frame{position:relative;aspect-ratio:5/4;border-radius:1rem;overflow:hidden;background:#e9ebeb}
 .kv-why__viewer-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .5s ease}
 .kv-why__viewer-img.is-active{opacity:1}
-.kv-why__viewer-caption{font-size:.9rem;line-height:1.5;color:rgba(21,23,23,.6);margin:1rem 0 0;min-height:2.7em}
+.kv-why__viewer-caption{font-size:1.5rem;line-height:1.5;color:rgba(21,23,23,.6);margin:1rem 0 0;min-height:2.7em}
 .kv-why__stats{display:grid;grid-template-columns:repeat(2,1fr);gap:2rem 1.5rem;align-content:start;padding:2.5rem 0;margin-bottom:3.5rem;border-top:1px solid rgba(21,23,23,.12);border-bottom:1px solid rgba(21,23,23,.12)}
-.kv-why__stat-num{display:block;font-size:clamp(2.25rem,5vw,3.25rem);font-weight:700;letter-spacing:-0.02em;line-height:1;color:#151717;font-family:"Instrument Sans","Instrument Sans Fallback";font-variant-numeric:tabular-nums}
-.kv-why__stat-label{display:block;font-size:.9rem;line-height:1.4;color:rgba(21,23,23,.6);margin-top:.5rem}
+.kv-why__stat-num{display:block;font-size:clamp(2.4rem,5vw,4.2rem);font-weight:700;letter-spacing:-0.02em;line-height:1;color:#151717;font-family:"Instrument Sans","Instrument Sans Fallback";font-variant-numeric:tabular-nums}
+.kv-why__stat-label{display:block;font-size:1.43rem;line-height:1.4;color:rgba(21,23,23,.6);margin-top:.5rem}
 .kv-why__benefits{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
 .kv-why__benefit{position:relative;aspect-ratio:3/4;border-radius:.85rem;overflow:hidden;background-size:cover;background-position:center;transition:transform .4s ease,box-shadow .4s ease}
 .kv-why__benefit::before{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(10,11,11,.8) 0%,rgba(10,11,11,.25) 45%,rgba(10,11,11,.05) 70%)}
-.kv-why__benefit p{position:relative;z-index:1;margin:0;padding:1.1rem;font-size:.95rem;font-weight:600;line-height:1.35;color:#fff;letter-spacing:-0.005em}
+.kv-why__benefit p{position:relative;z-index:1;margin:0;padding:1.1rem;font-size:1.63rem;font-weight:600;line-height:1.35;color:#fff;letter-spacing:-0.005em}
 .kv-why__benefit:hover,.kv-why__benefit:focus-visible{transform:translateY(-.3rem);box-shadow:0 1.25rem 2.5rem rgba(21,23,23,.22)}
-.kv-why__disclaimer{font-size:.8rem;line-height:1.5;color:rgba(21,23,23,.5);margin:1.75rem 0 0}
+.kv-why__disclaimer{font-size:1.32rem;line-height:1.5;color:rgba(21,23,23,.5);margin:1.75rem 0 0}
 @media(min-width:768px){
   .kv-why{padding:8rem 0}
   .kv-why__grid{grid-template-columns:1fr 1.1fr;gap:5rem;align-items:center;margin-bottom:4rem}
@@ -292,12 +302,12 @@
 
 /* --- kv-cta --- */
 .kv-cta{padding:7rem 0;background:#151717;color:#fff}
-.kv-cta__heading{font-size:clamp(2rem,4vw,3.25rem);font-weight:700;letter-spacing:-0.02em;line-height:1.15;color:#fff;margin:0 0 1.25rem;max-width:26ch;font-family:"Instrument Sans","Instrument Sans Fallback"}
-.kv-cta__body{font-size:1.1rem;line-height:1.6;color:rgba(255,255,255,.75);max-width:48ch;margin:0 0 2.5rem}
+.kv-cta__heading{font-size:clamp(2.2rem,4vw,4.2rem);font-weight:700;letter-spacing:-0.02em;line-height:1.15;color:#fff;margin:0 0 1.25rem;max-width:26ch;font-family:"Instrument Sans","Instrument Sans Fallback"}
+.kv-cta__body{font-size:1.9rem;line-height:1.6;color:rgba(255,255,255,.75);max-width:48ch;margin:0 0 2.5rem}
 @media(min-width:768px){.kv-cta{padding:9rem 0}}
 
 /* --- footer RERA disclosure --- */
-.kv-rera{font-size:.8rem;line-height:1.5;color:rgba(255,255,255,.55);max-width:60ch;padding:1.5rem 0 0}
+.kv-rera{font-size:1.32rem;line-height:1.5;color:rgba(255,255,255,.55);max-width:60ch;padding:1.5rem 0 0}
 .kv-rera a{color:inherit;text-decoration:underline}
 
 /* --- kv-video: mirrors FIND's original why-us_root layout exactly (padding,
@@ -324,12 +334,12 @@
 .kv-modal.is-open{opacity:1;visibility:visible}
 .kv-modal__backdrop{position:absolute;inset:0;background:rgba(10,11,11,.6)}
 .kv-modal__dialog{position:relative;width:100%;max-width:30rem;background:#fff;border-radius:1rem;padding:2.5rem 2rem 2rem;box-shadow:0 1.5rem 4rem rgba(0,0,0,.35)}
-.kv-modal__close{position:absolute;top:1rem;right:1rem;width:2.25rem;height:2.25rem;border:none;background:transparent;font-size:1.5rem;line-height:1;color:#151717;cursor:pointer}
-.kv-modal__dialog h3{font-size:1.5rem;font-weight:700;letter-spacing:-0.01em;color:#151717;margin:0 0 .75rem;font-family:"Instrument Sans","Instrument Sans Fallback"}
-.kv-modal__body{font-size:1rem;line-height:1.5;color:rgba(21,23,23,.75);margin:0 0 1.5rem}
+.kv-modal__close{position:absolute;top:1rem;right:1rem;width:2.25rem;height:2.25rem;border:none;background:transparent;font-size:2rem;line-height:1;color:#151717;cursor:pointer}
+.kv-modal__dialog h3{font-size:2.24rem;font-weight:700;letter-spacing:-0.01em;color:#151717;margin:0 0 .75rem;font-family:"Instrument Sans","Instrument Sans Fallback"}
+.kv-modal__body{font-size:1.63rem;line-height:1.5;color:rgba(21,23,23,.75);margin:0 0 1.5rem}
 .kv-modal__form{display:flex;flex-direction:column;gap:1rem}
-.kv-modal__field{display:flex;flex-direction:column;gap:.4rem;font-size:.85rem;color:#151717}
-.kv-modal__field input{font:inherit;font-size:1rem;padding:.75rem .9rem;border:1px solid rgba(21,23,23,.2);border-radius:.5rem;background:#fff;color:#151717}
+.kv-modal__field{display:flex;flex-direction:column;gap:.4rem;font-size:1.32rem;color:#151717}
+.kv-modal__field input{font:inherit;font-size:16px;padding:.75rem .9rem;border:1px solid rgba(21,23,23,.2);border-radius:.5rem;background:#fff;color:#151717}
 .kv-modal__field input:focus{outline:2px solid #151717;outline-offset:1px}
 .kv-modal__form .button_button-round__TFjlU{margin-top:.5rem;align-self:flex-start}
 
@@ -341,19 +351,19 @@
    count), not decoration. */
 .kv-unit-layout{background:#FBF1EA;padding:6rem 0}
 .kv-unit-layout .kv-section__eyebrow{color:rgba(44,21,18,.55)}
-.kv-unit-layout__intro{max-width:38ch;margin:-.5rem 0 0;font-size:1.05rem;line-height:1.5;color:rgba(44,21,18,.65)}
+.kv-unit-layout__intro{max-width:38ch;margin:-.5rem 0 0;font-size:1.73rem;line-height:1.5;color:rgba(44,21,18,.65)}
 .kv-unit-layout__grid{display:grid;grid-template-columns:1fr;gap:1.5rem;margin-top:2.5rem}
 .kv-unit-layout__card{background:#fff;border-radius:1.25rem;padding:2.5rem 2.25rem;display:flex;flex-direction:column;align-items:flex-start;gap:1.5rem}
 .kv-unit-layout__num{font-family:"Fraunces","Georgia",serif;font-weight:300;font-size:clamp(3.5rem,8vw,5rem);line-height:1;color:#2c1512}
-.kv-unit-layout__card h3{margin:-.75rem 0 0;font-size:.8rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(21,23,23,.55)}
+.kv-unit-layout__card h3{margin:-.75rem 0 0;font-size:1.32rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(21,23,23,.55)}
 .kv-unit-layout__specs{width:100%;margin:0;border-top:1px solid rgba(21,23,23,.12)}
 .kv-unit-layout__specs>div{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;padding:.85rem 0;border-bottom:1px solid rgba(21,23,23,.12)}
-.kv-unit-layout__specs dt{margin:0;font-size:.85rem;color:rgba(21,23,23,.55)}
-.kv-unit-layout__specs dd{margin:0;font-size:1rem;font-weight:600;color:#151717;white-space:nowrap}
-.kv-unit-layout__price{font-family:"Fraunces","Georgia",serif;font-weight:300;font-size:2rem;color:#2c1512}
-.kv-unit-layout__price span{display:block;margin-top:.2rem;font-family:"Instrument Sans","Instrument Sans Fallback";font-size:.8rem;font-weight:500;color:rgba(21,23,23,.55)}
+.kv-unit-layout__specs dt{margin:0;font-size:1.32rem;color:rgba(21,23,23,.55)}
+.kv-unit-layout__specs dd{margin:0;font-size:1.73rem;font-weight:600;color:#151717;white-space:nowrap}
+.kv-unit-layout__price{font-family:"Fraunces","Georgia",serif;font-weight:300;font-size:2.85rem;color:#2c1512}
+.kv-unit-layout__price span{display:block;margin-top:.2rem;font-family:"Instrument Sans","Instrument Sans Fallback";font-size:1.32rem;font-weight:500;color:rgba(21,23,23,.55)}
 .kv-unit-layout__card .button_button-round__TFjlU{align-self:flex-start}
-.kv-unit-layout__note{margin:3rem 0 0;font-size:.9rem;color:rgba(44,21,18,.5);text-align:center}
+.kv-unit-layout__note{margin:3rem 0 0;font-size:1.5rem;color:rgba(44,21,18,.5);text-align:center}
 @media(min-width:768px){
   .kv-unit-layout__grid{grid-template-columns:repeat(2,1fr);gap:2rem}
 }
