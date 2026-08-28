@@ -13,10 +13,35 @@
 .header_logo__LO_Jk svg{display:none}
 .header_logo__LO_Jk>a{display:block;width:13rem;height:5.6rem;background:url("./kalpataru-vista-logo.svg") no-repeat left center;background-size:contain}
 
-/* footer wordmark */
+/* footer: simple stacked layout. DOM order is fixed by the React component
+   (contacts, nav+socials, logo, then kv-rera injected before copyright) --
+   `order` on each row re-presents them logo-first without touching
+   hydration-owned markup. The old grid-template-areas gave kv-rera (which
+   has no assigned area) nowhere to go, so it rendered as an unstyled stray
+   element -- switching to flex fixes that as a side effect. */
 .footer_logo__5ncK8 svg{display:none}
-.footer_logo__5ncK8{width:100%;height:9rem;background:url("./kalpataru-vista-logo.svg") no-repeat center;background-size:contain}
-@media(min-width:768px){.footer_logo__5ncK8{width:97.5rem;max-width:100%;height:28rem;background-position:left center}}
+.footer_logo__5ncK8{grid-area:logo;width:16rem;height:4.6rem;margin-top:0;background:url("./kalpataru-vista-logo.svg") no-repeat left center;background-size:contain}
+
+.footer_content__E2ijt{display:grid;grid-template-columns:1fr;grid-template-areas:"logo" "nav" "contacts" "rera" "copyright";row-gap:2.5rem;padding:5rem 0 4rem}
+@media(min-width:768px){
+  .footer_content__E2ijt{grid-template-columns:auto 1fr;column-gap:3rem;align-items:center;grid-template-areas:"logo nav" "contacts contacts" "rera rera" "copyright copyright"}
+}
+
+.footer_newsletter-container__POI_T{grid-area:contacts;width:auto;gap:0;margin-top:0}
+.footer_contacts__HFiAl{margin-top:0!important;gap:2.5rem}
+@media(min-width:768px){.footer_contacts__HFiAl{justify-content:space-between;gap:3rem;margin-top:0!important}}
+
+.footer_links__vib46{grid-area:nav;margin-top:0!important;justify-content:flex-start;gap:3rem}
+@media(min-width:768px){.footer_links__vib46{justify-content:flex-end}}
+.footer_nav__XkBHY{flex-direction:row;flex-wrap:wrap;gap:1.75rem 2.5rem}
+.footer_nav-link__LFUNG{font-size:1rem!important;font-weight:500;color:rgba(255,255,255,.75)}
+.footer_nav-link__LFUNG:hover{color:#fff}
+.footer_socials__4JfcA{display:none}
+
+.kv-rera{grid-area:rera;padding:2rem 0 0;margin:0;border-top:1px solid rgba(255,255,255,.12)}
+
+.footer_copyright-container__yt1ht{grid-area:copyright;justify-content:space-between;gap:.75rem;margin-top:0}
+.footer_sublinks__Pj_ed{display:none}
 
 /* anchor the wide render to the top of its (tall) box instead of centering */
 .hero_house__aJy7p img{object-position:top center}
