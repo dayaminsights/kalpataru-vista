@@ -307,3 +307,17 @@ section:not([class]),
 .kv-modal__field input{font:inherit;font-size:1rem;padding:.75rem .9rem;border:1px solid rgba(21,23,23,.2);border-radius:.5rem;background:#fff;color:#151717}
 .kv-modal__field input:focus{outline:2px solid #151717;outline-offset:1px}
 .kv-modal__form .button_button-round__TFjlU{margin-top:.5rem;align-self:flex-start}
+
+/* --- kv-unit-layout: Unit Layout Plan section CSS --- */
+.kv-unit-layout__grid{display:grid;grid-template-columns:1fr;gap:1.5rem;margin-top:1rem}
+.kv-unit-layout__card{border:1px solid rgba(21,23,23,.12);border-radius:1rem;padding:2rem;display:flex;flex-direction:column;gap:1.25rem;align-items:flex-start}
+.kv-unit-layout__icon{width:2.75rem;height:2.75rem;color:#151717}
+.kv-unit-layout__icon svg{display:block;width:100%;height:100%}
+.kv-unit-layout__card h3{margin:0;font-size:1.3rem;font-weight:700;letter-spacing:-0.01em;color:#151717;font-family:"Instrument Sans","Instrument Sans Fallback"}
+.kv-unit-layout__card ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.5rem}
+.kv-unit-layout__card li{font-size:1rem;line-height:1.5;color:#151717;padding-left:1.1rem;position:relative}
+.kv-unit-layout__card li::before{content:'';position:absolute;left:0;top:.55em;width:.4rem;height:.4rem;border-radius:50%;background:#151717}
+.kv-unit-layout__note{margin:2rem 0 0;font-size:.9rem;color:rgba(21,23,23,.55);text-align:center}
+@media(min-width:768px){
+  .kv-unit-layout__grid{grid-template-columns:repeat(2,1fr);gap:2rem}
+}
