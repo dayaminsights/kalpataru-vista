@@ -305,10 +305,14 @@ const server = http.createServer((req, res) => {
         var ulGrid=kvUnitLayout.querySelector('.kv-unit-layout__grid');
         var ulTriggers=kvUnitLayout.querySelectorAll('.kv-layouts-trigger');
         out.kvUnitLayout={
+          bg:getComputedStyle(kvUnitLayout).backgroundColor,
           gridColumns:ulGrid?getComputedStyle(ulGrid).gridTemplateColumns:null,
           cardCount:ulCards.length,
+          cardNums:Array.prototype.map.call(ulCards,function(c){return (c.querySelector('.kv-unit-layout__num')||{}).textContent;}),
           cardHeadings:Array.prototype.map.call(ulCards,function(c){return (c.querySelector('h3')||{}).textContent;}),
-          cardSpecs:Array.prototype.map.call(ulCards,function(c){return Array.prototype.map.call(c.querySelectorAll('li'),function(li){return li.textContent;});}),
+          cardSpecs:Array.prototype.map.call(ulCards,function(c){return Array.prototype.map.call(c.querySelectorAll('.kv-unit-layout__specs dt,.kv-unit-layout__specs dd'),function(el){return el.tagName+':'+el.textContent;});}),
+          cardPrices:Array.prototype.map.call(ulCards,function(c){return (c.querySelector('.kv-unit-layout__price')||{}).textContent;}),
+          numFontFamily:ulCards[0]?getComputedStyle(ulCards[0].querySelector('.kv-unit-layout__num')).fontFamily:null,
           triggerCount:ulTriggers.length,
           noteText:(kvUnitLayout.querySelector('.kv-unit-layout__note')||{}).textContent,
           domOrder:{
