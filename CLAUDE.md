@@ -14,10 +14,14 @@ decision in this repo. Read `ARCHITECTURE.md` before making structural changes.
 node local-server.js
 ```
 
-Serves on `http://localhost:5000/`. Do **not** use a plain static server (`npx serve`,
-etc.) — the page calls Next.js's `/_next/image?url=...` optimizer endpoint for every
-image, which doesn't exist outside a real Next.js server. `local-server.js` intercepts
-those requests and resolves them to the local asset files instead. See its comments.
+Serves on `http://localhost:5000/`. `local-server.js` is convenient for local dev (its
+`?probe=1` route is the project's whole verification methodology, see below), but as of
+the image patches described in ARCHITECTURE.md it is **no longer required to view the
+site** — the page now works on a plain static file server too (confirmed against a bare
+Node static server with no `/_next/image` route at all: 0 broken images, 0 requests to
+that endpoint). This is what makes GitHub Pages hosting possible; see
+`docs/superpowers/plans` history / git log for the patch that made this true if the image
+handling ever needs revisiting.
 
 Kill any previous instance first (`taskkill //F //IM node.exe` on Windows) — it doesn't
 hot-reload and holds port 5000.
