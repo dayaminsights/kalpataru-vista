@@ -81,8 +81,6 @@ section:not([class]),
 .kv-amenities__copy p{font-size:1.05rem;line-height:1.6;color:rgba(21,23,23,.75);max-width:42ch;margin:0 0 1.5rem}
 .kv-amenities__tags{list-style:none;display:flex;flex-wrap:wrap;gap:.6rem;margin:0;padding:0}
 .kv-amenities__tags li{border:1px solid rgba(21,23,23,.18);border-radius:100px;padding:.5rem 1.1rem;font-size:.85rem;color:#151717;white-space:nowrap}
-.kv-amenities__list{list-style:none;display:flex;flex-wrap:wrap;gap:.75rem;margin:2.5rem 0 0;padding:0}
-.kv-amenities__list li{border:1px solid rgba(21,23,23,.18);border-radius:100px;padding:.65rem 1.35rem;font-size:.95rem;color:#151717;white-space:nowrap}
 @media(min-width:768px){
   .kv-amenities{padding:8rem 0}
   .kv-amenities__panel{grid-template-columns:1fr 1fr;grid-template-areas:"media copy";gap:4rem}
