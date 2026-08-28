@@ -105,11 +105,67 @@ const server = http.createServer((req, res) => {
       out.requestedScrollY=${scrollY};
       out.actualScrollY=window.scrollY;
       out.docScrollHeight=document.documentElement.scrollHeight;
+      var headerLogoWrap=document.querySelector('.header_logo__LO_Jk');
+      var headerLogoA=headerLogoWrap?headerLogoWrap.querySelector('a'):null;
+      if(headerLogoA){
+        var hls=getComputedStyle(headerLogoA);
+        var hlr=headerLogoA.getBoundingClientRect();
+        out.headerLogo={bgImage:(hls.backgroundImage||'').slice(0,200),bgSize:hls.backgroundSize,rect:hlr.toJSON(),display:hls.display};
+      } else { out.headerLogo='not found'; }
+      var navItems=Array.prototype.map.call(document.querySelectorAll('.header_nav-item__Wn05d'),function(n){var a=n.querySelector('a');return a?{text:a.textContent,href:a.getAttribute('href')}:null;});
+      out.navItems=navItems;
+      var actionsBtn=document.querySelector('.header_actions__Sv09J a');
+      out.actionsBtn=actionsBtn?{text:actionsBtn.textContent,href:actionsBtn.getAttribute('href')}:'not found';
+      var burgerItems=Array.prototype.map.call(document.querySelectorAll('.burger-menu_nav-item__mCA9u'),function(n){var a=n.querySelector('a');return a?{text:a.textContent,href:a.getAttribute('href')}:null;});
+      out.burgerItems=burgerItems;
+      var burgerActionsBtn=document.querySelector('.burger-menu_actions__In3qE a');
+      out.burgerActionsBtn=burgerActionsBtn?{text:burgerActionsBtn.textContent,href:burgerActionsBtn.getAttribute('href')}:'not found';
+      var footerNav=Array.prototype.map.call(document.querySelectorAll('.footer_nav-link__LFUNG'),function(a){return {text:a.textContent,href:a.getAttribute('href')};});
+      out.footerNav=footerNav;
+      var footerSocials=Array.prototype.map.call(document.querySelectorAll('.footer_social-link__2uQBq'),function(a){return {text:a.textContent,href:a.getAttribute('href')};});
+      out.footerSocials=footerSocials;
+      var footerSublinks=Array.prototype.map.call(document.querySelectorAll('.footer_sublinks__Pj_ed *'),function(a){return a.textContent;});
+      out.footerSublinks=footerSublinks;
+      var newsletter=document.querySelector('.footer_newsletter-title__bRCRZ, .footer_newsletter-form__0k_h5');
+      out.newsletterPresent=!!newsletter;
+      var contactVals=Array.prototype.map.call(document.querySelectorAll('.footer_contact__fFxbr'),function(c){var l=c.querySelector('.footer_contact-label__gYKsP');var a=c.querySelector('.footer_contact-value__e1jbK a');return {label:l?l.textContent:null,text:a?a.textContent.trim():null,href:a?a.getAttribute('href'):null};});
+      out.footerContacts=contactVals;
+      var copyrightDivs=Array.prototype.map.call(document.querySelectorAll('.footer_copyright-container__yt1ht > div.footer_copyright__1JHRz, .footer_copyright-container__yt1ht > div'),function(d){return d.textContent;});
+      out.footerCopyrightDivs=copyrightDivs;
+      function rectOf(sel){var el=document.querySelector(sel);return el?el.getBoundingClientRect().toJSON():null;}
+      var fc=document.querySelector('.footer_content__E2ijt');
+      if(fc){out.footerContentStyle={transform:getComputedStyle(fc).transform,opacity:getComputedStyle(fc).opacity,inlineStyle:fc.getAttribute('style')};}
+      out.footerRects={
+        wrapper:rectOf('.footer_wrapper__9GQwi'),
+        logo:rectOf('.footer_logo__5ncK8'),
+        nav:rectOf('.footer_links__vib46'),
+        contacts:rectOf('.footer_newsletter-container__POI_T'),
+        rera:rectOf('.kv-rera'),
+        copyright:rectOf('.footer_copyright-container__yt1ht')
+      };
+      var headerContent=document.querySelector('.header_content__cVJDb');
+      var headerWrapper=document.querySelector('.header_wrapper__MJ5bn');
+      if(headerContent&&headerWrapper){
+        out.headerColors={contentColor:getComputedStyle(headerContent).color,wrapperBg:getComputedStyle(headerWrapper).backgroundColor,wrapperClass:headerWrapper.className};
+      }
       var comp=document.querySelector('.hero_composite__3blHB');
       var logo=document.querySelector('.hero_logo__FxgRj');
       if(comp){var s=getComputedStyle(comp);out.compositeMask=(s.maskImage||s.webkitMaskImage||'').slice(0,120);out.compositeMaskSize=s.maskSize||s.webkitMaskSize;out.compositeOpacity=s.opacity;out.compositeDisplay=s.display;out.compositeBg=s.backgroundColor;
+        out.compositeTransform=s.transform;out.compositeRect=comp.getBoundingClientRect().toJSON();out.compositeZIndex=s.zIndex;out.compositePosition=s.position;
         var nestedHouse=comp.querySelector('.hero_house__aJy7p');
         out.nestedHouseDisplay=nestedHouse?getComputedStyle(nestedHouse).display:'no nested house';}
+      var clouds=document.querySelector('.hero_clouds__bC7V4');
+      if(clouds){var cs=getComputedStyle(clouds);out.cloudsZIndex=cs.zIndex;out.cloudsOpacity=cs.opacity;out.cloudsPosition=cs.position;}
+      var smoke=document.querySelector('.hero_smoke__8za_R');
+      if(smoke){var sms=getComputedStyle(smoke);out.smokeZIndex=sms.zIndex;out.smokeOpacity=sms.opacity;out.smokePosition=sms.position;var sr=smoke.getBoundingClientRect();out.smokeRect=sr.toJSON();}
+      var heroContent=document.querySelector('.hero_content__DK_Ny');
+      if(heroContent)out.heroContentOpacity=getComputedStyle(heroContent).opacity;
+      var heroBg=document.querySelector('.hero_bg__S_r_n');
+      if(heroBg){out.heroBgChildrenOrder=Array.prototype.map.call(heroBg.children,function(c){return c.className;});
+        var hbs=getComputedStyle(heroBg);out.heroBgPosition=hbs.position;out.heroBgRect=heroBg.getBoundingClientRect().toJSON();
+        var glow=getComputedStyle(heroBg,'::before');
+        out.glow={bg:(glow.backgroundImage||'').slice(0,60),zIndex:glow.zIndex,opacity:glow.opacity,top:glow.top,left:glow.left,right:glow.right,bottom:glow.bottom,position:glow.position,content:glow.content};
+        out.wordmarkCssVar=heroBg.style.getPropertyValue('--kv-wordmark-opacity');}
       var outerHouse=document.querySelector('body > * .hero_house__aJy7p:not(.hero_composite__3blHB .hero_house__aJy7p)');
       var allHouses=document.querySelectorAll('.hero_house__aJy7p');
       out.totalHouseEls=allHouses.length;
@@ -125,6 +181,7 @@ const server = http.createServer((req, res) => {
         if(p)out.firstPathD=p.getAttribute('d').slice(0,40);
         out.logoSvgDisplay=logo.querySelector('svg')?getComputedStyle(logo.querySelector('svg')).display:'no svg';
         out.logoOpacity=getComputedStyle(logo).opacity;
+        out.logoTransform=getComputedStyle(logo).transform;out.logoRect=logo.getBoundingClientRect().toJSON();out.logoZIndex=getComputedStyle(logo).zIndex;
         if(p){out.logoPathFill=getComputedStyle(p).fill;out.logoPathStroke=getComputedStyle(p).stroke;}}
       else out.logoSvgPaths='NO .hero_logo ELEMENT';
       out.brandCssLoaded=[].some.call(document.styleSheets,function(ss){return (ss.href||'').indexOf('kalpataru-brand')>-1;});
@@ -178,12 +235,43 @@ const server = http.createServer((req, res) => {
       });
       var bareSections=document.querySelectorAll('section:not([class])');
       out.sections['bare-sections']=bareSections.length?Array.prototype.map.call(bareSections,function(s){return getComputedStyle(s).display}).join(','):'none present';
-      ['kv-video','kv-overview','kv-benefits','kv-amenities','kv-cta'].forEach(function(id){
+      ['kv-video','kv-overview','kv-amenities','kv-plans','kv-why','kv-cta'].forEach(function(id){
         var el=document.getElementById(id);
         if(!el){out.sections[id]='NOT FOUND';return;}
         var r=el.getBoundingClientRect();
         out.sections[id]=getComputedStyle(el).display+' height='+Math.round(r.height);
       });
+      var kvWhy=document.getElementById('kv-why');
+      if(kvWhy){
+        var wr=kvWhy.getBoundingClientRect();
+        var wgrid=kvWhy.querySelector('.kv-why__grid');
+        var wstats=kvWhy.querySelectorAll('.kv-why__stat-num');
+        var wbenefits=kvWhy.querySelectorAll('.kv-why__benefit');
+        var wbuttons=kvWhy.querySelectorAll('.kv-why__credit');
+        var wimgsBefore=Array.prototype.map.call(kvWhy.querySelectorAll('.kv-why__viewer-img'),function(im){return {src:im.getAttribute('src').split('/').pop(),active:im.classList.contains('is-active')};});
+        var captionBefore=(kvWhy.querySelector('.kv-why__viewer-caption')||{}).textContent;
+        // simulate the "hover the 2nd credit" interaction (no click needed on desktop)
+        var wimgsAfter=null,captionAfter=null,secondBtnActiveAfter=null;
+        if(wbuttons.length>1){
+          wbuttons[1].dispatchEvent(new MouseEvent('mouseenter',{bubbles:true}));
+          wimgsAfter=Array.prototype.map.call(kvWhy.querySelectorAll('.kv-why__viewer-img'),function(im){return {src:im.getAttribute('src').split('/').pop(),active:im.classList.contains('is-active')};});
+          captionAfter=(kvWhy.querySelector('.kv-why__viewer-caption')||{}).textContent;
+          secondBtnActiveAfter=wbuttons[1].classList.contains('is-active');
+        }
+        out.kvWhy={
+          bg:getComputedStyle(kvWhy).backgroundColor,
+          top:Math.round(wr.top),bottom:Math.round(wr.bottom),
+          gridTemplateColumns:wgrid?getComputedStyle(wgrid).gridTemplateColumns:'NO GRID',
+          statCount:wstats.length,
+          statTexts:Array.prototype.map.call(wstats,function(s){return s.textContent;}),
+          benefitCount:wbenefits.length,
+          benefitBgImages:Array.prototype.map.call(wbenefits,function(b){return getComputedStyle(b).backgroundImage.slice(0,20)==='none'?'NONE':getComputedStyle(b).backgroundImage.split('/').pop();}),
+          headingText:(kvWhy.querySelector('.kv-section__heading')||{}).textContent,
+          creditButtonCount:wbuttons.length,
+          galleryBeforeHover:{images:wimgsBefore,caption:captionBefore},
+          galleryAfterHoverSecondCredit:{images:wimgsAfter,caption:captionAfter,secondButtonActive:secondBtnActiveAfter},
+        };
+      }
       var kvVideo=document.getElementById('kv-video');
       if(kvVideo){
         var vr=kvVideo.getBoundingClientRect();
@@ -211,6 +299,23 @@ const server = http.createServer((req, res) => {
         var ov=document.getElementById('kv-overview');
         if(ov)out.kvVideo.overviewTop=Math.round(ov.getBoundingClientRect().top);
       } else out.kvVideo='kv-video element NOT FOUND';
+      var kvPlans=document.getElementById('kv-plans');
+      if(kvPlans){
+        var siteImg=kvPlans.querySelector('.kv-plans__site-media img');
+        var groups=kvPlans.querySelectorAll('.kv-plans__spec-group');
+        var grid=kvPlans.querySelector('.kv-plans__grid');
+        var siteInner=kvPlans.querySelector('.kv-plans__site-inner');
+        out.kvPlans={
+          gridColumns:grid?getComputedStyle(grid).gridTemplateColumns:null,
+          siteInnerPosition:siteInner?getComputedStyle(siteInner).position:null,
+          imgFound:!!siteImg,
+          imgSrc:siteImg?siteImg.getAttribute('src').split('/').pop():null,
+          imgNaturalSize:siteImg?(siteImg.naturalWidth+'x'+siteImg.naturalHeight):null,
+          specGroupCount:groups.length,
+          specItemCount:kvPlans.querySelectorAll('.kv-plans__spec-group li').length,
+          benefitsGone:!document.getElementById('kv-benefits')
+        };
+      } else out.kvPlans='kv-plans element NOT FOUND';
       var rera=document.querySelector('.kv-rera');
       out.sections['kv-rera']=rera?'found':'NOT FOUND';
       var navOverview=document.querySelector('a[href="#kv-overview"]');
@@ -268,7 +373,7 @@ const server = http.createServer((req, res) => {
         Array.prototype.forEach.call(document.styleSheets,function(ss){
           try{
             Array.prototype.forEach.call(ss.cssRules||[],function(r){
-              if(r.selectorText==='.kv-overview__card--golf:hover'&&/scale\\(/.test(r.style.transform))golfHoverRuleFound=true;
+              if(r.selectorText==='.kv-overview__card:hover'&&/scale\\(/.test(r.style.transform))golfHoverRuleFound=true;
             });
           }catch(e){}
         });
@@ -356,20 +461,11 @@ const server = http.createServer((req, res) => {
           autoplay:locVideo?locVideo.autoplay:null,
           muted:locVideo?locVideo.muted:null,
           loop:locVideo?locVideo.loop:null,
-          paused:locVideo?locVideo.paused:null,
           readyState:locVideo?locVideo.readyState:null,
-          // paused may read true this soon after the section is injected --
-          // autoplay's own play() call can lag a tick behind insertion. play()
-          // resolving cleanly (no NotAllowedError) is the real signal that
-          // muted autoplay is permitted here.
-          paused:locVideo?locVideo.paused:null,
+          pausedBeforeHover:locVideo?locVideo.paused:null,
           activeBeforeHover:locBox?locBox.classList.contains('is-active'):null
         };
         if(locVideo){
-          var playResult=locVideo.play();
-          if(playResult&&playResult.then){
-            playResult.then(function(){out.locationVideo.playResult='resolved';},function(err){out.locationVideo.playResult='rejected: '+err.name+' '+err.message;});
-          }
           // getComputedStyle mid-CSS-transition is unreliable under headless
           // --virtual-time-budget (compositor timeline doesn't tick with virtual
           // time), so verify the cascade result with transitions bypassed rather
@@ -382,10 +478,18 @@ const server = http.createServer((req, res) => {
           out.locationVideo.activeVisibility=getComputedStyle(locBox).visibility;
           locBox.classList.remove('is-active');
           locBox.style.transition='';
+
+          // reveal()/conceal() are unconditional now: every hover-enter forces
+          // currentTime=0+play(), every leave pauses immediately. No debounce --
+          // "restart from the beginning on every hover" is the desired behavior,
+          // not something to guard against.
           locCard.dispatchEvent(new MouseEvent('mouseenter',{bubbles:false}));
           out.locationVideo.activeAfterHover=locBox.classList.contains('is-active');
+          out.locationVideo.pausedAfterHover=locVideo.paused;
+          out.locationVideo.currentTimeAfterHover=locVideo.currentTime;
           locCard.dispatchEvent(new MouseEvent('mouseleave',{bubbles:false}));
           out.locationVideo.activeAfterLeave=locBox.classList.contains('is-active');
+          out.locationVideo.pausedAfterLeave=locVideo.paused;
         }
       } else {
         out.locationVideo={cardFound:false};
