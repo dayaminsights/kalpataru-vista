@@ -1,0 +1,14 @@
+{
+  "name": "Kalpataru Vista",
+  "short_name": "Kalpataru Vista",
+  "description": "A twin-tower residential project in Sector 128, Noida, set within a 110-acre golf course. 3 & 4 bed apartments and duplexes.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#151717",
+  "theme_color": "#151717",
+  "icons": [
+    { "src": "./icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "./apple-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}
