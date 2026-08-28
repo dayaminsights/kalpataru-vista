@@ -226,6 +226,20 @@ const server = http.createServer((req, res) => {
       out.amenities.oldFlatListPresent=!!oldList;
       var amenText=document.getElementById('kv-amenities')?document.getElementById('kv-amenities').textContent:'';
       out.amenities.allSeventeenPresent=['Swimming Pool','Gymnasium','Multi-Purpose Hall','Squash Court','Community Centre','Creche','Business Lounge',"Kids' Play Area",'Fitness Zone','Games Room','Jogging Path','Landscaped Podium for Walking','Library and TV Lounge','Lounge Area','Spa','Sundecks','Waiting Niche'].every(function(name){return amenText.indexOf(name)>-1;});
+      var overviewCards=document.querySelectorAll('#kv-overview .kv-overview__card');
+      out.overview={cardCount:overviewCards.length};
+      out.overview.cards=Array.prototype.map.call(overviewCards,function(c){
+        var img=c.querySelector('.kv-overview__card-media img');
+        var h3=c.querySelector('.kv-overview__card-title h3');
+        return {
+          heading:h3?h3.textContent:'NO H3',
+          imgSrc:img?img.getAttribute('src').split('/').pop():'NO IMG',
+          imgNaturalSize:img?(img.naturalWidth+'x'+img.naturalHeight):'n/a',
+          mediaHeight:img?Math.round(img.getBoundingClientRect().height):0
+        };
+      });
+      var cardsGrid=document.querySelector('#kv-overview .kv-overview__cards');
+      out.overview.gridColumns=cardsGrid?getComputedStyle(cardsGrid).gridTemplateColumns.split(' ').length:0;
       document.title='PROBE::'+JSON.stringify(out);
     },5000)</script></body>`;
     const patched = html.replace("</body>", probe);
