@@ -308,16 +308,27 @@ section:not([class]),
 .kv-modal__field input:focus{outline:2px solid #151717;outline-offset:1px}
 .kv-modal__form .button_button-round__TFjlU{margin-top:.5rem;align-self:flex-start}
 
-/* --- kv-unit-layout: Unit Layout Plan section CSS --- */
-.kv-unit-layout__grid{display:grid;grid-template-columns:1fr;gap:1.5rem;margin-top:1rem}
-.kv-unit-layout__card{border:1px solid rgba(21,23,23,.12);border-radius:1rem;padding:2rem;display:flex;flex-direction:column;gap:1.25rem;align-items:flex-start}
-.kv-unit-layout__icon{width:2.75rem;height:2.75rem;color:#151717}
-.kv-unit-layout__icon svg{display:block;width:100%;height:100%}
-.kv-unit-layout__card h3{margin:0;font-size:1.3rem;font-weight:700;letter-spacing:-0.01em;color:#151717;font-family:"Instrument Sans","Instrument Sans Fallback"}
-.kv-unit-layout__card ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.5rem}
-.kv-unit-layout__card li{font-size:1rem;line-height:1.5;color:#151717;padding-left:1.1rem;position:relative}
-.kv-unit-layout__card li::before{content:'';position:absolute;left:0;top:.55em;width:.4rem;height:.4rem;border-radius:50%;background:#151717}
-.kv-unit-layout__note{margin:2rem 0 0;font-size:.9rem;color:rgba(21,23,23,.55);text-align:center}
+/* --- kv-unit-layout: warm continuation of kv-amenities' cream/espresso world
+   (same #FBF1EA/#2c1512/Fraunces tokens) rather than a neutral spec sheet --
+   this section is still "what these homes feel like", not yet the dry
+   kv-plans specs below it. The big Fraunces numeral replaces a generic line
+   icon: it's the one number in this section that's actually content (BHK
+   count), not decoration. */
+.kv-unit-layout{background:#FBF1EA;padding:6rem 0}
+.kv-unit-layout .kv-section__eyebrow{color:rgba(44,21,18,.55)}
+.kv-unit-layout__intro{max-width:38ch;margin:-.5rem 0 0;font-size:1.05rem;line-height:1.5;color:rgba(44,21,18,.65)}
+.kv-unit-layout__grid{display:grid;grid-template-columns:1fr;gap:1.5rem;margin-top:2.5rem}
+.kv-unit-layout__card{background:#fff;border-radius:1.25rem;padding:2.5rem 2.25rem;display:flex;flex-direction:column;align-items:flex-start;gap:1.5rem}
+.kv-unit-layout__num{font-family:"Fraunces","Georgia",serif;font-weight:300;font-size:clamp(3.5rem,8vw,5rem);line-height:1;color:#2c1512}
+.kv-unit-layout__card h3{margin:-.75rem 0 0;font-size:.8rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(21,23,23,.55)}
+.kv-unit-layout__specs{width:100%;margin:0;border-top:1px solid rgba(21,23,23,.12)}
+.kv-unit-layout__specs>div{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;padding:.85rem 0;border-bottom:1px solid rgba(21,23,23,.12)}
+.kv-unit-layout__specs dt{margin:0;font-size:.85rem;color:rgba(21,23,23,.55)}
+.kv-unit-layout__specs dd{margin:0;font-size:1rem;font-weight:600;color:#151717;white-space:nowrap}
+.kv-unit-layout__price{font-family:"Fraunces","Georgia",serif;font-weight:300;font-size:2rem;color:#2c1512}
+.kv-unit-layout__price span{display:block;margin-top:.2rem;font-family:"Instrument Sans","Instrument Sans Fallback";font-size:.8rem;font-weight:500;color:rgba(21,23,23,.55)}
+.kv-unit-layout__card .button_button-round__TFjlU{align-self:flex-start}
+.kv-unit-layout__note{margin:3rem 0 0;font-size:.9rem;color:rgba(44,21,18,.5);text-align:center}
 @media(min-width:768px){
   .kv-unit-layout__grid{grid-template-columns:repeat(2,1fr);gap:2rem}
 }
