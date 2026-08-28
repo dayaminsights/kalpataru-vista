@@ -606,25 +606,30 @@ const server = http.createServer((req, res) => {
       out.overviewExpand={cardCount:expandCards.length,prevArrowFound:!!prevArrow,nextArrowFound:!!nextArrow};
       if(expandCards.length===3&&prevArrow&&nextArrow){
         try{
-        var golfCard=expandCards[1];
-        golfCard.dispatchEvent(new MouseEvent('mouseenter',{bubbles:false}));
-        void golfCard.offsetWidth;
-        out.overviewExpand.expandedRightAfterHover=golfCard.classList.contains('is-expanded');
+        var expandGolfCard=expandCards[1];
+        expandGolfCard.dispatchEvent(new MouseEvent('mouseenter',{bubbles:false}));
+        out.overviewExpand.expandedRightAfterHover=expandGolfCard.classList.contains('is-expanded');
         out.overviewExpand.lightboxOpenRightAfterHover=document.body.classList.contains('kv-overview-lightbox-open');
         probeWaits.push(new Promise(function(resolveExpandWait){
           setTimeout(function(){
-            var r=golfCard.getBoundingClientRect();
+            try{
+            var r=expandGolfCard.getBoundingClientRect();
             out.overviewExpand.rectAfterFlip={top:Math.round(r.top),left:Math.round(r.left),width:Math.round(r.width),height:Math.round(r.height)};
             out.overviewExpand.arrowOpacityAfterHover=getComputedStyle(prevArrow).opacity;
             nextArrow.dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true}));
             out.overviewExpand.residencesExpandedAfterNextClick=expandCards[2].classList.contains('is-expanded');
-            out.overviewExpand.golfStillExpandedAfterNextClick=golfCard.classList.contains('is-expanded');
+            out.overviewExpand.golfStillExpandedAfterNextClick=expandGolfCard.classList.contains('is-expanded');
             document.dispatchEvent(new MouseEvent('mouseleave',{bubbles:false}));
             setTimeout(function(){
+              try{
               out.overviewExpand.anyExpandedAfterDocLeave=document.querySelector('#kv-overview .kv-overview__card.is-expanded')!==null;
               out.overviewExpand.lightboxOpenAfterDocLeave=document.body.classList.contains('kv-overview-lightbox-open');
+              }catch(innerErr){out.overviewExpandErr=(innerErr&&innerErr.stack)?innerErr.stack:String(innerErr);}
+              finally{
               resolveExpandWait();
+              }
             },550);
+            }catch(outerErr){out.overviewExpandErr=(outerErr&&outerErr.stack)?outerErr.stack:String(outerErr);resolveExpandWait();}
           },500);
         }));
         }catch(expandErr){out.overviewExpandErr=(expandErr&&expandErr.stack)?expandErr.stack:String(expandErr);}
