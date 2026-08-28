@@ -91,17 +91,11 @@
   background:radial-gradient(ellipse at center,rgba(255,255,255,.9) 0%,rgba(255,255,255,.6) 45%,rgba(255,255,255,0) 75%);
 }
 
-/* hide leftover FIND React sections below the hero — replaced by static
-   kv-* sections built in this plan. These are React-owned components; do
-   not delete the markup (hydration owns it), just hide it. */
-.why-us_root__aGsFp,
-.arrows-section_root__yyPBl,
-section:not([class]),
-.testimonials_root__PiYLZ,
-.services_root__Ch_WM,
-.features_root__CCic6,
-.latest-posts_root__W0OHF,
-.outro_root__stMHm{display:none}
+/* The leftover FIND React sections that used to be hidden here are now
+   deleted outright — from the server HTML and from HomePageWrapper in
+   page-01bc6cce4f7f3b4a.js, which was re-adding them on hydration. Hiding
+   them left ~4,000 characters of another company's copy (named broker
+   testimonials, NYC blog posts) crawlable in the shipped markup. */
 
 /* content sections sit visually below the hero in document order, but the hero's
    building photo (.hero_house__aJy7p) is absolutely positioned with z-index:1/2 and

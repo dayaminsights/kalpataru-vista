@@ -105,12 +105,10 @@ state):
 
 ## New sections: React strips extra static siblings on hydration
 
-The "content sections" plan (Overview / Amenities / Site Layout & Specifications / CTA,
-stacked above
-the hidden `why-us_root__aGsFp` etc.) originally assumed a brand-new `<section>` with no
-matching React component couldn't be reverted by hydration, since no component owns it.
-**That assumption is false.** The container that lists `why-us_root__aGsFp` and its
-sibling sections is itself React-owned (`why-us_root__aGsFp` is referenced in
+The "content sections" plan (Overview / Amenities / Site Layout & Specifications / CTA)
+originally assumed a brand-new `<section>` with no matching React component couldn't be
+reverted by hydration, since no component owns it. **That assumption is false.** `<main>`
+and the section list inside it are React-owned (rendered by `HomePageWrapper` in
 `page-01bc6cce4f7f3b4a.js`). Inserting a static extra `<section>` as a sibling in that
 list creates a server-HTML/hydration mismatch; React's hydration recovery wipes the
 mismatched subtree, and the extra node disappears in-browser within milliseconds — even
@@ -129,15 +127,15 @@ one script per section) — both `index.html` and the FIND-named HTML file end w
 ```js
 (function(){
   var KV_SECTIONS=[
-    {id:'kv-video', anchor:'.why-us_root__aGsFp', pos:'beforebegin', html:`...`},
-    {id:'kv-overview', anchor:'.why-us_root__aGsFp', pos:'beforebegin', html:`...`},
-    {id:'kv-amenities', anchor:'.why-us_root__aGsFp', pos:'beforebegin', html:`...`},
-    {id:'kv-plans', anchor:'.why-us_root__aGsFp', pos:'beforebegin', html:`...`},
-    {id:'kv-cta', anchor:'.why-us_root__aGsFp', pos:'beforebegin', html:`...`},
-    {id:'kv-layouts-modal', anchor:'.why-us_root__aGsFp', pos:'beforebegin', html:`...`},
-    {id:'kv-rera', anchor:'.footer_copyright-container__yt1ht', pos:'beforebegin', html:`...`},
-    {id:'kv-nav-links', anchor:'.header_nav__if_jI', pos:'afterbegin', html:`<span id="kv-nav-links" style="display:contents">...</span>`},
-    {id:'kv-burger-nav-links', anchor:'.burger-menu_nav__dAhwA', pos:'afterbegin', html:`<div id="kv-burger-nav-links" ...>...</div>...`}
+    {id:'kv-video', anchor:'main', pos:'beforeend', html:`...`},
+    {id:'kv-overview', anchor:'main', pos:'beforeend', html:`...`},
+    {id:'kv-amenities', anchor:'main', pos:'beforeend', html:`...`},
+    {id:'kv-unit-layout', anchor:'main', pos:'beforeend', html:`...`},
+    {id:'kv-plans', anchor:'main', pos:'beforeend', html:`...`},
+    {id:'kv-why', anchor:'main', pos:'beforeend', html:`...`},
+    {id:'kv-cta', anchor:'main', pos:'beforeend', html:`...`},
+    {id:'kv-layouts-modal', anchor:'main', pos:'beforeend', html:`...`},
+    {id:'kv-rera', anchor:'.footer_copyright-container__yt1ht', pos:'beforebegin', html:`...`}
   ];
   function ensure(){
     KV_SECTIONS.forEach(function(s){
@@ -179,14 +177,17 @@ surgery. Things to know before adding an entry:
     item, put the id on the *first* sibling directly and skip the wrapper entirely
     (`kv-burger-nav-links`). Prefer the no-wrapper form when it works; only reach for
     `display:contents` if a wrapper is unavoidable and flex/grid child semantics matter.
-- **`pos` is `'beforebegin'` for every section** (insert immediately before the anchor).
-  The two nav-link entries use `'afterbegin'` instead (insert as the anchor's first
-  child) since there's no existing sibling to insert "before" — the anchor *is* the
-  container being inserted into, not a sibling to insert next to.
-- Insertion order is safe: repeated `insertAdjacentHTML(anchor, 'beforebegin', ...)`
-  calls against the *same* anchor, processed in array order, land in declaration order
-  immediately before the anchor — so array order `[overview, benefits, amenities, cta]`
-  produces exactly that visual order without needing separate anchors per entry.
+- **`pos` is `'beforeend'` for every section**, appending into `<main>`. The `kv-rera`
+  entry uses `'beforebegin'` instead, because it targets a sibling inside the footer
+  rather than a container to append into.
+  These sections previously anchored `'beforebegin'` of `.why-us_root__aGsFp`. That
+  anchor was one of the leftover FIND sections, and it stopped existing when they were
+  deleted — appending to `<main>` puts them in exactly the same position (after the
+  hero, before the footer) without depending on FIND markup.
+- Insertion order is safe: repeated `insertAdjacentHTML('beforeend', ...)` calls against
+  the *same* anchor, processed in array order, land in declaration order — so array
+  order `[overview, amenities, plans, cta]` produces exactly that visual order without
+  needing separate anchors per entry. (The same held for the old `'beforebegin'` form.)
 - **The header nav (`.header_nav__if_jI`) and the mobile burger menu
   (`.burger-menu_nav__dAhwA`) are two separate DOM subtrees**, not one nav that reflows —
   the header nav is `display:none` below the 768px breakpoint, the burger menu is the
