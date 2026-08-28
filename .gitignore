@@ -1,4 +1,18 @@
-kalpataruvista.org.in.html
-kalpataruvista.org.in_files/
-assets/KALPATARU SHOW APARTMENT/
-assets/Hero.jpeg
+# Raw/unused source assets (not wired into the live site — see CLAUDE.md).
+# Includes the 428-frame apartment walkthrough sequence, hero source photos,
+# and other multi-MB intermediates. The live site's actual assets live under
+# "FIND Real Estate ..._files/" and are tracked normally.
+assets/
+
+# Downloaded reference page (content research only, not part of the site)
+Kalpataru Vista - Buy 3 & 4 BHK Flats in Noida by Kalpataru.html
+Kalpataru Vista - Buy 3 & 4 BHK Flats in Noida by Kalpataru_files/
+
+# Dev server logs / ad-hoc debug/probe output
+server.log
+*.log
+debug-*.html
+probe*.html
+
+node_modules/
+.DS_Store
