@@ -526,3 +526,18 @@ html{font-size:min(11px,2.6666666667vw)}
 /* dark grounds take the lighter tone, matching their --light eyebrow */
 .kv-overview .kv-section__heading::after,
 .kv-cta__heading::after{background:#c89b6e}
+
+/* --- touch targets ---------------------------------------------------------
+   Explicit px, not rem: the fluid root font means a rem-based minimum would
+   still fall short in the 768-1000px band where the root is 9px.
+   The burger is the primary navigation control below 1000px and was a 33x33
+   hit area. Padding grows the target without changing the icon. */
+.header_burger-control__YR_x_{min-width:44px;min-height:44px}
+/* inline links inside the RERA notice were 16-21px tall; padding lifts them
+   over the 24px WCAG 2.5.8 minimum without disturbing the line */
+.kv-rera a{display:inline-block;padding:.4rem 0;min-height:24px}
+/* burger menu items are the whole navigation on phones - give them a full
+   44px row rather than the 23px the text alone occupied */
+.burger-menu_nav__dAhwA a{display:flex;align-items:center;min-height:44px}
+/* footer contact links (mailto / tel) sat at 21-24px */
+.footer_contacts__HFiAl a{display:inline-block;padding:.5rem 0;min-height:24px}
