@@ -163,7 +163,10 @@ a.button_button-round__TFjlU{display:inline-flex;align-items:center}
 .kv-section__heading{font-size:clamp(2.2rem,4vw,4.6rem);font-weight:700;letter-spacing:-0.02em;line-height:1.1;color:#151717;margin:0 0 1.5rem;max-width:32ch;font-family:var(--font-primary)}
 .kv-overview .kv-section__heading{color:#fff}
 .kv-overview .kv-section__heading .em{color:#8a8d8d}
-.kv-overview__top{display:grid;grid-template-columns:1fr;gap:2rem;margin-bottom:3rem}
+.kv-overview__top{display:grid;grid-template-columns:1fr;grid-template-areas:"eyebrow" "head" "intro";gap:0 2rem;margin-bottom:3rem}
+.kv-overview__eyebrow{grid-area:eyebrow}
+.kv-overview__headline{grid-area:head}
+.kv-overview__intro{grid-area:intro}
 .kv-overview__body{font-size:1.9rem;line-height:1.6;color:rgba(255,255,255,.85);max-width:52ch;margin:0 0 2rem}
 .kv-overview__body .em{color:rgba(255,255,255,.72)}
 .kv-overview__cards{display:grid;grid-template-columns:1fr;gap:1.5rem}
@@ -182,7 +185,7 @@ a.button_button-round__TFjlU{display:inline-flex;align-items:center}
 .kv-overview__card-slide.is-active{opacity:1}
 @media(min-width:768px){
   .kv-overview{padding:9rem 0}
-  .kv-overview__top{grid-template-columns:1fr 1fr;gap:4rem;align-items:start;margin-bottom:4rem}
+  .kv-overview__top{grid-template-columns:1fr 1fr;grid-template-areas:"eyebrow eyebrow" "head intro";gap:0 4rem;align-items:start;margin-bottom:4rem}
   .kv-overview__cards{grid-template-columns:repeat(3,1fr);gap:2rem}
   .kv-overview__card-overlay h3{font-size:2.45rem}
 }
@@ -347,25 +350,31 @@ a.button_button-round__TFjlU{display:inline-flex;align-items:center}
 .kv-rera{font-size:1.32rem;line-height:1.5;color:rgba(255,255,255,.55);max-width:60ch;padding:1.5rem 0 0}
 .kv-rera a{color:inherit;text-decoration:underline}
 
-/* --- kv-video: mirrors FIND's original why-us_root layout exactly (padding,
+/* --- kv-video: was a straight reskin of FIND's why-us_root layout, whose type
+   scale puts a small label opposite an oversized statement. That reads as a
+   label, not a heading (measured 19.6px against 55px body copy), and it was
+   the only section on the page with no numbered eyebrow. It now carries the
+   same eyebrow + kv-section__heading + body + CTA structure as kv-overview, on
+   the same 1fr 1fr split, so the two sections share one alignment grid.
+   Superseded comment kept below for the record:
+   --- mirrors FIND's original why-us_root layout exactly (padding,
    grid, type scale, em color, preview aspect-ratio/height) -- reskinned with
    Kalpataru copy and the show-apartment video instead of rebuilding a new
    pattern, per the reference screenshot of the original section. */
 .kv-video{padding:6rem 0;background:#fff}
-.kv-video__grid{display:grid;margin:0 0 6rem}
-.kv-video__title h2{font-weight:600;font-size:2rem;line-height:140%;margin:0}
-.kv-video__text{font-weight:500;font-size:3rem;line-height:115%;letter-spacing:-.01em;margin:0;color:#151717}
+.kv-video__grid{display:grid;grid-template-columns:1fr;gap:2rem;margin:0 0 4rem}
+.kv-video__title h2{margin:0}
+.kv-video__text{font-size:1.9rem;line-height:1.6;margin:0 0 2rem;color:rgba(21,23,23,.7);max-width:52ch}
 /* #b3b3b3 was inherited from FIND's own .em rule and measured 2.1:1 on white
    at 55px - below the 3.0 WCAG needs even for large text. The two-tone
    editorial device is intentional and kept; only the grey is darkened, to
    the same muted ink used elsewhere (5.1:1). */
-.kv-video__text .em{color:#6e7069}
+.kv-video__text .em{color:#151717;font-weight:500}
 .kv-video__preview{margin:0 -2rem;aspect-ratio:365/450;overflow:hidden}
 .kv-video__preview video{display:block;width:100%;height:100%;object-fit:cover}
 @media(min-width:768px){
   .kv-video{padding:11rem 0}
-  .kv-video__grid{grid-template-columns:minmax(0,1fr) min(97.6rem,55vw);margin:0 0 6rem}
-  .kv-video__text{font-size:5.6rem;letter-spacing:-.03em}
+  .kv-video__grid{grid-template-columns:1fr 1fr;gap:0 4rem;align-items:start;margin:0 0 5rem}
   .kv-video__preview{margin:0;aspect-ratio:1920/1088;height:auto}
 }
 
@@ -566,3 +575,54 @@ html{font-size:min(11px,2.6666666667vw)}
    make a rem value drift across breakpoints. */
 html{scroll-padding-top:96px}
 @media(min-width:768px){html{scroll-padding-top:80px}}
+
+
+/* ==========================================================================
+   Section CTAs + footer cohesion pass
+   ========================================================================== */
+
+/* --- section-level CTA block ---
+   Five of the eight sections closed with no call to action at all (show
+   apartment, amenities, site layout, why, questions) -- past the overview the
+   only conversion path left was the sticky bar. One prompt plus one button now
+   closes each content section, each matched to what that section just proved. */
+.kv-section__cta{display:flex;flex-direction:column;align-items:flex-start;gap:1.5rem;margin:4rem 0 0;padding-top:2.5rem;border-top:1px solid rgba(21,23,23,.12)}
+.kv-section__cta-text{font-size:1.73rem;line-height:1.6;color:rgba(21,23,23,.65);margin:0;max-width:46ch}
+@media(min-width:768px){
+  .kv-section__cta{flex-direction:row;align-items:center;justify-content:space-between;gap:4rem;margin-top:5rem}
+}
+/* kv-why closes on its own disclaimer line, so its CTA sits above that rather
+   than at the very end and needs less air than the sections that end on it. */
+.kv-why .kv-section__cta{margin-top:3.5rem}
+.kv-why__disclaimer{margin-top:2rem}
+
+/* --- footer: make it read as one unit ---
+   Measured at 1900px: the three contact blocks sat 529px apart under
+   justify-content:space-between, and the label-to-value gap (24.5px) was
+   identical to the row-gap between whole blocks, so nothing grouped -- the
+   footer read as six unrelated fragments rather than one block. Pack the row
+   left with a capped gap, and tighten the internal gap well under the outer
+   one so each label+value reads as a pair. */
+@media(min-width:768px){
+  .footer_contacts__HFiAl{justify-content:flex-start;gap:clamp(3.5rem,7vw,10rem)}
+  .footer_links__vib46{gap:2rem}
+  /* hairline rules turn four floating rows into a structured stack; kv-rera
+     already carries one, this gives the contacts row the same treatment. */
+  .footer_newsletter-container__POI_T{padding-top:2.5rem;border-top:1px solid rgba(255,255,255,.12)}
+}
+/* the labels were display:none below the desktop breakpoint, leaving a bare
+   address/email/phone stack with nothing saying what each one was. */
+.footer_contact-label__gYKsP{display:block!important;margin-bottom:.9rem!important;font-size:1.32rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:hsla(0,0%,100%,.45)}
+
+/* .footer_nav-link__LFUNG carries overflow:hidden from FIND's design, where it
+   clipped exactly at the content box and so hid the span:after hover duplicate
+   (positioned at top:105%). The brand override added padding:1.1rem 0 for a
+   44px tap target, which opened a 10.8px window inside that padding where the
+   duplicate leaked through half-cut -- a sliced second copy of every word under
+   every footer link (measured: link box 38px, span 16px at 11px inset, so the
+   duplicate started at 27.8px and was clipped at 38px). Push the duplicate down
+   by the same padding so it is fully clipped at rest, and travel the same
+   distance on hover. */
+.footer_nav-link__LFUNG span:after{top:calc(100% + 1.1rem)}
+.footer_nav-link__LFUNG span:hover,
+.footer_nav-link__LFUNG:hover span{transform:translateY(calc(-100% - 1.1rem))}
