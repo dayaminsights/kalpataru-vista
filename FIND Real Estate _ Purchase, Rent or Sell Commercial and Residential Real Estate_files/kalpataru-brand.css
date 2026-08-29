@@ -363,9 +363,9 @@ a.button_button-round__TFjlU{display:inline-flex;align-items:center}
 .kv-video__preview video{display:block;width:100%;height:100%;object-fit:cover}
 @media(min-width:768px){
   .kv-video{padding:15rem 0}
-  .kv-video__grid{grid-template-columns:auto 97.6rem;margin:0 0 10rem}
+  .kv-video__grid{grid-template-columns:minmax(0,1fr) min(97.6rem,55vw);margin:0 0 10rem}
   .kv-video__text{font-size:5.6rem;letter-spacing:-.03em}
-  .kv-video__preview{margin:0;aspect-ratio:auto;height:97.6rem}
+  .kv-video__preview{margin:0;aspect-ratio:1;height:auto}
 }
 
 /* --- kv-layouts-modal: lead-capture modal opened from the overview
@@ -411,4 +411,64 @@ a.button_button-round__TFjlU{display:inline-flex;align-items:center}
 .kv-unit-layout__note{margin:3rem 0 0;font-size:1.5rem;color:rgba(44,21,18,.5);text-align:center}
 @media(min-width:768px){
   .kv-unit-layout__grid{grid-template-columns:repeat(2,1fr);gap:2rem}
+}
+
+/* --- kv-faq: answers in crawlable text, styled as a ruled Q&A sheet rather
+   than accordions. Always-visible text reads better to search and answer
+   engines than collapsed panels, and it matches the hairline-rule treatment
+   already used by kv-plans' specification list. Two columns on desktop keeps
+   twelve entries to roughly one viewport instead of three.
+   Ground is stone, not white: kv-why above it is white and kv-cta below is
+   dark, so stone keeps the section boundaries readable. */
+.kv-faq{padding:6rem 0;background:#f1f1ef}
+.kv-faq__list{display:grid;grid-template-columns:1fr;margin:2.5rem 0 0}
+.kv-faq__item{border-top:1px solid rgba(21,23,23,.12);padding:1.6rem 0}
+.kv-faq__item dt{margin:0 0 .6rem;font-size:1.9rem;font-weight:600;letter-spacing:-0.01em;line-height:1.3;color:#151717}
+.kv-faq__item dd{margin:0;font-size:1.63rem;line-height:1.6;color:#6e7069;max-width:52ch}
+@media(min-width:768px){
+  .kv-faq{padding:8rem 0}
+  .kv-faq__list{grid-template-columns:1fr 1fr;column-gap:5rem}
+}
+
+/* --- root font scale ------------------------------------------------------
+   The inherited fluid rem system is only correct at two viewport widths.
+   Measured on the untouched FIND nav, which shows the same behaviour:
+
+       749px -> root 20.37px, nav 36.7px
+       869px -> root  4.60px, nav  9.2px      <- 4.4x cliff at the breakpoint
+      1369px -> root  7.21px, nav 14.4px
+      1869px -> root  9.81px, nav 19.6px
+
+   html{font-size:2.6667vw} gives 10px at 375px but keeps growing to ~20px by
+   767px; the >=768px rule (0.5208vw) restarts at 4px and only reaches 10px at
+   1920px. So phones over ~500px get oversized text and every tablet and
+   ordinary laptop gets 7-12px body copy.
+
+   Capping the mobile branch and putting a floor under the desktop one makes
+   the curve continuous without moving the 1920px reference the whole design
+   is built around (max(9px, 0.5208vw) is still exactly 10px at 1920). Every
+   width in between only moves toward that reference, never past it. */
+html{font-size:min(11px,2.6666666667vw)}
+@media(min-width:768px){html{font-size:max(9px,0.5208333333vw)}}
+@media(min-width:1920px){html{font-size:10px}}
+
+/* Header at tablet / small-laptop widths: the nav carries five items now, and
+   with the root font no longer collapsing at 768px the default 4rem gap plus
+   a 13rem logo overflowed the bar. Tightens only between the breakpoint and
+   1200px; wide desktop is untouched. */
+@media(min-width:768px) and (max-width:1200px){
+  .header_nav__if_jI{gap:2.2rem}
+  .header_logo__LO_Jk>a{width:11rem}
+}
+/* 768-900px keeps the burger instead of the inline nav. The bar carries a
+   logo, four section links and the CTA; below ~900px, with the root font no
+   longer collapsing, they cannot fit on one line and the CTA was pushed off
+   the right edge (+53px at 789px). Shrinking gaps could not recover that
+   much. The burger menu already contains the same #kv-* links and its own
+   CTA, so nothing becomes unreachable - this just moves FIND own
+   nav/burger breakpoint up to where the content actually fits. */
+@media(min-width:768px) and (max-width:900px){
+  .header_nav__if_jI{display:none}
+  .header_actions__Sv09J{display:none}
+  .header_burger-control__YR_x_{display:flex!important}
 }
