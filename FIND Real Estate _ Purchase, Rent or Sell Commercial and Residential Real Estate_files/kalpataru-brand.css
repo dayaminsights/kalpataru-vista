@@ -456,19 +456,39 @@ html{font-size:min(11px,2.6666666667vw)}
    with the root font no longer collapsing at 768px the default 4rem gap plus
    a 13rem logo overflowed the bar. Tightens only between the breakpoint and
    1200px; wide desktop is untouched. */
-@media(min-width:768px) and (max-width:1200px){
+@media(min-width:1001px) and (max-width:1200px){
   .header_nav__if_jI{gap:2.2rem}
   .header_logo__LO_Jk>a{width:11rem}
 }
 /* 768-900px keeps the burger instead of the inline nav. The bar carries a
-   logo, four section links and the CTA; below ~900px, with the root font no
+   logo, four section links and the CTA; below ~1000px, with the root font no
    longer collapsing, they cannot fit on one line and the CTA was pushed off
    the right edge (+53px at 789px). Shrinking gaps could not recover that
    much. The burger menu already contains the same #kv-* links and its own
    CTA, so nothing becomes unreachable - this just moves FIND own
-   nav/burger breakpoint up to where the content actually fits. */
-@media(min-width:768px) and (max-width:900px){
+   nav/burger breakpoint up to where five items plus the CTA actually fit. */
+@media(min-width:768px) and (max-width:1000px){
   .header_nav__if_jI{display:none}
   .header_actions__Sv09J{display:none}
   .header_burger-control__YR_x_{display:flex!important}
 }
+
+/* --- kv-sticky: persistent enquiry action below 900px -----------------------
+   Above 900px the header carries its own CTA, so this only exists in the band
+   where that CTA is folded into the burger. One action, no price, no dismiss
+   nag: it slides in past the hero and stands down again once the enquiry
+   section is on screen, so it never competes with the real form. */
+.kv-sticky{position:fixed;left:0;right:0;bottom:0;z-index:60;display:none;
+  align-items:center;justify-content:space-between;gap:1.5rem;
+  padding:1rem 1.8rem;background:#151717;color:#fff;
+  transform:translateY(100%);transition:transform .28s ease}
+.kv-sticky.is-visible{transform:translateY(0)}
+.kv-sticky__text{display:flex;flex-direction:column;line-height:1.25;min-width:0}
+.kv-sticky__text strong{font-size:1.5rem;font-weight:600;letter-spacing:-0.01em}
+.kv-sticky__text span{font-size:1.3rem;color:rgba(255,255,255,.7);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kv-sticky__cta{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;
+  min-height:4.4rem;padding:0 2.2rem;border-radius:100px;background:#fff;color:#151717;
+  font-size:1.5rem;font-weight:600;text-decoration:none}
+@media(max-width:1000px){.kv-sticky{display:flex}}
+@media(prefers-reduced-motion:reduce){.kv-sticky{transition:none}}
