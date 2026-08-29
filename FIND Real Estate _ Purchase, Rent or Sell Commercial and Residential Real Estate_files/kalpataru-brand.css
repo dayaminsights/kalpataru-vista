@@ -325,7 +325,7 @@ a.button_button-round__TFjlU{display:inline-flex;align-items:center}
 .kv-why__disclaimer{font-size:1.32rem;line-height:1.5;color:rgba(21,23,23,.5);margin:1.75rem 0 0}
 @media(min-width:768px){
   .kv-why{padding:8rem 0}
-  .kv-why__grid{grid-template-columns:1fr 1.1fr;gap:5rem;align-items:center;margin-bottom:4rem}
+  .kv-why__grid{grid-template-columns:1fr 1.1fr;gap:5rem;align-items:stretch;margin-bottom:4rem}
   .kv-why__viewer-frame{aspect-ratio:4/3}
   .kv-why__stats{grid-template-columns:repeat(4,1fr)}
   .kv-why__benefits{grid-template-columns:repeat(4,1fr);gap:1.5rem}
@@ -362,10 +362,10 @@ a.button_button-round__TFjlU{display:inline-flex;align-items:center}
 .kv-video__preview{margin:0 -2rem;aspect-ratio:365/450;overflow:hidden}
 .kv-video__preview video{display:block;width:100%;height:100%;object-fit:cover}
 @media(min-width:768px){
-  .kv-video{padding:15rem 0}
-  .kv-video__grid{grid-template-columns:minmax(0,1fr) min(97.6rem,55vw);margin:0 0 10rem}
+  .kv-video{padding:11rem 0}
+  .kv-video__grid{grid-template-columns:minmax(0,1fr) min(97.6rem,55vw);margin:0 0 6rem}
   .kv-video__text{font-size:5.6rem;letter-spacing:-.03em}
-  .kv-video__preview{margin:0;aspect-ratio:1;height:auto}
+  .kv-video__preview{margin:0;aspect-ratio:1920/1088;height:auto}
 }
 
 /* --- kv-layouts-modal: lead-capture modal opened from the overview
@@ -492,3 +492,23 @@ html{font-size:min(11px,2.6666666667vw)}
   font-size:1.5rem;font-weight:600;text-decoration:none}
 @media(max-width:1000px){.kv-sticky{display:flex}}
 @media(prefers-reduced-motion:reduce){.kv-sticky{transition:none}}
+
+/* --- kv-why column balance ------------------------------------------------
+   The eyebrow and heading used to be full-width siblings stacked above the
+   grid, so the image began below them and the left column held only 377px of
+   content against a 687px image. With align-items:center that short block
+   floated in the middle, leaving unequal gaps above and below it — the
+   uneven spacing.
+   They now sit inside the left column, so the image spans the full height
+   beside them. align-items:stretch makes both columns equal height, and
+   margin-top:auto drops the credit list onto the bottom edge, so the two
+   columns start and finish level. */
+.kv-why__intro{display:flex;flex-direction:column}
+.kv-why__credits{margin-top:auto}
+@media(min-width:768px){
+  /* taller rows: with the list bottom-anchored, roomier rows close most of
+     the remaining height difference rather than leaving one large dead gap */
+  .kv-why__credit{padding:1.6rem .25rem}
+  .kv-why__intro .kv-section__heading{margin-bottom:2.25rem}
+  .kv-why__intro p{margin-bottom:2.5rem}
+}
