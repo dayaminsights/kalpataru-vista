@@ -158,8 +158,8 @@ a.button_button-round__TFjlU{display:inline-flex;align-items:center}
    screenshot of the original section. Landscape 6:5 card aspect matches the
    original's 1107x940 source images. */
 .kv-overview{padding:6rem 0;background:#151717}
-.kv-section__eyebrow{font-size:1.32rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:rgba(21,23,23,.55);margin-bottom:1rem}
-.kv-section__eyebrow--light{color:rgba(255,255,255,.55)}
+.kv-section__eyebrow{font-size:1.32rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:#855c3a;margin-bottom:1rem}
+.kv-section__eyebrow--light{color:#c89b6e}
 .kv-section__heading{font-size:clamp(2.2rem,4vw,4.6rem);font-weight:700;letter-spacing:-0.02em;line-height:1.1;color:#151717;margin:0 0 1.5rem;max-width:32ch;font-family:var(--font-primary)}
 .kv-overview .kv-section__heading{color:#fff}
 .kv-overview .kv-section__heading .em{color:#8a8d8d}
@@ -395,7 +395,7 @@ a.button_button-round__TFjlU{display:inline-flex;align-items:center}
    icon: it's the one number in this section that's actually content (BHK
    count), not decoration. */
 .kv-unit-layout{background:#FBF1EA;padding:6rem 0}
-.kv-unit-layout .kv-section__eyebrow{color:rgba(44,21,18,.55)}
+.kv-unit-layout .kv-section__eyebrow{color:#855c3a}
 .kv-unit-layout__intro{max-width:38ch;margin:-.5rem 0 0;font-size:1.73rem;line-height:1.5;color:rgba(44,21,18,.65)}
 .kv-unit-layout__grid{display:grid;grid-template-columns:1fr;gap:1.5rem;margin-top:2.5rem}
 .kv-unit-layout__card{background:#fff;border-radius:1.25rem;padding:2.5rem 2.25rem;display:flex;flex-direction:column;align-items:flex-start;gap:1.5rem}
@@ -512,3 +512,17 @@ html{font-size:min(11px,2.6666666667vw)}
   .kv-why__intro .kv-section__heading{margin-bottom:2.25rem}
   .kv-why__intro p{margin-bottom:2.5rem}
 }
+
+/* --- section heading rule --------------------------------------------------
+   A short accent rule under each numbered section heading. Kept deliberately
+   small and hairline-thin: it marks the head of a section without becoming
+   decoration. Colour is the same accent as the eyebrow above it, so the two
+   read as one masthead.
+   Applied to the eyebrow-numbered sections only. kv-video has no eyebrow and
+   is a statement layout, so it stays bare. */
+.kv-section__heading::after,
+.kv-cta__heading::after{content:"";display:block;width:4.5rem;height:2px;
+  margin-top:1.5rem;background:#855c3a}
+/* dark grounds take the lighter tone, matching their --light eyebrow */
+.kv-overview .kv-section__heading::after,
+.kv-cta__heading::after{background:#c89b6e}
