@@ -212,7 +212,7 @@ a.button_button-round__TFjlU{display:inline-flex;align-items:center}
    sideways until the trigger fired. `hidden` would fix it too but turns this
    into a scroll container, which breaks the position:sticky pin below —
    `clip` contains the overhang without that side effect. */
-.kv-amenities{position:relative;background:#FBF1EA;overflow-x:clip}
+.kv-amenities{position:relative;background:#FBF1EA;overflow-x:clip;padding:6rem 0}
 .kv-amenities-track{position:relative;height:340vh}
 .kv-amenities-wrap{display:flex;flex-flow:column;align-items:center;justify-content:center;gap:3rem;height:auto;min-height:100vh;padding:4rem 0;position:sticky;top:0}
 .kv-amenities-images{position:relative;width:75%;max-width:32rem;aspect-ratio:4/5;flex-shrink:0}
@@ -241,6 +241,7 @@ a.button_button-round__TFjlU{display:inline-flex;align-items:center}
 [data-amenities-anim="big-image"]{mask-image:var(--mask-gradient);-webkit-mask-image:var(--mask-gradient)}
 [data-amenities-anim="big-image"].is-first{mask-image:none!important;-webkit-mask-image:none!important;transition:unset}
 @media(min-width:768px){
+  .kv-amenities{padding:8rem 0}
   .kv-amenities-wrap{flex-flow:row;justify-content:center;align-items:center;gap:37.4rem;height:100vh;min-height:0;padding:0}
   .kv-amenities-images{width:auto;max-width:none;height:84%;aspect-ratio:4/5;order:1;flex-shrink:0}
   .kv-amenities-images-small{width:61.9%;height:59.5%;right:auto;left:-43.8%;bottom:auto;top:20.2%}
@@ -410,6 +411,7 @@ a.button_button-round__TFjlU{display:inline-flex;align-items:center}
 .kv-unit-layout__card .button_button-round__TFjlU{align-self:flex-start}
 .kv-unit-layout__note{margin:3rem 0 0;font-size:1.5rem;color:rgba(44,21,18,.5);text-align:center}
 @media(min-width:768px){
+  .kv-unit-layout{padding:8rem 0}
   .kv-unit-layout__grid{grid-template-columns:repeat(2,1fr);gap:2rem}
 }
 
@@ -552,3 +554,15 @@ html{font-size:min(11px,2.6666666667vw)}
 @media(min-width:768px){
   .kv-amenities-texts{align-self:flex-start;margin-top:8vh}
 }
+
+/* --- anchor landing offset --------------------------------------------------
+   The header is position:sticky, and the stylesheet sets scroll-behavior:smooth
+   but no scroll-padding-top. So every in-page jump put the target section's top
+   at viewport 0, i.e. underneath the header: 2px of clearance on desktop and
+   -27px on phones, where the eyebrow landed behind the bar entirely.
+   Offsetting by a little over the header height lands each section flush below
+   it, and the section's own top padding then supplies the breathing room.
+   Explicit px, not rem: the header is not rem-sized, and the fluid root would
+   make a rem value drift across breakpoints. */
+html{scroll-padding-top:96px}
+@media(min-width:768px){html{scroll-padding-top:80px}}
