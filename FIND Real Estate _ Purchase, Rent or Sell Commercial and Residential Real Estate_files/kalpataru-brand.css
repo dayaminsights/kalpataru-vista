@@ -362,7 +362,10 @@ a.button_button-round__TFjlU{display:inline-flex;align-items:center}
    Kalpataru copy and the show-apartment video instead of rebuilding a new
    pattern, per the reference screenshot of the original section. */
 .kv-video{padding:6rem 0;background:#fff}
-.kv-video__grid{display:grid;grid-template-columns:1fr;gap:2rem;margin:0 0 4rem}
+.kv-video__grid{display:grid;grid-template-columns:1fr;grid-template-areas:"eyebrow" "head" "intro";gap:0 2rem;margin:0 0 4rem}
+.kv-video__eyebrow{grid-area:eyebrow}
+.kv-video__title{grid-area:head}
+.kv-video__intro{grid-area:intro}
 .kv-video__title h2{margin:0}
 .kv-video__text{font-size:1.9rem;line-height:1.6;margin:0 0 2rem;color:rgba(21,23,23,.7);max-width:52ch}
 /* #b3b3b3 was inherited from FIND's own .em rule and measured 2.1:1 on white
@@ -374,7 +377,7 @@ a.button_button-round__TFjlU{display:inline-flex;align-items:center}
 .kv-video__preview video{display:block;width:100%;height:100%;object-fit:cover}
 @media(min-width:768px){
   .kv-video{padding:11rem 0}
-  .kv-video__grid{grid-template-columns:1fr 1fr;gap:0 4rem;align-items:start;margin:0 0 5rem}
+  .kv-video__grid{grid-template-columns:1fr 1fr;grid-template-areas:"eyebrow eyebrow" "head intro";gap:0 4rem;align-items:start;margin:0 0 5rem}
   .kv-video__preview{margin:0;aspect-ratio:1920/1088;height:auto}
 }
 
@@ -424,21 +427,46 @@ a.button_button-round__TFjlU{display:inline-flex;align-items:center}
   .kv-unit-layout__grid{grid-template-columns:repeat(2,1fr);gap:2rem}
 }
 
-/* --- kv-faq: answers in crawlable text, styled as a ruled Q&A sheet rather
-   than accordions. Always-visible text reads better to search and answer
-   engines than collapsed panels, and it matches the hairline-rule treatment
-   already used by kv-plans' specification list. Two columns on desktop keeps
-   twelve entries to roughly one viewport instead of three.
+/* --- kv-faq: category groups + single-open accordion ---------------------
+   The list outgrew a flat ruled sheet, so questions are now grouped under a
+   category label (sticky on desktop, so the label stays with its questions)
+   and each answer collapses. Answers stay in the DOM at all times — the panel
+   is a 0fr grid row, not display:none — so search and answer engines still
+   read them, which was the reason the original version avoided accordions.
+   Open on click, not hover: there is no hover on touch, and a tall answer that
+   opens as the pointer crosses a row flickers on the way to the one below.
+   Hover only previews the target (label goes brand brown).
    Ground is stone, not white: kv-why above it is white and kv-cta below is
    dark, so stone keeps the section boundaries readable. */
 .kv-faq{padding:6rem 0;background:#f1f1ef}
-.kv-faq__list{display:grid;grid-template-columns:1fr;margin:2.5rem 0 0}
-.kv-faq__item{border-top:1px solid rgba(21,23,23,.12);padding:1.6rem 0}
-.kv-faq__item dt{margin:0 0 .6rem;font-size:1.9rem;font-weight:600;letter-spacing:-0.01em;line-height:1.3;color:#151717}
-.kv-faq__item dd{margin:0;font-size:1.63rem;line-height:1.6;color:#6e7069;max-width:52ch}
-@media(min-width:768px){
+.kv-faq__groups{margin:2.5rem 0 0}
+.kv-faq__group{padding:2.6rem 0 0}
+.kv-faq__group-label{margin:0 0 .6rem;font-size:1.32rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:#855c3a}
+.kv-faq__group-items{border-top:1px solid rgba(21,23,23,.14)}
+.kv-faq__item{border-bottom:1px solid rgba(21,23,23,.12)}
+.kv-faq__q-wrap{margin:0;font:inherit}
+.kv-faq__q{display:flex;align-items:center;justify-content:space-between;gap:2rem;width:100%;margin:0;padding:1.5rem 0;background:none;border:0;text-align:left;cursor:pointer;color:#151717;font:inherit;transition:color .2s ease}
+.kv-faq__q-text{font-size:1.9rem;font-weight:600;letter-spacing:-0.01em;line-height:1.35}
+.kv-faq__q:hover{color:#855c3a}
+.kv-faq__q:focus-visible{outline:2px solid #855c3a;outline-offset:4px}
+/* plus that loses its vertical stroke on open, rather than a rotating chevron:
+   quieter at this type size and it reads as state, not direction */
+.kv-faq__icon{position:relative;flex:0 0 auto;width:1.5rem;height:1.5rem}
+.kv-faq__icon::before,.kv-faq__icon::after{content:"";position:absolute;left:50%;top:50%;background:currentColor;transform:translate(-50%,-50%)}
+.kv-faq__icon::before{width:100%;height:1.5px}
+.kv-faq__icon::after{width:1.5px;height:100%;transition:transform .35s cubic-bezier(.4,0,.2,1),opacity .25s ease}
+.kv-faq__item.is-open .kv-faq__icon::after{transform:translate(-50%,-50%) rotate(90deg);opacity:0}
+.kv-faq__a{display:grid;grid-template-rows:0fr;transition:grid-template-rows .38s cubic-bezier(.4,0,.2,1)}
+.kv-faq__item.is-open .kv-faq__a{grid-template-rows:1fr}
+.kv-faq__a-inner{overflow:hidden}
+.kv-faq__a-inner p{margin:0;padding:0 0 1.9rem;font-size:1.63rem;line-height:1.6;color:#6e7069;max-width:60ch}
+@media(prefers-reduced-motion:reduce){.kv-faq__a,.kv-faq__icon::after{transition:none}}
+@media(min-width:900px){
   .kv-faq{padding:8rem 0}
-  .kv-faq__list{grid-template-columns:1fr 1fr;column-gap:5rem}
+  .kv-faq__group{display:grid;grid-template-columns:24rem 1fr;column-gap:5rem;align-items:start;padding:3rem 0}
+  .kv-faq__group-label{margin:0;padding-top:1.9rem;position:sticky;top:11rem}
+  .kv-faq__item:last-child{border-bottom:0}
+  .kv-faq__group+.kv-faq__group .kv-faq__group-items{border-top:1px solid rgba(21,23,23,.14)}
 }
 
 /* --- root font scale ------------------------------------------------------
@@ -589,11 +617,9 @@ html{scroll-padding-top:96px}
 .kv-section__cta{display:flex;flex-direction:column;align-items:flex-start;gap:1.5rem;margin:4rem 0 0;padding-top:2.5rem;border-top:1px solid rgba(21,23,23,.12)}
 .kv-section__cta-text{font-size:1.73rem;line-height:1.6;color:rgba(21,23,23,.65);margin:0;max-width:46ch}
 @media(min-width:768px){
-  .kv-section__cta{flex-direction:row;align-items:center;justify-content:space-between;gap:4rem;margin-top:5rem}
+  .kv-section__cta{flex-direction:row;align-items:center;justify-content:flex-start;gap:3rem;margin-top:5rem}
+  .kv-section__cta-text{flex:0 1 auto}
 }
-/* kv-why closes on its own disclaimer line, so its CTA sits above that rather
-   than at the very end and needs less air than the sections that end on it. */
-.kv-why .kv-section__cta{margin-top:3.5rem}
 .kv-why__disclaimer{margin-top:2rem}
 
 /* --- footer: make it read as one unit ---
@@ -626,3 +652,339 @@ html{scroll-padding-top:96px}
 .footer_nav-link__LFUNG span:after{top:calc(100% + 1.1rem)}
 .footer_nav-link__LFUNG span:hover,
 .footer_nav-link__LFUNG:hover span{transform:translateY(calc(-100% - 1.1rem))}
+
+/* ==========================================================================
+   CLOSING CTA REBUILD — 2026-08-29
+   The only surviving piece of that day's layout pass; the rest (container
+   scale, vertical rhythm, mobile type, hero geometry, imagery, section
+   backgrounds) was rolled back at the client's request.
+
+   Was 384px tall at 1440: one 131px button with 1,113px of empty dark ground
+   beside it, as the last thing a qualified buyer sees. Now a two-column block
+   carrying two actions on the left and the contact details on the right.
+   ========================================================================== */
+.kv-cta__grid{display:grid;grid-template-columns:1fr;gap:3.5rem}
+@media(min-width:768px){
+  .kv-cta{padding:10rem 0}
+  .kv-cta__grid{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:6rem;align-items:start}
+  .kv-cta__aside{padding-top:.5rem}
+}
+.kv-cta__heading{font-size:clamp(2.6rem,4.4vw,5rem);max-width:18ch}
+.kv-cta__actions{display:flex;flex-wrap:wrap;align-items:center;gap:1.5rem}
+.kv-cta__aside{display:flex;flex-direction:column;gap:2.5rem}
+.kv-cta__contact-label{font-size:1.32rem;font-weight:500;letter-spacing:.08em;
+  text-transform:uppercase;color:hsla(0,0%,100%,.45);margin-bottom:.9rem}
+/* inline-block + its own leading because the address runs to two lines and
+   must not drag the underline across the break */
+.kv-cta__contact a{display:inline-block;line-height:1.45;font-size:1.9rem;color:#fff;
+  text-decoration:none;border-bottom:1px solid hsla(0,0%,100%,.25);padding-bottom:.2rem;
+  transition:border-color .25s ease}
+.kv-cta__contact a:hover,.kv-cta__contact a:focus-visible{border-bottom-color:#c89b6e}
+.kv-cta__rera{font-size:1.32rem;line-height:1.5;color:hsla(0,0%,100%,.5);margin:0;
+  padding-top:2.5rem;border-top:1px solid hsla(0,0%,100%,.12)}
+.kv-cta__rera a{color:hsla(0,0%,100%,.7)}
+@media(max-width:767px){
+  .kv-cta__aside{gap:1.75rem}
+  .kv-cta__rera{padding-top:1.75rem}
+  .kv-cta__grid{gap:2.5rem}
+}
+
+/* ==========================================================================
+   AMENITIES — sticky section heading + single alignment axis  (2026-08-29)
+
+   The eyebrow and H2 sat above .kv-amenities-track, so the moment the 340vh
+   pinned sequence took over they scrolled away and three slides played with
+   no visible section title. The heading now rides inside the sticky stage.
+
+   Alignment: the wrap was justify-content:center, so the text column floated
+   to wherever the row happened to centre (x=220 against a heading at x=90).
+   Head, text column and progress rail now all start on the container axis.
+   ========================================================================== */
+.kv-amenities__head{display:flex;flex-direction:column}
+
+@media(min-width:1024px){
+  /* one sticky viewport-height stage holds the head and the slide row, so the
+     row simply gets whatever height the head leaves - no magic offsets */
+  .kv-amenities-stage{
+    position:sticky;top:0;height:100vh;
+    display:flex;flex-direction:column;
+    padding-top:10rem;     /* 7.8rem sticky nav + 2rem breathing room */
+    padding-bottom:3rem;
+  }
+  .kv-amenities__head{flex:0 0 auto}
+  /* smaller than a normal section heading: it is on screen for 340vh of
+     scrolling, so it has to sit back and let the slides carry the section */
+  .kv-amenities__head .kv-section__heading{
+    font-size:clamp(2.4rem,2.6vw,3.6rem);
+    max-width:30ch;margin:0 0 1.8rem;
+  }
+
+  /* the wrap is no longer the sticky element; it fills the remaining height */
+  .kv-amenities-wrap{
+    position:static;height:auto;min-height:0;
+    flex:1 1 auto;
+    justify-content:space-between;
+    align-items:center;
+    gap:4rem;
+  }
+  .kv-amenities-texts{
+    align-self:center;margin-top:0;
+    flex:0 1 40rem;max-width:40rem;
+  }
+  .kv-amenities-images{height:100%;max-height:none;flex:0 0 auto;align-self:center}
+
+  /* progress reads left-to-right, matching the direction of the sequence,
+     and sits on the axis instead of hanging 4.4rem outside it */
+  .kv-amenities-progress{
+    position:relative;left:auto;top:auto;
+    width:100%;height:.15rem;
+    background:rgba(44,21,18,.15);
+  }
+  .kv-amenities-progress-line{width:0;height:100%;background:#2c1512}
+}
+
+@media(min-width:768px) and (max-width:1023px){
+  /* The two-column row needs roughly 90rem to hold text + gap + a 4:5 image.
+     Below 1024 it overflowed the container and was only ever hidden by
+     overflow-x:clip - at 768 the original row wanted 1322px inside a 588px
+     content box, so half the photo was cut off. Stack it instead, but keep
+     the sticky head, and undo the row-only overrides from the >=768 block. */
+  .kv-amenities-stage{
+    position:sticky;top:0;height:100vh;
+    display:flex;flex-direction:column;
+    padding-top:10rem;padding-bottom:3rem;
+  }
+  .kv-amenities__head{flex:0 0 auto}
+  .kv-amenities__head .kv-section__heading{
+    font-size:clamp(2.4rem,2.6vw,3.6rem);
+    max-width:30ch;margin:0 0 1.8rem;
+  }
+  .kv-amenities-wrap{
+    position:static;flex:1 1 auto;min-height:0;height:auto;padding:0;
+    flex-flow:column;align-items:flex-start;justify-content:center;gap:3rem;
+  }
+  /* text and image share the container axis with the head above them */
+  .kv-amenities-texts{align-self:flex-start;width:100%;max-width:42rem;margin-top:0;text-align:left}
+  .kv-amenities-images{height:auto;width:min(52%,23rem);align-self:flex-start}
+  /* the desktop offset hangs the small image 43.8% off the left edge, which
+     only works beside a text column; put it on the inside corner when stacked */
+  .kv-amenities-images-small{width:55%;height:50%;right:0;left:auto;bottom:-8%;top:auto}
+  .kv-amenities-tags{justify-content:flex-start}
+  .kv-amenities-progress{
+    position:relative;left:auto;top:auto;
+    width:100%;height:.15rem;
+    background:rgba(44,21,18,.15);
+  }
+  .kv-amenities-progress-line{width:0;height:100%;background:#2c1512}
+}
+
+@media(max-width:767px){
+  /* Phones got the same problem as desktop: the heading scrolled away and the
+     three slides played untitled. The stacked column fits inside a sticky
+     stage here too, so give it the same treatment. */
+  .kv-amenities-stage{
+    position:sticky;top:0;height:100vh;
+    display:flex;flex-direction:column;
+    padding-top:10rem;padding-bottom:2rem;
+  }
+  .kv-amenities__head{flex:0 0 auto}
+  .kv-amenities__head .kv-section__heading{
+    font-size:2.6rem;line-height:1.15;max-width:24ch;margin:0 0 1.4rem;
+  }
+  .kv-amenities-wrap{
+    position:static;flex:1 1 auto;min-height:0;height:auto;padding:0;
+    align-items:flex-start;justify-content:center;gap:2.4rem;
+  }
+  /* left-align the slide copy so it shares the heading's axis instead of
+     centring against it */
+  .kv-amenities-texts{text-align:left;align-self:flex-start}
+  .kv-amenities-tags{justify-content:flex-start}
+  .kv-amenities-images{width:min(55%,20rem);align-self:flex-start}
+  .kv-amenities-progress{
+    display:block;position:relative;left:auto;top:auto;
+    width:100%;height:.15rem;background:rgba(44,21,18,.15);
+  }
+  .kv-amenities-progress-line{width:0;height:100%;background:#2c1512}
+}
+
+/* --- kv-plans: CTA moved from the section foot to the masthead --------------
+   The download prompt used to close the section, a full scroll past the plan
+   image. Sitting opposite the heading it is visible the moment the section
+   opens, and the section now ends on the specification list instead of a rule.
+   Mobile stacks the button under the heading; the side-by-side masthead only
+   turns on where there is room for it. */
+.kv-plans__head{display:flex;flex-direction:column;margin-bottom:3.5rem}
+.kv-plans__cta{margin-top:2.5rem}
+@media(min-width:1024px){
+  .kv-plans__head{flex-direction:row;align-items:flex-end;justify-content:space-between;
+    gap:4rem;margin-bottom:5rem}
+  .kv-plans__head-title{flex:1 1 auto}
+  .kv-plans__head-title .kv-section__heading{margin-bottom:0}
+  /* button alone -- the prompt sentence was cut, the label already says it.
+     No top rule or margin here: the heading's accent rule marks the masthead. */
+  .kv-plans__cta{flex:0 0 auto;align-items:flex-end;margin:0;padding-top:0;border-top:0;
+    padding-bottom:.25rem}
+}
+
+/* --- amenities follow-ups -------------------------------------------------
+   1. The progress fill (#2c1512) shared a baseline with the heading's own
+      golden ::after accent, both starting at x=90, so it read as a black bar
+      lying on the gold rule. Fill dropped; the light hairline stays on as the
+      divider under the head.
+   2. The section CTA moved out of the section footer into the empty space
+      below the slide copy. */
+.kv-amenities-progress-line{display:none}
+
+@media(min-width:768px){
+  /* clear the gold accent off the hairline below it */
+  .kv-amenities__head .kv-section__heading{margin-bottom:2.6rem}
+}
+
+@media(min-width:1024px){
+  /* copy sits at the top of the column so it can never run into the CTA */
+  .kv-amenities-texts{align-self:flex-start}
+  /* absolutely placed, so the CTA costs the slide row no height and the
+     photos keep their full size while it fills the empty bottom-left */
+  .kv-amenities-stage > .kv-section__cta{
+    position:absolute;left:0;bottom:3rem;
+    width:40rem;max-width:calc(100% - 4rem);margin:0;
+    flex-direction:column;align-items:flex-start;gap:1.5rem;
+    padding-top:2.5rem;border-top:1px solid rgba(44,21,18,.12);
+  }
+  .kv-amenities-stage > .kv-section__cta .kv-section__cta-text{max-width:none;font-size:1.6rem}
+}
+
+@media(max-width:1023px){
+  /* Below 1024 there is no empty space to put the CTA in, and no room for it
+     inside a 100vh pin alongside the copy, tags and photo. Dissolve the stage
+     so head / slide row / CTA behave as three ordinary track children again:
+     the heading scrolls, the row pins, the CTA lands at the section end. */
+  .kv-amenities-stage{display:contents}
+  .kv-amenities__head{margin-bottom:2rem}
+  .kv-amenities__head .kv-section__heading{font-size:clamp(2.2rem,4vw,4.6rem);margin-bottom:1.5rem}
+  .kv-amenities-wrap{position:sticky;top:0;min-height:100vh;height:auto;padding:4rem 0;flex:none}
+  .kv-amenities-stage > .kv-section__cta{position:static;width:auto;max-width:none;margin:4rem 0 0}
+}
+
+/* --- kv-why left column ----------------------------------------------------
+   The intro copy carries two things now: who builds Kalpataru, then who
+   designed this building. They are one block, so only the last paragraph keeps
+   the full run-out into the credit list below it.
+
+   The credit list stays bottom-anchored (margin-top:auto, above) and the CTA
+   closes the column under it. It is this section's only button now -- the
+   section-footer .kv-section__cta that used to sit above the disclaimer was
+   removed, so the ask sits beside the credits it follows from rather than
+   trailing the whole section. */
+.kv-why__intro p:not(:last-of-type){margin-bottom:1.25rem}
+.kv-why__cta{align-self:flex-start;margin-top:2rem}
+@media(min-width:768px){
+  .kv-why__cta{margin-top:2.5rem}
+}
+
+/* --- amenities left column: one indent, CTA off the floor ------------------
+   The slide paragraph carried margin:0 auto from the original centred layout,
+   so in a left-aligned column it sat ~24px in from the heading and tags.
+   And the CTA was anchored to the stage floor, which read as detached from
+   the copy it belongs to. */
+.kv-amenities-slide-text{margin:0}
+
+@media(min-width:1024px){
+  /* Put the head in row 1 and let the slide row and the CTA share row 2, so
+     the CTA can be offset from the TOP of the slide area rather than the
+     bottom of the stage - no dependency on how many lines the head wraps to.
+     The copy block is a constant height (slide 1 sets it; slides 2-3 are
+     absolutely positioned inside it), so a fixed offset holds for all three. */
+  .kv-amenities-stage{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto 1fr}
+  .kv-amenities__head{grid-row:1}
+  .kv-amenities-wrap{grid-row:2;grid-column:1;min-height:0}
+  .kv-amenities-stage > .kv-section__cta{
+    grid-row:2;grid-column:1;align-self:start;justify-self:start;
+    position:static;margin:42rem 0 0;width:40rem;max-width:100%;
+  }
+}
+
+/* --- kv-why: photo aligned to the heading and the CTA -----------------------
+   Brief: the photo should start level with the section heading and finish level
+   with the bottom of the CTA button, so the two columns frame the same block of
+   page rather than merely being the same height.
+
+   Bottom edge: the caption used to sit below the frame and ate 82px of the
+   column, so the photo stopped short of the button. It is now absolutely
+   positioned over the foot of the image, on the same dark scrim the benefit
+   cards below already use, and the frame takes the whole remaining column
+   height (flex:1, aspect-ratio dropped on desktop -- object-fit:cover shapes it).
+
+   Top edge: the eyebrow sits above the heading in the left column, so the right
+   column is inset by exactly the eyebrow line box plus its 1rem margin. Measured
+   at 25px against a 9.81px root; kept in rem so it tracks the type scale. */
+:root{--kv-why-eyebrow-offset:2.55rem}
+.kv-why__viewer{display:flex;flex-direction:column}
+.kv-why__viewer-frame{flex:0 0 auto}
+.kv-why__viewer-frame::after{content:"";position:absolute;left:0;right:0;bottom:0;height:42%;z-index:1;pointer-events:none;background:linear-gradient(to top,rgba(10,11,11,.82) 0%,rgba(10,11,11,.34) 48%,rgba(10,11,11,0) 100%)}
+.kv-why__viewer-caption{position:absolute;left:0;right:0;bottom:0;z-index:2;margin:0;min-height:0;padding:1.4rem 1.6rem;font-size:1.43rem;line-height:1.45;color:rgba(255,255,255,.92)}
+/* The stretch is gated at 1100px, not at the 768px two-column breakpoint.
+   Between 768 and 1100 the right column is only ~400px wide while the left
+   column runs ~760px tall, so a full-height frame crops these landscape
+   renders to a 0.53 slice. Below 1100 the frame keeps its 4/3 shape and only
+   the caption overlay carries over; the edge-to-edge alignment is a wide-
+   viewport promise. */
+@media(min-width:1100px){
+  .kv-why__viewer{padding-top:var(--kv-why-eyebrow-offset)}
+  .kv-why__viewer-frame{flex:1 1 auto;min-height:0;aspect-ratio:auto}
+}
+
+/* --- amenities: photo spans head-top to CTA-bottom -------------------------
+   The big photo sat inside the slide row, so it started below the head and
+   ended at the stage floor. It should read as a full-height plate against the
+   whole left column: top flush with the eyebrow, bottom flush with the CTA
+   button. Dissolving the wrap at desktop makes the texts and the photo direct
+   grid items, so the photo can span both rows while the copy stays in row 2.
+   Row 2 is auto-sized by the CTA, so the span ends exactly on the button. */
+@media(min-width:1024px){
+  .kv-amenities-stage{
+    grid-template-columns:40rem minmax(0,1fr);
+    grid-template-rows:auto auto;
+    column-gap:4rem;align-content:start;
+  }
+  .kv-amenities__head{grid-row:1;grid-column:1 / -1}
+  .kv-amenities-wrap{display:contents}
+  .kv-amenities-texts{
+    grid-row:2;grid-column:1;align-self:start;
+    flex:none;width:auto;max-width:none;
+  }
+  .kv-amenities-stage > .kv-section__cta{grid-column:1}
+  .kv-amenities-images{
+    grid-row:1 / 3;grid-column:2;
+    justify-self:end;align-self:stretch;
+    height:100%;width:auto;min-height:0;
+  }
+}
+
+/* Anchor the plate and the CTA to the SAME edge rather than trying to make an
+   auto row land on the button: row 2 fills the stage (minmax(0,1fr) also stops
+   the photo inflating it), the CTA sits at its end, and the photo stretches to
+   it. Stage padding-bottom then sets where that shared baseline falls.
+   aspect-ratio is released at this size - height is dictated by the span, so
+   the ratio and the column width cannot both be honoured; the inner img is
+   object-fit:cover, so nothing distorts. */
+@media(min-width:1024px){
+  .kv-amenities-stage{grid-template-rows:auto minmax(0,1fr);padding-bottom:7.5rem}
+  .kv-amenities-stage > .kv-section__cta{grid-row:2;grid-column:1;align-self:end;margin:0}
+  .kv-amenities-images{
+    grid-row:1 / 3;grid-column:2;
+    justify-self:end;align-self:stretch;
+    aspect-ratio:auto;height:auto;width:min(100%,56rem);min-height:0;
+  }
+}
+
+/* The inset photo hangs 43.8% off the plate's left edge. That reads well at
+   >=1440 where there is 175px of clear ground, but once the plate narrows the
+   overhang crosses into the copy column (-160px at 1024, 15px at 1280). Pull
+   the overhang in as the space runs out; the plate-on-plate look survives. */
+@media(min-width:1280px) and (max-width:1439px){
+  .kv-amenities-images-small{left:-12%}
+}
+@media(min-width:1024px) and (max-width:1279px){
+  .kv-amenities-images-small{left:0}
+}
