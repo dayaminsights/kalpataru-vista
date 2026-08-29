@@ -601,6 +601,48 @@ const server = http.createServer((req, res) => {
         out.layoutsModal.closedAfterBackdropClick=!layoutsModal.classList.contains('is-open');
         }catch(layoutsModalErr){out.layoutsModalErr=(layoutsModalErr&&layoutsModalErr.stack)?layoutsModalErr.stack:String(layoutsModalErr);}
       }
+      // kv-callback-modal: same open/submit/close contract as the layouts
+      // modal, but a second dialog on the page is exactly where the shared
+      // handler can regress (wrong modal opened, reset restoring the other
+      // dialog's title), so it gets its own checks rather than an assumption.
+      var cbModal=document.getElementById('kv-callback-modal');
+      var cbTrigger=document.querySelector('.kv-callback-trigger');
+      out.callbackModal={
+        modalFound:!!cbModal,
+        openOnLoad:cbModal?cbModal.classList.contains('is-open'):null,
+        triggerFound:!!cbTrigger,
+        triggerText:cbTrigger?cbTrigger.textContent.trim():null
+      };
+      if(cbModal&&cbTrigger){
+        try{
+        var cbHref=null;
+        window.__kvMailtoOverride=function(href){cbHref=href;};
+        cbTrigger.dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true}));
+        out.callbackModal.openAfterClick=cbModal.classList.contains('is-open');
+        out.callbackModal.layoutsStayedClosed=!document.getElementById('kv-layouts-modal').classList.contains('is-open');
+        var cbForm=document.getElementById('kv-callback-form');
+        out.callbackModal.formFound=!!cbForm;
+        if(cbForm){
+          cbForm.querySelector('[name="name"]').value='Test User';
+          cbForm.querySelector('[name="phone"]').value='9999999999';
+          cbForm.querySelector('[name="time"]').selectedIndex=2;
+          cbForm.querySelector('[name="config"]').selectedIndex=1;
+          cbForm.dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}));
+        }
+        out.callbackModal.mailtoHref=cbHref;
+        var cbSuccess=document.getElementById('kv-callback-success');
+        out.callbackModal.successShown=cbSuccess?!cbSuccess.hidden:null;
+        out.callbackModal.formHiddenAfterSubmit=cbForm?cbForm.hidden:null;
+        out.callbackModal.titleAfterSubmit=cbModal.querySelector('h3').textContent;
+        document.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
+        out.callbackModal.closedAfterEscape=!cbModal.classList.contains('is-open');
+        // closeKvModal must put *this* dialog back to its own title, not the
+        // layouts dialog's -- the shared handler reads data-kv-title for it.
+        out.callbackModal.titleAfterClose=cbModal.querySelector('h3').textContent;
+        out.callbackModal.formRestoredAfterClose=cbForm?!cbForm.hidden:null;
+        out.callbackModal.layoutsTitleIntact=document.getElementById('kv-layouts-modal-title').textContent;
+        }catch(cbErr){out.callbackModalErr=(cbErr&&cbErr.stack)?cbErr.stack:String(cbErr);}
+      }
       // KVAUDIT: section-level geometry/typography audit (added for the
       // copy/alignment review -- reports rendered font sizes, box rects and
       // overflow for the sections under question).
@@ -617,6 +659,13 @@ const server = http.createServer((req, res) => {
           ovHeading:kvBox('.kv-overview .kv-section__heading'),
           ovIntro:kvBox('.kv-overview__intro'),
           ovIntroP:kvBox('.kv-overview__body'),
+          unitCtaButtons:document.querySelectorAll('#kv-unit-layout .kv-layouts-trigger').length,
+          unitStrayCta:document.querySelectorAll('#kv-unit-layout .kv-unit-layout__cta, #kv-unit-layout .kv-unit-layout__note').length,
+          unitCallout:kvBox('.kv-unit-layout__callout'),
+          unitCalloutTop:kvBox('.kv-unit-layout__callout-top'),
+          unitCalloutHeading:kvBox('.kv-unit-layout__callout-heading'),
+          unitCalloutActions:kvBox('.kv-unit-layout__callout-actions'),
+          unitCalloutNote:kvBox('.kv-unit-layout__callout-note'),
           cta:kvBox('.kv-cta'),
           ctaHeading:kvBox('.kv-cta__heading'),
           footer:kvBox('.footer_content__E2ijt'),
@@ -650,6 +699,7 @@ const server = http.createServer((req, res) => {
             var bcs=getComputedStyle(btn);
             var hd=document.querySelector('.kv-why__intro .kv-section__heading');var eb=document.querySelector('.kv-why__intro .kv-section__eyebrow');var fr=document.querySelector('.kv-why__viewer-frame');var cap=document.querySelector('.kv-why__viewer-caption');
             return {heading:bx(hd),eyebrow:bx(eb),frame:bx(fr),caption:bx(cap),headingTopFromIntro:Math.round(hd.getBoundingClientRect().top-ib.top),frameTopMinusHeadingTop:Math.round(fr.getBoundingClientRect().top-hd.getBoundingClientRect().top),frameBottomMinusBtnBottom:Math.round(fr.getBoundingClientRect().bottom-bb.bottom),capPos:getComputedStyle(cap).position,frameAR:getComputedStyle(fr).aspectRatio,intro:bx(intro),viewer:bx(vw),pCount:ps.length,paras:Array.prototype.map.call(ps,function(p){var cs=getComputedStyle(p);return {box:bx(p),mb:cs.marginBottom,fs:cs.fontSize};}),credits:bx(cr),btn:bx(btn),btnText:btn.textContent.trim(),btnHref:btn.getAttribute('href'),btnBg:bcs.backgroundColor,btnColor:bcs.color,gapPtoCredits:Math.round(cb.top-lastP.bottom),gapCreditsToBtn:Math.round(bb.top-cb.bottom),introBottomVsBtn:Math.round(ib.bottom-bb.bottom),introVsViewerH:Math.round(ib.height-(vw?vw.getBoundingClientRect().height:0)),footerCtaInWhy:document.querySelectorAll('#kv-why .kv-section__cta').length};})(),
+          jsErrors:(window.__kvErrs||['collector missing']),
           docW:document.documentElement.clientWidth,
           bodyOverflow:document.documentElement.scrollWidth>document.documentElement.clientWidth+1?('BODY OVERFLOW '+document.documentElement.scrollWidth):'ok',
           faqAccordion:(function(){
@@ -664,6 +714,26 @@ const server = http.createServer((req, res) => {
               closedRows:getComputedStyle(firstPanel).gridTemplateRows,
               answerTextInDom:(first.querySelector('.kv-faq__a-inner p').textContent||'').slice(0,40),
               labelPos:getComputedStyle(groups[0].querySelector('.kv-faq__group-label')).position,
+              rootFS:getComputedStyle(document.documentElement).fontSize,
+              headingText:(document.querySelector('#kv-faq .kv-section__heading')||{}).textContent,
+              eyebrowText:(document.querySelector('#kv-faq .kv-section__eyebrow')||{}).textContent,
+              layoutCols:(function(){var l=document.querySelector('.kv-faq__layout');return l?getComputedStyle(l).gridTemplateColumns:'nf';})(),
+              railPos:(function(){var r=document.querySelector('.kv-faq__rail-inner');return r?getComputedStyle(r).position+'@'+getComputedStyle(r).top:'nf';})(),
+              railRight:(function(){var r=document.querySelector('.kv-faq__rail');var g=document.getElementById('kv-faq-groups');if(!r||!g)return 'nf';var rb=r.getBoundingClientRect(),gb=g.getBoundingClientRect();return Math.round(rb.left)+'..'+Math.round(rb.right)+' | list '+Math.round(gb.left)+'..'+Math.round(gb.right)+' | sideBySide='+(rb.right<=gb.left+1);})(),
+              rowH:Math.round(first.querySelector('.kv-faq__q').getBoundingClientRect().height),
+              qFS:getComputedStyle(first.querySelector('.kv-faq__q-text')).fontSize,
+              sectionH:Math.round(document.getElementById('kv-faq').getBoundingClientRect().height),
+              tailCtaCount:document.querySelectorAll('#kv-faq .kv-section__cta').length,
+              listH:Math.round(document.getElementById('kv-faq-groups').getBoundingClientRect().height),
+              listHOldDensity:(function(){
+                /* re-apply the pre-change density values and re-measure the same
+                   16 rows, so the 'too long' claim is a measurement not a guess */
+                var st=document.createElement('style');
+                st.textContent='.kv-faq__groups{margin:2.5rem 0 0}.kv-faq__group{padding:2.6rem 0 0}.kv-faq__q{padding:1.5rem 0}.kv-faq__q-text{font-size:1.9rem;line-height:1.35}.kv-faq__a-inner p{padding:0 0 1.9rem;font-size:1.63rem}.kv-faq__icon{width:1.5rem;height:1.5rem}@media(min-width:900px){.kv-faq__group{display:grid;grid-template-columns:24rem 1fr;column-gap:5rem;padding:3rem 0}.kv-faq__group-label{margin:0;padding-top:1.9rem;position:sticky;top:11rem}}';
+                document.head.appendChild(st);
+                var h=Math.round(document.getElementById('kv-faq-groups').getBoundingClientRect().height);
+                st.remove();
+                return h;})(),
               btnAria:first.querySelector('.kv-faq__q').getAttribute('aria-expanded')};
             Array.prototype.forEach.call(document.querySelectorAll('.kv-faq__a'),function(p){p.style.transition='none';});
             first.querySelector('.kv-faq__q').click();
@@ -673,7 +743,38 @@ const server = http.createServer((req, res) => {
               setTimeout(function(){
                 o.afterSecondClick={firstOpen:first.classList.contains('is-open'),firstH:Math.round(firstPanel.getBoundingClientRect().height),secondOpen:second.classList.contains('is-open'),secondH:Math.round(second.querySelector('.kv-faq__a').getBoundingClientRect().height)};
                 second.querySelector('.kv-faq__q').click();
-                setTimeout(function(){o.afterToggleOff={secondOpen:second.classList.contains('is-open'),secondH:Math.round(second.querySelector('.kv-faq__a').getBoundingClientRect().height)};res();},600);
+                setTimeout(function(){
+                  o.afterToggleOff={secondOpen:second.classList.contains('is-open'),secondH:Math.round(second.querySelector('.kv-faq__a').getBoundingClientRect().height)};
+                  /* --- search + ask-the-team --- */
+                  var inp=document.getElementById('kv-faq-search');
+                  var cnt=document.getElementById('kv-faq-count');
+                  var emp=document.getElementById('kv-faq-empty');
+                  var ask=document.getElementById('kv-faq-ask');
+                  var askQ=document.getElementById('kv-faq-ask-q');
+                  if(!inp){o.search='NO SEARCH INPUT';res();return;}
+                  function vis(sel){return Array.prototype.filter.call(document.querySelectorAll(sel),function(e){return e.offsetParent!==null||getComputedStyle(e).display!=='none';}).length;}
+                  function type(v){inp.value=v;inp.dispatchEvent(new Event('input',{bubbles:true}));}
+                  function snap(){return {items:vis('#kv-faq-groups .kv-faq__item'),groups:vis('#kv-faq-groups .kv-faq__group'),count:(cnt.textContent||'').trim(),emptyShown:emp?!emp.hidden:'nf',askShown:ask?!ask.hidden:'nf',open:document.querySelectorAll('#kv-faq-groups .kv-faq__item.is-open').length};}
+                  o.search={};
+                  o.search.idle=snap();
+                  type('airport');   o.search.oneHit=snap();
+                  o.search.oneHitQ=(document.querySelector('#kv-faq-groups .kv-faq__item.is-open .kv-faq__q-text')||{}).textContent;
+                  type('golf');      o.search.golf=snap();
+                  type('RERA');      o.search.rera=snap();
+                  type('zzqq');      o.search.noHit=snap();
+                  o.search.prefilled=askQ?askQ.value:'nf';
+                  /* submit with the name/contact still blank -> inline error, no mailto */
+                  var form=document.getElementById('kv-faq-ask-form');
+                  form.dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}));
+                  o.search.blankSubmit={err:(document.getElementById('kv-faq-ask-error').hidden?'hidden':(document.getElementById('kv-faq-ask-error').textContent||'').slice(0,40)),mailto:form.getAttribute('data-kv-mailto')||'none'};
+                  document.getElementById('kv-faq-ask-name').value='Asha Rao';
+                  document.getElementById('kv-faq-ask-contact').value='asha@example.com';
+                  form.dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}));
+                  o.search.filledSubmit=(form.getAttribute('data-kv-mailto')||'none').slice(0,190);
+                  type('');          o.search.cleared=snap();
+                  o.search.lastBorders=Array.prototype.map.call(document.querySelectorAll('#kv-faq-groups .kv-faq__group'),function(g){var k=g.querySelectorAll('.kv-faq__item');var l=k[k.length-1];return l.classList.contains('is-last')+':'+getComputedStyle(l).borderBottomWidth;});
+                  res();
+                },600);
               },600);
             },600);}));
             return o;})(),
@@ -690,7 +791,10 @@ const server = http.createServer((req, res) => {
       }
       realTicks(120);
     },5000)</script></body>`;
-    const patched = html.replace("</body>", probe);
+    // page-level error capture, injected first thing in <head> so it sees
+    // failures in the page's own inline scripts, not just the probe's.
+    const errCatch = "<script>window.__kvErrs=[];window.addEventListener('error',function(e){window.__kvErrs.push(String(e.message||e.type)+' @ '+String(e.lineno||'?'));});</script>";
+    const patched = html.replace("<head>", "<head>" + errCatch).replace("</body>", probe);
     res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
     res.end(patched);
     return;
