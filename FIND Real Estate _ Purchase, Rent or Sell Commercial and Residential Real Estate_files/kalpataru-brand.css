@@ -218,11 +218,11 @@ a.button_button-round__TFjlU{display:inline-flex;align-items:center}
 .kv-amenities-images{position:relative;width:75%;max-width:32rem;aspect-ratio:4/5;flex-shrink:0}
 .kv-amenities-images-big{position:relative;width:100%;height:100%}
 .kv-amenities-slide-imgs{position:absolute;inset:0;transform-origin:50% 100%;transition:transform 1s}
-.kv-amenities-slide-imgs.is-first{position:relative}
+.kv-amenities-slide-imgs.is-first{position:relative;height:100%}
 .kv-amenities-slide-imgs img{display:block;width:100%;height:100%;object-fit:cover}
 .kv-amenities-images-small{position:absolute;width:55%;height:50%;right:0;left:auto;bottom:-8%;top:auto;z-index:2}
 .kv-amenities-slide-img-inner{position:absolute;inset:0}
-.kv-amenities-slide-img-inner.is-first{position:static}
+.kv-amenities-slide-img-inner.is-first{position:static;height:100%}
 .kv-amenities-slide-img-inner img{display:block;width:100%;height:100%;object-fit:cover}
 .kv-amenities-texts{position:relative;width:100%;max-width:38rem;text-align:center}
 .kv-amenities-progress{display:none}
@@ -541,3 +541,14 @@ html{font-size:min(11px,2.6666666667vw)}
 .burger-menu_nav__dAhwA a{display:flex;align-items:center;min-height:44px}
 /* footer contact links (mailto / tel) sat at 21-24px */
 .footer_contacts__HFiAl a{display:inline-block;padding:.5rem 0;min-height:24px}
+
+/* --- kv-amenities column alignment ----------------------------------------
+   Both columns were vertically centred in the pinned 100vh wrap. The image
+   stack is 676px tall and the text block only ~310px, so centring dropped the
+   text ~185px below the image top, leaving a large void between the section
+   heading and the first line of copy.
+   The images sit at 84% height, so 8vh of the wrap sits above them; matching
+   that on the text column starts both at the same line. */
+@media(min-width:768px){
+  .kv-amenities-texts{align-self:flex-start;margin-top:8vh}
+}
