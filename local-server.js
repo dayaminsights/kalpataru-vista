@@ -600,6 +600,39 @@ const server = http.createServer((req, res) => {
         out.layoutsModal.closedAfterBackdropClick=!layoutsModal.classList.contains('is-open');
         }catch(layoutsModalErr){out.layoutsModalErr=(layoutsModalErr&&layoutsModalErr.stack)?layoutsModalErr.stack:String(layoutsModalErr);}
       }
+      // KVAUDIT: section-level geometry/typography audit (added for the
+      // copy/alignment review -- reports rendered font sizes, box rects and
+      // overflow for the sections under question).
+      try{
+        function kvBox(sel){var e=document.querySelector(sel);if(!e)return 'not found';
+          var r=e.getBoundingClientRect();var cs=getComputedStyle(e);
+          return {t:Math.round(r.top+window.scrollY),l:Math.round(r.left),w:Math.round(r.width),h:Math.round(r.height),fs:cs.fontSize,lh:cs.lineHeight,ta:cs.textAlign,ov:e.scrollWidth>e.clientWidth+1?('OVERFLOW sw='+e.scrollWidth+' cw='+e.clientWidth):'ok'};}
+        out.kvAudit={
+          order:Array.prototype.map.call(document.querySelectorAll('main > section[id^=kv-], main > div[id^=kv-]'),function(n){return n.id;}),
+          videoH2:kvBox('.kv-video__title h2'),
+          videoText:kvBox('.kv-video__text'),
+          ovTop:kvBox('.kv-overview__top'),
+          ovEyebrow:kvBox('.kv-overview .kv-section__eyebrow'),
+          ovHeading:kvBox('.kv-overview .kv-section__heading'),
+          ovIntro:kvBox('.kv-overview__intro'),
+          ovIntroP:kvBox('.kv-overview__body'),
+          cta:kvBox('.kv-cta'),
+          ctaHeading:kvBox('.kv-cta__heading'),
+          footer:kvBox('.footer_content__E2ijt'),
+          footerLogo:kvBox('.footer_logo__5ncK8'),
+          footerContacts:kvBox('.footer_contacts__HFiAl'),
+          footerLinks:kvBox('.footer_links__vib46'),
+          rera:kvBox('.kv-rera'),
+          copyright:kvBox('.footer_copyright-container__yt1ht'),
+          navLinks:Array.prototype.map.call(document.querySelectorAll('.footer_nav-link__LFUNG'),function(a){var sp=a.querySelector('span');var ar=a.getBoundingClientRect();var sr=sp?sp.getBoundingClientRect():null;var cs=getComputedStyle(a);var ss=sp?getComputedStyle(sp):null;return {txt:a.textContent.trim(),ov:cs.overflow,pad:cs.paddingTop,linkH:Math.round(ar.height),spanH:sr?Math.round(sr.height):-1,spanTop:sr?Math.round(sr.top-ar.top):-1,spanBottom:sr?Math.round((ar.top+ar.height)-(sr.top+sr.height)):-1,fs:cs.fontSize,lh:ss?ss.lineHeight:cs.lineHeight};}),
+          contacts:Array.prototype.map.call(document.querySelectorAll('.footer_contact__fFxbr'),function(d){var r=d.getBoundingClientRect();var lab=d.querySelector('.footer_contact-label__gYKsP');var val=d.querySelector('.footer_contact-value__e1jbK');return {k:d.getAttribute('data-contact'),l:Math.round(r.left),w:Math.round(r.width),labMb:lab?getComputedStyle(lab).marginBottom:'-',gap:(lab&&val)?Math.round(val.getBoundingClientRect().top-(lab.getBoundingClientRect().top+lab.getBoundingClientRect().height)):-1};}),
+          clipped:(function(){var res=[];var root=document.querySelector('footer')||document.body;var all=root.querySelectorAll('*');for(var i=0;i<all.length;i++){var e=all[i];var cs=getComputedStyle(e);if(cs.overflow==='visible')continue;if(e.scrollHeight>e.clientHeight+1||e.scrollWidth>e.clientWidth+1){res.push({cls:(e.className||'').toString().slice(0,50),tag:e.tagName,ov:cs.overflow,ch:e.clientHeight,sh:e.scrollHeight,cw:e.clientWidth,sw:e.scrollWidth,txt:(e.textContent||'').trim().slice(0,30)});}}return res;})(),
+          ctaBlock:(function(){var s=document.querySelector('.kv-cta');if(!s)return 'nf';var r=s.getBoundingClientRect();var f=document.querySelector('footer');var fr=f?f.getBoundingClientRect():null;return {ctaBottom:Math.round(r.bottom+window.scrollY),footerTop:fr?Math.round(fr.top+window.scrollY):-1,footerBg:f?getComputedStyle(f).backgroundColor:'-',ctaBg:getComputedStyle(s).backgroundColor,footerPadTop:f?getComputedStyle(f).paddingTop:'-'};})(),
+          docW:document.documentElement.clientWidth,
+          bodyOverflow:document.documentElement.scrollWidth>document.documentElement.clientWidth+1?('BODY OVERFLOW '+document.documentElement.scrollWidth):'ok',
+          ctaCount:Array.prototype.map.call(document.querySelectorAll('main a'),function(a){var h=a.getAttribute('href')||'';if(h.indexOf('kv-cta')<0&&h.indexOf('tel')!==0&&!a.classList.contains('kv-layouts-trigger'))return null;var sc=a.closest('section');return (sc?sc.id:'?')+' :: '+a.textContent.trim().slice(0,40);}).filter(Boolean)
+        };
+      }catch(kvErr){out.kvAuditErr=String(kvErr);}
       Promise.all(probeWaits).then(function(){setTimeout(finishProbe,50);});
       }
       function realTicks(n){
