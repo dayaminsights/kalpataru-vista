@@ -296,6 +296,24 @@ const server = http.createServer((req, res) => {
             return top===vid||kvVideo.contains(top)?'no (video/overlay on top)':'YES, covered by: '+top.className;
           })()
         };
+        (function(){
+          var vg=kvVideo.querySelector('.kv-video__grid'),vp=kvVideo.querySelector('.kv-video__preview'),vhd=kvVideo.querySelector('.kv-section__heading'),vtx=kvVideo.querySelector('.kv-video__text'),vc=kvVideo.querySelector('a.button_button-round__TFjlU');
+          var vcs=getComputedStyle(kvVideo);
+          out.kvVideoGeom={
+            vw:window.innerWidth,vph:window.innerHeight,
+            rootFont:getComputedStyle(document.documentElement).fontSize,
+            sectionH:Math.round(vr.height),
+            padTop:vcs.paddingTop,padBottom:vcs.paddingBottom,
+            gridH:vg?Math.round(vg.getBoundingClientRect().height):null,
+            gridMB:vg?getComputedStyle(vg).marginBottom:null,
+            previewW:vp?Math.round(vp.getBoundingClientRect().width):null,
+            previewH:vp?Math.round(vp.getBoundingClientRect().height):null,
+            headFont:vhd?getComputedStyle(vhd).fontSize:null,
+            headH:vhd?Math.round(vhd.getBoundingClientRect().height):null,
+            textFont:vtx?getComputedStyle(vtx).fontSize:null,
+            ctaH:vc?Math.round(vc.getBoundingClientRect().height):null
+          };
+        })();
         var ov=document.getElementById('kv-overview');
         if(ov)out.kvVideo.overviewTop=Math.round(ov.getBoundingClientRect().top);
       } else out.kvVideo='kv-video element NOT FOUND';

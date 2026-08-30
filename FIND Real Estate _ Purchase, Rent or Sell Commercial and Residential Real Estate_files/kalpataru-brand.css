@@ -1087,3 +1087,35 @@ html{scroll-padding-top:96px}
   background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath stroke='%23151717' stroke-width='1.5' d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
   background-repeat:no-repeat;background-position:right .75rem center;background-size:1.25rem;padding-right:2.5rem}
 .kv-modal__field select:focus{outline:2px solid #151717;outline-offset:1px}
+
+/* --- kv-video: fit the preview to the viewport HEIGHT ---
+   .kv-video__preview sized itself from aspect-ratio 1920/1088 at full
+   container width, so the video's height was a function of how WIDE the
+   screen is and took no account of how TALL it is. Measured with ?probe=1:
+   958px of video inside an 855px viewport at 1920x950, 696px inside 685px at
+   1440x780, 606px inside 605px at 1280x700 -- on every laptop-shaped screen
+   the video alone is taller than the window, so it can never be seen whole
+   and reads as cut off. (2560x1440 at 150% scale, the case reported, is
+   1706x~860 CSS px and lands in the same bracket.)
+   Fix: keep the full container width -- this plate is the section's whole
+   presence and shrinking it to fit killed the scale -- and cap its HEIGHT to
+   a share of the viewport instead, letting object-fit:cover take the
+   difference off the frame. The crop is anchored to the top, not centred:
+   the Kalpataru Vista watermark sits in the frame's top-left corner and the
+   ceiling detail reads as the subject, while the bottom of the frame is
+   floor. Result is a wide cinematic strip on laptop-shaped screens and the
+   original untouched 1920/1088 bleed on anything tall enough to hold it. */
+@media(min-width:768px){
+  .kv-video{padding:clamp(4rem,6vh,11rem) 0}
+  .kv-video__grid{margin:0 0 clamp(2.5rem,4vh,5rem)}
+  .kv-video__preview{
+    /* width must be DEFINITE: left auto, Chrome satisfies max-height by
+       transferring it back through aspect-ratio and narrowing the box (the
+       plate shrank to 1237px of a 1691px container) instead of cropping. */
+    width:100%;
+    max-height:82vh;
+    max-height:82svh;
+    border-radius:1rem;
+  }
+  .kv-video__preview video{object-position:center top}
+}
