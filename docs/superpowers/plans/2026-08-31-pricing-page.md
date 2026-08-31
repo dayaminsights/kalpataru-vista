@@ -58,12 +58,12 @@ Then parse the `<title>PROBE::{...}</title>` JSON out of `out.html` with Node �
 The probe already reports `out.navItems` (header) and `out.burgerItems` (burger menu). Find the line that sets `out.burgerItems` and add immediately after it:
 
 ```js
-      var footerItems=Array.prototype.map.call(document.querySelectorAll('.footer_nav-link__LFUNG'),function(a){return {text:a.textContent,href:a.getAttribute('href'),tag:a.tagName};});
-      out.footerItems=footerItems;
       out.pageErrors=(window.__kvErrs||[]).concat(window.__jsErrors||[]);
 ```
 
 The `pageErrors` key is new. Page errors are currently only reachable nested inside `out.amenitiesAnim.jsErrors` and one section's `jsErrors`; a top-level key is what later tasks assert against.
+
+Footer nav reporting already exists — `out.footerNav`, set around line 123 from the same `.footer_nav-link__LFUNG` selector. Do **not** add a second key for it. Add `tag:a.tagName` to the existing `footerNav` mapping instead, matching Step 2.
 
 - [ ] **Step 2: Report the tag name on header and burger items too**
 
@@ -75,7 +75,11 @@ The existing route is gated on `pathname === "/"`. Add a second route immediatel
 
 ```js
   if (pathname === "/pricing.html" && url.parse(reqUrl, true).query.probe) {
-    const html = fs.readFileSync(path.join(ROOT, "pricing.html"), "utf8");
+    const pricingPath = path.join(ROOT, "pricing.html");
+    if (!fs.existsSync(pricingPath)) {
+      res.writeHead(404); res.end("pricing.html not created yet"); return;
+    }
+    const html = fs.readFileSync(pricingPath, "utf8");
     const probe = `<script>
       setTimeout(function(){
         var out={};
@@ -98,10 +102,12 @@ The existing route is gated on `pathname === "/"`. Add a second route immediatel
 ```bash
 taskkill //F //IM node.exe 2>/dev/null; node local-server.js &
 "/c/Program Files/Google/Chrome/Application/chrome.exe" --headless --disable-gpu --dump-dom --virtual-time-budget=10000 --window-size=1900,900 "http://localhost:5000/?probe=1&scrollY=0" > out.html
-node -e "const m=require('fs').readFileSync('out.html','utf8').match(/PROBE::(\{.*?\})<\/title>/s);const o=JSON.parse(m[1]);console.log(JSON.stringify({nav:o.navItems,burger:o.burgerItems,footer:o.footerItems},null,1));"
+node -e "const m=require('fs').readFileSync('out.html','utf8').match(/PROBE::(\{.*?\})<\/title>/s);const o=JSON.parse(m[1]);console.log(JSON.stringify({nav:o.navItems,burger:o.burgerItems,footer:o.footerNav},null,1));"
 ```
 
-Expected: `nav` and `burger` each list five items — Overview, Amenities, Residences, Site Layout, Why Vista — each with `tag:"A"`. `footer` lists four. **No Pricing item yet.** That absence is the failing test the next task fixes.
+Expected: `nav` and `burger` each list five items — Overview, Amenities, Residences, Site Layout, Why Vista — each with `tag:"A"`. `footer` lists the same five — the footer's pre-hydration HTML snapshot shows only four, but React renders five, and the probe reads post-hydration state. **No Pricing item yet.** That absence is the failing test the next task fixes.
+
+`pageErrors` will show three pre-existing errors on `master` — a React #418 hydration mismatch and a `lang` property read. They are not yours and not in scope. Record them as the baseline; later tasks assert no errors are added beyond these three.
 
 - [ ] **Step 5: Commit**
 
@@ -243,7 +249,7 @@ Expected: no output, exit 0.
 
 Restart the server, re-run the probe.
 
-Expected: `footer` now lists **five** items, the fifth `{text:"Pricing", href:"pricing.html", tag:"A"}`.
+Expected: `footer` now lists **six** items, the sixth `{text:"Pricing", href:"pricing.html", tag:"A"}`.
 
 - [ ] **Step 6: Commit**
 
@@ -306,7 +312,7 @@ Expected: `IDENTICAL`.
 
 - [ ] **Step 5: Probe — first paint and post-hydration agree**
 
-Re-run the probe. Expected: unchanged from Task 3 — six header items, six burger items, five footer items, all `tag:"A"`. A regression here means the HTML edit broke markup React then choked on; check `pageErrors` in the probe output, which must be empty.
+Re-run the probe. Expected: unchanged from Task 3 — six header items, six burger items, six footer items, all `tag:"A"`. A regression here means the HTML edit broke markup React then choked on; check `pageErrors`, which must still show only the three pre-existing baseline errors from Task 1 and nothing new. A fourth error means your markup edit caused it.
 
 - [ ] **Step 6: Commit**
 
@@ -596,10 +602,10 @@ Overflow at 360px almost always traces to a table that escaped its scrolling wra
 
 ```bash
 "/c/Program Files/Google/Chrome/Application/chrome.exe" --headless --disable-gpu --dump-dom --virtual-time-budget=10000 --window-size=1900,900 "http://localhost:5000/?probe=1&scrollY=0" > out.html
-node -e "const m=require('fs').readFileSync('out.html','utf8').match(/PROBE::(\{.*?\})<\/title>/s);const o=JSON.parse(m[1]);console.log(JSON.stringify({nav:o.navItems,burger:o.burgerItems,footer:o.footerItems,errs:o.pageErrors},null,1));"
+node -e "const m=require('fs').readFileSync('out.html','utf8').match(/PROBE::(\{.*?\})<\/title>/s);const o=JSON.parse(m[1]);console.log(JSON.stringify({nav:o.navItems,burger:o.burgerItems,footer:o.footerNav,errs:o.pageErrors},null,1));"
 ```
 
-Expected: six header items, six burger items, five footer items, all `tag:"A"`, Pricing pointing at `pricing.html`, and no page errors.
+Expected: six header items, six burger items, six footer items, all `tag:"A"`, Pricing pointing at `pricing.html`, and `pageErrors` showing only the three pre-existing baseline errors — nothing new.
 
 - [ ] **Step 4: Confirm the site still works as plain static files**
 
