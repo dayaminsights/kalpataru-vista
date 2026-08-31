@@ -4,6 +4,17 @@ const path = require("path");
 const url = require("url");
 
 const ROOT = __dirname;
+
+// Page-level error capture for the ?probe=1 routes, injected first thing in
+// <head> so it sees failures in the page's own inline scripts, not just the
+// probe's. This is the ONLY window 'error' listener the probes register -- a
+// second one on the same target made every error land in two arrays, so the
+// reported count was double what actually happened.
+const ERR_CATCH =
+  "<script>window.__kvErrs=[];window.addEventListener('error',function(e){" +
+  "var st=(e.error&&e.error.stack)?String(e.error.stack).split('\\n')[1]:'';" +
+  "window.__kvErrs.push(String(e.message||e.type)+' @ '+String(e.lineno||'?')+" +
+  "(st?' :: '+st.trim():''));});</script>";
 const ASSETS_DIR = path.join(
   ROOT,
   "FIND Real Estate _ Purchase, Rent or Sell Commercial and Residential Real Estate_files"
@@ -91,8 +102,11 @@ const server = http.createServer((req, res) => {
     const html = fs.readFileSync(path.join(ROOT, "index.html"), "utf8");
     const scrollY = parseInt(url.parse(reqUrl, true).query.scrollY || "0", 10);
     const probe = `<script>
-      window.__jsErrors=[];
-      window.addEventListener('error',function(e){window.__jsErrors.push((e.error&&e.error.stack)?e.error.stack:e.message);});
+      // Alias, not a second listener: window.__kvErrs is already collecting from
+      // <head> (see ERR_CATCH). Registering another window 'error' handler here
+      // meant every error after body-parse was pushed to both arrays, so the
+      // reported count double-counted and the "known baseline" was inflated.
+      window.__jsErrors=window.__kvErrs||(window.__kvErrs=[]);
       window.scrollTo(0, ${scrollY});
       if(typeof ScrollTrigger!=='undefined'){ScrollTrigger.update();}
       setTimeout(function(){
@@ -112,17 +126,14 @@ const server = http.createServer((req, res) => {
         var hlr=headerLogoA.getBoundingClientRect();
         out.headerLogo={bgImage:(hls.backgroundImage||'').slice(0,200),bgSize:hls.backgroundSize,rect:hlr.toJSON(),display:hls.display};
       } else { out.headerLogo='not found'; }
-      var navItems=Array.prototype.map.call(document.querySelectorAll('.header_nav-item__Wn05d'),function(n){var a=n.querySelector('a');return a?{text:a.textContent,href:a.getAttribute('href'),tag:a.tagName}:null;});
-      out.navItems=navItems;
+      // out.navItems / out.burgerItems / out.footerNav are built at the very END
+      // of the run, inside finishProbe() -- they dispatch real clicks, which can
+      // scroll the page, so they must not run ahead of the scroll-dependent
+      // computed-style measurements below.
       var actionsBtn=document.querySelector('.header_actions__Sv09J a');
       out.actionsBtn=actionsBtn?{text:actionsBtn.textContent,href:actionsBtn.getAttribute('href')}:'not found';
-      var burgerItems=Array.prototype.map.call(document.querySelectorAll('.burger-menu_nav-item__mCA9u'),function(n){var a=n.querySelector('a');return a?{text:a.textContent,href:a.getAttribute('href'),tag:a.tagName}:null;});
-      out.burgerItems=burgerItems;
-      out.pageErrors=(window.__kvErrs||[]).concat(window.__jsErrors||[]);
       var burgerActionsBtn=document.querySelector('.burger-menu_actions__In3qE a');
       out.burgerActionsBtn=burgerActionsBtn?{text:burgerActionsBtn.textContent,href:burgerActionsBtn.getAttribute('href')}:'not found';
-      var footerNav=Array.prototype.map.call(document.querySelectorAll('.footer_nav-link__LFUNG'),function(a){return {text:a.textContent,href:a.getAttribute('href'),tag:a.tagName};});
-      out.footerNav=footerNav;
       var footerSocials=Array.prototype.map.call(document.querySelectorAll('.footer_social-link__2uQBq'),function(a){return {text:a.textContent,href:a.getAttribute('href')};});
       out.footerSocials=footerSocials;
       var footerSublinks=Array.prototype.map.call(document.querySelectorAll('.footer_sublinks__Pj_ed *'),function(a){return a.textContent;});
@@ -199,6 +210,11 @@ const server = http.createServer((req, res) => {
         out.houseTransform=hs.transform;out.houseTopCss=hs.top;out.houseHeightCss=hs.height;
         var img=house.querySelector('img');
         if(img){var ir=img.getBoundingClientRect();var is=getComputedStyle(img);
+          // NOTE: imgRect/visiblePhotoRect/visibleInViewportPx are NOT stable run to
+          // run -- this hero tween has not settled by the time buildProbeOutput()
+          // measures, so top flips between ~639 and ~471 across identical runs
+          // (measured: 639,471,639,639,471). Do not treat a change in these three
+          // as a regression signal on its own; re-run before believing a diff.
           out.imgRect={top:Math.round(ir.top),bottom:Math.round(ir.bottom),height:Math.round(ir.height)};
           out.imgObjectPosition=is.objectPosition;out.imgNaturalSize=img.naturalWidth+'x'+img.naturalHeight;
           // object-fit:contain visible-pixel rect (element box != visible photo content)
@@ -491,7 +507,61 @@ const server = http.createServer((req, res) => {
         out.amenitiesAnim.rootFound=false;
       }
       var locCard=document.getElementById('kv-location-card');
-      function finishProbe(){document.title='PROBE::'+JSON.stringify(out);}
+      // Does clicking this anchor actually navigate, or does something cancel it?
+      // Reporting tagName here would prove nothing: next/link renders a plain <a>
+      // itself -- see 2619-b8db57ac19da49ac.js, (0,o.jsx)("a",{...k,...Q,...}) --
+      // so BOTH branches of the href.startsWith('#') ternary yield tagName 'A'.
+      // The real, observable difference is behavioural: Link's onClick calls
+      // preventDefault() so it can route client-side; a plain <a> does not.
+      // A document-level BUBBLE listener runs after the element's own handlers,
+      // so it can read the flag -- and it must preventDefault() itself as well,
+      // or a real cross-page anchor would navigate and destroy the probe run.
+      //   false -> nothing cancelled the default: a real anchor that will really
+      //            navigate. Correct for the cross-page 'pricing.html' links.
+      //   true  -> next/link intercepted the click. Correct for the '#' anchors,
+      //            and a FAILURE of the anchor fallback if seen on 'pricing.html'.
+      // NOTE: if a cross-page link is still a next/link, its click dispatches a
+      // real app-router navigation. In this static capture the RSC fetch fails and
+      // the router falls back to a hard location change, replacing the document --
+      // so the run comes back with no PROBE:: title at all. A vanished title
+      // during this sweep IS the failure signal, not a flake.
+      function navBehaviour(a){
+        if(!a) return 'no element';
+        var prevented=null;
+        function h(e){ prevented=e.defaultPrevented; e.preventDefault(); }
+        document.addEventListener('click',h,false);
+        try{ a.dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true})); }
+        catch(err){ prevented='threw: '+err; }
+        document.removeEventListener('click',h,false);
+        return prevented;
+      }
+      function navList(sel,descend){
+        return Array.prototype.map.call(document.querySelectorAll(sel),function(n){
+          var a=descend?n.querySelector('a'):n;
+          return a?{text:a.textContent,href:a.getAttribute('href'),prevented:navBehaviour(a)}:null;
+        });
+      }
+      function finishProbe(){
+        // Clicking a '#' anchor can scroll the page, so this runs dead last,
+        // after every scroll-dependent measurement is already recorded in out.
+        var scrollBefore=window.scrollY;
+        out.navItems=navList('.header_nav-item__Wn05d',true);
+        out.burgerItems=navList('.burger-menu_nav-item__mCA9u',true);
+        out.footerNav=navList('.footer_nav-link__LFUNG',false);
+        // The header logo is a fourth cross-page link, and the one render site
+        // that still hard-coded next/link. Same assertion: it must be a real
+        // anchor, or it cannot carry a visitor from pricing.html back home.
+        var hlA=document.querySelector('.header_logo__LO_Jk a');
+        out.headerLogoLink=hlA?{href:hlA.getAttribute('href'),prevented:navBehaviour(hlA)}:'not found';
+        out.navProbeScroll={before:scrollBefore,after:window.scrollY};
+        if(window.scrollY!==scrollBefore){window.scrollTo(0,scrollBefore);}
+        // Snapshotted here, not near the top of buildProbeOutput(): the probe
+        // keeps running for roughly two more seconds after that point (a FAQ
+        // click sequence, two form submits, a MutationObserver window), and
+        // errors thrown in that window have to reach the output as well.
+        out.pageErrors=(window.__kvErrs||[]).slice();
+        document.title='PROBE::'+JSON.stringify(out);
+      }
       if(locCard){
         var locBox=locCard.querySelector('.kv-overview__card-video');
         var locVideo=locBox?locBox.querySelector('.kv-overview__card-video-el'):null;
@@ -810,10 +880,7 @@ const server = http.createServer((req, res) => {
       }
       realTicks(120);
     },5000)</script></body>`;
-    // page-level error capture, injected first thing in <head> so it sees
-    // failures in the page's own inline scripts, not just the probe's.
-    const errCatch = "<script>window.__kvErrs=[];window.addEventListener('error',function(e){window.__kvErrs.push(String(e.message||e.type)+' @ '+String(e.lineno||'?'));});</script>";
-    const patched = html.replace("<head>", "<head>" + errCatch).replace("</body>", probe);
+    const patched = html.replace("<head>", "<head>" + ERR_CATCH).replace("</body>", probe);
     res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
     res.end(patched);
     return;
@@ -834,10 +901,15 @@ const server = http.createServer((req, res) => {
         out.hasHorizontalScroll=document.documentElement.scrollWidth>document.documentElement.clientWidth+1;
         out.brokenImages=Array.prototype.map.call(document.images,function(i){return (i.complete&&i.naturalWidth>0)?null:(i.getAttribute('src')||'?');}).filter(Boolean);
         out.imageCount=document.images.length;
+        // Without this, the page could throw on every load and the probe would
+        // still report a clean bill of health. No nav/footer assertions here on
+        // purpose: pricing.html is a standalone document, not a page carrying
+        // the site header -- its only navigation is a back-link to index.html.
+        out.pageErrors=(window.__kvErrs||['collector missing']);
         document.title='PROBE::'+JSON.stringify(out);
       },2000)</script></body>`;
     res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
-    res.end(html.replace("</body>", probe));
+    res.end(html.replace("<head>", "<head>" + ERR_CATCH).replace("</body>", probe));
     return;
   }
 
