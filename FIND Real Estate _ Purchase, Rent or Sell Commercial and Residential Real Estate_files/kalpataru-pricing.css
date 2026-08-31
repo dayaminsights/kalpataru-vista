@@ -2,24 +2,57 @@
    kalpataru-pricing.css
    Stylesheet for pricing.html ONLY -- Dayam Insights' proposal to the client.
 
-   STANDALONE BY DESIGN. This file is never appended to kalpataru-brand.css and
-   is never linked from index.html or the FIND-named snapshot. pricing.html
-   loads no React, no bundle chunk and no GSAP, so nothing here can reach the
-   main site and the hydration rules in CLAUDE.md do not apply to it.
+   STANDALONE BY DESIGN. Never appended to kalpataru-brand.css, never linked
+   from index.html or the FIND-named snapshot. pricing.html loads no React, no
+   bundle chunk and no GSAP, so nothing here can reach the main site and the
+   hydration rules in CLAUDE.md do not apply to it.
 
    Every class is prefixed kvp- (kalpataru pricing) so a stray copy-paste into
    the brand sheet would still not collide with the site's kv- classes.
 
-   DESIGN NOTE, for whoever extends this.
-   The page is set as a document, not a landing page: the register is the
-   specification sheet the live site already uses to sell an apartment --
-   hairline rules, tracked micro-labels, values in the serif, one alignment
-   axis. Section heads are clause heads: a rule across the full shell, a folio
-   numeral hanging in the left rail, a label sitting on the rule. Later
-   sections should reuse the primitives below (.kvp-specs, .kvp-cards,
-   .kvp-list, .kvp-tablewrap, .kvp-price, .kvp-sources) rather than inventing
-   a bespoke treatment per section. Spend nothing on decoration; the rhythm is
-   the design.
+   ---------------------------------------------------------------------------
+   THE SYSTEM, for whoever extends this.
+
+   This page is the sibling of the World of Anush proposal, which is Dayam
+   Insights' house style for a client proposal. It is a CARD SYSTEM: warm-white
+   surfaces floating on cream, each with a 1px hairline, a small radius and a
+   soft shadow. Accent borders are reserved for the two rows that matter -- the
+   spotlight tier and the "us" market row. It is NOT a hairline specification
+   sheet; an earlier draft of this file was, and was replaced.
+
+   Component inventory. Sections 4-10 should REUSE these, not reinvent them.
+   The right-hand column is the name the design spec uses for each.
+
+     .kvp-feature ................. feature-block   (image beside copy)
+       .kvp-feature__media ........ feature-media   (5/7 portrait, tan ring)
+       .kvp-feature--plan ......... drawing mode: media goes full width ACROSS
+                                    the card instead of beside it. Use for
+                                    dense line drawings (floor plates, site
+                                    layouts, maps) -- they are illegible in a
+                                    190px rail. Photographs use the default.
+       .kvp-feature__copy ......... feature-copy    (tag / name / desc / hint)
+     .kvp-market-row .............. market-row      (+ --us for our row)
+     .kvp-impact-row .............. impact-row      (tan numeral + claim)
+     .kvp-tier .................... tier-card       (+ .kvp-receipt/.kvp-rline)
+     .kvp-tier--spotlight ......... price-spotlight (the Signature tier)
+     .kvp-cta-final ............... cta-final       (closing panel)
+     .kvp-glance .................. the at-a-glance strip under the cover
+     .kvp-cover / .kvp-back ....... title page and the fixed back-link
+     .kvp-panel ................... generic tinted panel (perks, add-ons)
+     .kvp-addon-row ............... label left, price right, baseline aligned
+     .kvp-card / .kvp-cards ....... generic surface + auto-fit grid
+     .kvp-specs ................... key/value rows (terms, tier contents)
+     .kvp-list .................... tan-marked checklist
+     .kvp-tablewrap / .kvp-table .. every table on the page sits in the wrapper
+     .kvp-fn / .kvp-sources ....... superscript citation + numbered source list
+
+   ACCENT DISCIPLINE. Tan is the single accent and is spent on exactly four
+   things: the spotlight tier, the "us" market row, the impact numerals, and
+   the image rings. Rust is the page's one alert colour and is budgeted for
+   ONE element on the whole page -- it is currently UNSPENT. The hook is
+   .kvp-impact-row--alert, intended for the single figure that states the
+   problem being solved. Do not spend it twice, and do not add a colour that
+   is not mixed from the seven brand tokens.
    =========================================================================== */
 
 /* --- tokens ------------------------------------------------------------- */
@@ -41,11 +74,30 @@
 /* Derived values. Nothing below this block uses a raw colour: every tint is
    mixed from the seven tokens above, so a palette change propagates. */
 :root{
+  /* Card surface. Not pure #fff: a hair of cream keeps the surfaces inside
+     the warm palette, so a white card does not read as a hole in the page. */
+  --kvp-surface:color-mix(in srgb,var(--kv-cream) 16%,white);
+
+  /* Card hairline. The spec calls for a cream-deep border, but cream-deep
+     (#f1f1ef) is a COOL near-white and disappears against cream -- the cards
+     would read as shadows with no edge. Warmed with a trace of brown so the
+     edge is actually drawn while staying as quiet as the spec intends. */
+  --kvp-border:color-mix(in srgb,var(--kv-brown) 15%,var(--kv-cream-deep));
+  --kvp-border-soft:color-mix(in srgb,var(--kv-brown) 9%,var(--kv-cream-deep));
+
   --kvp-rule:color-mix(in srgb,var(--kv-tan) 62%,transparent);       /* hairlines */
   --kvp-rule-soft:color-mix(in srgb,var(--kv-tan) 34%,transparent);  /* table rows */
-  --kvp-muted:color-mix(in srgb,var(--kv-ink) 72%,var(--kv-cream));  /* secondary text */
-  --kvp-paper:color-mix(in srgb,var(--kv-cream) 62%,white);          /* card ground */
+
+  /* MEASURED: 72% ink over cream clears AA for body-size text. Do not lighten. */
+  --kvp-muted:color-mix(in srgb,var(--kv-ink) 72%,var(--kv-cream));
+
   --kvp-ground:var(--kv-cream);   /* the ground a section sits on; bands override */
+
+  --kvp-shadow:0 1px 2px color-mix(in srgb,var(--kv-ink-deep) 5%,transparent),
+               0 8px 24px color-mix(in srgb,var(--kv-ink-deep) 7%,transparent);
+  --kvp-shadow-lift:0 10px 32px color-mix(in srgb,var(--kv-brown) 18%,transparent);
+  --kvp-radius:14px;
+  --kvp-radius-sm:10px;
 
   /* Reading measures, derived from --kv-measure so the token still governs.
      MEASURED: ch computes at .666em in this stack, so a bare 68ch runs about
@@ -56,22 +108,20 @@
   --kvp-measure:calc(var(--kv-measure) * .78);
   --kvp-measure-lede:calc(var(--kv-measure) * .66);
 
-  --kvp-shell:78rem;                        /* outer measure of the document */
-  --kvp-rail:clamp(3rem,5.5vw,5rem);        /* left margin rail: folio numerals */
-  --kvp-gutter:clamp(1rem,2.6vw,2.5rem);    /* rail to content */
+  --kvp-shell:70rem;                        /* outer measure of the document */
+  --kvp-gutter:clamp(1rem,2.6vw,2rem);
 
   --kvp-micro:clamp(.66rem,.62rem + .12vw,.74rem);
   --kvp-small:clamp(.82rem,.78rem + .16vw,.92rem);
-  --kvp-body:clamp(1rem,.95rem + .22vw,1.1rem);
-  --kvp-lede:clamp(1.15rem,1.02rem + .58vw,1.5rem);
-  --kvp-h3:clamp(1.1rem,1rem + .4vw,1.32rem);
-  --kvp-h2:clamp(1.85rem,1.35rem + 2.1vw,3.3rem);
-  --kvp-h1:clamp(2.9rem,1.9rem + 5vw,6rem);
-  --kvp-folio:clamp(1.5rem,1.1rem + 1.6vw,2.6rem);
+  --kvp-body:clamp(1rem,.95rem + .22vw,1.06rem);
+  --kvp-lede:clamp(1.1rem,1rem + .5vw,1.4rem);
+  --kvp-h3:clamp(1.05rem,.98rem + .34vw,1.24rem);
+  --kvp-h2:clamp(1.7rem,1.35rem + 1.5vw,2.6rem);
+  --kvp-h1:clamp(2.6rem,1.8rem + 4.2vw,5rem);
 
   --kvp-track:.13em;   /* tracking on uppercase micro-labels */
-  --kvp-gap:clamp(1rem,2.4vw,1.75rem);
-  --kvp-section-y:clamp(3.5rem,8vw,7rem);
+  --kvp-gap:clamp(1rem,2.2vw,1.5rem);
+  --kvp-section-y:clamp(3rem,7vw,5.5rem);
 }
 
 /* --- type --------------------------------------------------------------- */
@@ -162,8 +212,7 @@ a{color:inherit}
   padding-inline:var(--kv-pad);
 }
 
-/* Tracked uppercase micro-label. The page's only small-caps voice: eyebrows,
-   spec keys, table heads, letterhead labels, card meta. */
+/* Tracked uppercase micro-label: eyebrows, spec keys, table heads, card meta. */
 .kvp-eyebrow{
   margin:0;
   font-size:var(--kvp-micro);
@@ -174,7 +223,17 @@ a{color:inherit}
 }
 .kvp-eyebrow--light{color:var(--kv-tan)}
 
-/* Reading measure for running prose. */
+/* Section kicker: the eyebrow that sits above an h2. */
+.kvp-kicker{
+  display:block;
+  margin:0 0 .55rem;
+  font-size:var(--kvp-micro);
+  font-weight:700;
+  letter-spacing:var(--kvp-track);
+  text-transform:uppercase;
+  color:var(--kv-tan);
+}
+
 .kvp-prose{max-width:var(--kvp-measure)}
 .kvp-lede{
   max-width:var(--kvp-measure-lede);
@@ -183,11 +242,10 @@ a{color:inherit}
   color:var(--kv-ink-deep);
   letter-spacing:-.005em;
 }
-
 .kvp-note{
   max-width:var(--kvp-measure);
   font-size:var(--kvp-small);
-  line-height:1.55;
+  line-height:1.6;
   color:var(--kvp-muted);
 }
 
@@ -201,50 +259,103 @@ a{color:inherit}
   line-height:1.05;
   color:var(--kv-ink-deep);
   letter-spacing:-.015em;
+  font-variant-numeric:tabular-nums;
 }
 /* The rupee sign never comes from Instrument Sans (see the @font-face note).
    Wrapping it lets the fallback glyph be nudged onto the same optical size as
-   the digits beside it. */
+   the digits beside it. Use on EVERY price:
+   <span class="kvp-rupee">&#8377;</span>&#8201;1,38,000 */
 .kvp-rupee{
   font-size:.86em;
   letter-spacing:.02em;
   padding-inline-end:.06em;
 }
 
-/* Small tag, e.g. a tier flagged as the one most clients take. */
+/* Small pill tag. */
 .kvp-tag{
   display:inline-block;
-  padding:.25em .7em .3em;
-  border:1px solid var(--kvp-rule);
+  padding:.25em .75em .3em;
+  border:1px solid var(--kv-tan);
   border-radius:999px;
   font-size:var(--kvp-micro);
-  font-weight:600;
+  font-weight:700;
   letter-spacing:var(--kvp-track);
   text-transform:uppercase;
   color:var(--kv-brown);
   white-space:nowrap;
 }
+/* Solid tag -- the spotlight tier's "most picked". */
 .kvp-tag--accent{
   border-color:transparent;
-  background:var(--kv-ink-deep);
-  color:var(--kv-cream);
+  background:var(--kv-tan);
+  color:var(--kv-ink-deep);
 }
 
-/* Hairline key/value rows. The page's workhorse: used for the homepage
-   breakdown here, and for terms, tier contents and volume steps later. */
+/* Generic surface + auto-fit grid. */
+.kvp-cards{
+  display:grid;
+  gap:var(--kvp-gap);
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,16rem),1fr));
+}
+.kvp-cards--wide{grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr))}
+.kvp-cards--three{grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr))}
+.kvp-card{
+  background:var(--kvp-surface);
+  border:1px solid var(--kvp-border);
+  border-radius:var(--kvp-radius);
+  box-shadow:var(--kvp-shadow);
+  padding:clamp(1.1rem,2.2vw,1.6rem);
+  display:flex;
+  flex-direction:column;
+  gap:.6rem;
+}
+.kvp-card__title{font-size:var(--kvp-h3);line-height:1.25;color:var(--kv-ink-deep)}
+.kvp-card__text{font-size:var(--kvp-small);line-height:1.6;color:var(--kvp-muted);margin:0}
+
+/* Tinted panel: perks box, add-on box. Ground, no shadow -- it recedes. */
+.kvp-panel{
+  background:var(--kv-cream-deep);
+  border:1px solid var(--kvp-border-soft);
+  border-radius:var(--kvp-radius);
+  padding:clamp(1.25rem,3vw,1.75rem);
+}
+.kvp-panel--dashed{border-style:dashed;border-color:var(--kv-tan)}
+
+/* Label left, figure right, baseline aligned. Add-ons, volume steps. */
+.kvp-addon-rows{display:flex;flex-direction:column;gap:.6rem}
+.kvp-addon-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:1rem;
+  padding:.85rem 1rem;
+  background:var(--kvp-surface);
+  border:1px solid var(--kvp-border);
+  border-radius:var(--kvp-radius-sm);
+}
+.kvp-addon-row__name{font-size:var(--kvp-small);font-weight:600}
+.kvp-addon-row__price{
+  font-family:var(--kv-serif);
+  font-size:1rem;
+  color:var(--kv-brown);
+  white-space:nowrap;
+  font-variant-numeric:tabular-nums;
+}
+
+/* Hairline key/value rows: terms, tier contents, volume steps. */
 .kvp-specs{margin:0;padding:0}
 .kvp-specs__row{
   display:grid;
   grid-template-columns:1fr;
   gap:.3rem var(--kvp-gutter);
-  padding:1.15rem 0;
+  padding:1.1rem 0;
   border-top:1px solid var(--kvp-rule-soft);
 }
 .kvp-specs__row:first-child{border-top-color:var(--kvp-rule)}
 .kvp-specs__key{
   margin:0;
   font-size:var(--kvp-micro);
-  font-weight:600;
+  font-weight:700;
   letter-spacing:var(--kvp-track);
   text-transform:uppercase;
   color:var(--kv-brown);
@@ -254,7 +365,7 @@ a{color:inherit}
 .kvp-specs__val>p{margin:0 0 .5em}
 .kvp-specs__val>p:last-child{margin-bottom:0}
 @media(min-width:768px){
-  .kvp-specs__row{grid-template-columns:minmax(9rem,15rem) 1fr}
+  .kvp-specs__row{grid-template-columns:minmax(9rem,14rem) 1fr}
 }
 
 /* Checklist. Tan mark, no bullet glyph, hanging indent. */
@@ -273,27 +384,8 @@ a{color:inherit}
   height:1px;
   background:var(--kv-tan);
 }
-
-/* Card grid. One primitive for the feature cards, benchmark cards and tier
-   cards that later sections need -- change the min track, not the class. */
-.kvp-cards{
-  display:grid;
-  gap:var(--kvp-gap);
-  grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr));
-}
-.kvp-cards--wide{grid-template-columns:repeat(auto-fit,minmax(min(100%,21rem),1fr))}
-.kvp-card{
-  background:var(--kvp-paper);
-  border:1px solid var(--kvp-rule-soft);
-  border-radius:.9rem;
-  padding:clamp(1.25rem,2.4vw,1.9rem);
-  display:flex;
-  flex-direction:column;
-  gap:.85rem;
-}
-.kvp-card--flag{border-color:var(--kv-tan);box-shadow:inset 0 0 0 1px var(--kv-tan)}
-.kvp-card__title{font-size:var(--kvp-h3);line-height:1.25;color:var(--kv-ink-deep)}
-.kvp-card__text{font-size:var(--kvp-small);line-height:1.55;color:var(--kvp-muted)}
+.kvp-list--tight>li{font-size:var(--kvp-small);line-height:1.6;color:var(--kvp-muted)}
+.kvp-list strong{color:var(--kv-ink);font-weight:600}
 
 /* HARD RULE: every table on this page sits inside .kvp-tablewrap. Wide tables
    scroll inside themselves; the page body never scrolls sideways. The paired
@@ -328,7 +420,7 @@ a{color:inherit}
   text-align:left;
 }
 .kvp-table th{
-  font-weight:600;
+  font-weight:700;
   font-size:var(--kvp-micro);
   letter-spacing:var(--kvp-track);
   text-transform:uppercase;
@@ -350,17 +442,17 @@ a{color:inherit}
    numbered source list at the foot of its own section. */
 .kvp-fn{
   font-size:.62em;
-  font-weight:600;
+  font-weight:700;
   vertical-align:.45em;
   line-height:0;
   margin-left:.15em;
   text-decoration:none;
   color:var(--kv-brown);
 }
-.kvp-fn:hover,.kvp-fn:focus-visible{color:var(--kv-rust)}
+.kvp-fn:hover,.kvp-fn:focus-visible{color:var(--kv-tan)}
 .kvp-sources{
-  margin:clamp(1.5rem,3vw,2.25rem) 0 0;
-  padding:1.1rem 0 0 1.4rem;
+  margin:clamp(1.25rem,2.5vw,1.75rem) 0 0;
+  padding:1rem 0 0 1.4rem;
   border-top:1px solid var(--kvp-rule-soft);
   font-size:var(--kvp-micro);
   line-height:1.6;
@@ -377,22 +469,22 @@ a{color:inherit}
    both, and reads as a bookmark on a document rather than a floating button. */
 .kvp-back{
   position:fixed;
-  top:clamp(.75rem,2vw,1.5rem);
-  left:clamp(.75rem,2vw,1.5rem);
+  top:clamp(.75rem,2vw,1.25rem);
+  left:clamp(.75rem,2vw,1.25rem);
   z-index:20;
   display:inline-flex;
   align-items:center;
   gap:.4rem;
   padding:.5rem .95rem .5rem .7rem;
-  border:1px solid var(--kvp-rule);
+  border:1px solid var(--kvp-border);
   border-radius:999px;
   background:var(--kv-cream);
   color:var(--kv-ink-deep);
   font-size:var(--kvp-small);
-  font-weight:500;
+  font-weight:600;
   line-height:1;
   text-decoration:none;
-  box-shadow:0 1px 12px color-mix(in srgb,var(--kv-ink-deep) 16%,transparent);
+  box-shadow:var(--kvp-shadow);
   transition:color .2s ease,border-color .2s ease;
 }
 .kvp-back:hover,.kvp-back:focus-visible{color:var(--kv-brown);border-color:var(--kv-tan)}
@@ -406,15 +498,15 @@ a{color:inherit}
 
 /* --- cover -------------------------------------------------------------- */
 
-/* Title page. Full-bleed photograph, warm scrim, everything set on the same
-   left axis the rest of the document uses. */
+/* Title page. Full-bleed photograph, warm scrim, everything on the document's
+   left axis. */
 .kvp-cover{
   position:relative;
   isolation:isolate;
   display:flex;
   align-items:flex-end;
-  min-height:min(92svh,54rem);
-  padding-block:clamp(7rem,16vw,10rem) clamp(2.5rem,6vw,4.5rem);
+  min-height:min(88svh,46rem);
+  padding-block:clamp(6rem,14vw,9rem) clamp(2.5rem,6vw,4rem);
   background:var(--kv-ink-deep);
   color:var(--kv-cream);
   overflow:hidden;
@@ -425,11 +517,11 @@ a{color:inherit}
   width:100%;
   height:100%;
   object-fit:cover;
-  object-position:center 62%;
-  /* The plate is a bright, high-chroma garden photograph. Pulled down and
-     warmed so it sits under a cream-and-tan document as texture rather than
-     fighting it for attention. */
-  filter:saturate(.42) contrast(1.04) brightness(.62) sepia(.18);
+  /* The plate is a wide exterior render: four towers standing over the golf
+     course, horizon low. Held just above centre so the towers keep their full
+     height and the green stays in frame under the type. */
+  object-position:center 42%;
+  filter:saturate(.55) contrast(1.03) brightness(.68) sepia(.14);
   z-index:-2;
 }
 .kvp-cover__scrim{
@@ -439,11 +531,11 @@ a{color:inherit}
   background:
     linear-gradient(to top,
       color-mix(in srgb,var(--kv-ink-deep) 94%,transparent) 0%,
-      color-mix(in srgb,var(--kv-ink-deep) 72%,transparent) 42%,
-      color-mix(in srgb,var(--kv-ink-deep) 46%,transparent) 100%),
+      color-mix(in srgb,var(--kv-ink-deep) 70%,transparent) 45%,
+      color-mix(in srgb,var(--kv-ink-deep) 40%,transparent) 100%),
     linear-gradient(to right,
-      color-mix(in srgb,var(--kv-ink-deep) 60%,transparent),
-      transparent 72%);
+      color-mix(in srgb,var(--kv-ink-deep) 55%,transparent),
+      transparent 70%);
 }
 .kvp-cover__inner{position:relative}
 .kvp-cover__title{
@@ -454,107 +546,122 @@ a{color:inherit}
   color:var(--kv-cream);
 }
 .kvp-cover__sub{
-  max-width:44ch;
-  margin:clamp(1rem,2.5vw,1.5rem) 0 0;
+  max-width:46ch;
+  margin:clamp(.9rem,2.2vw,1.25rem) 0 0;
   font-size:var(--kvp-lede);
   line-height:1.42;
-  color:color-mix(in srgb,var(--kv-cream) 84%,transparent);
+  color:color-mix(in srgb,var(--kv-cream) 86%,transparent);
 }
 .kvp-cover__link{
   display:inline-flex;
   align-items:center;
   gap:.55rem;
-  margin-top:clamp(1.25rem,3vw,2rem);
-  padding-bottom:.3rem;
-  border-bottom:1px solid var(--kv-tan);
+  margin-top:clamp(1.25rem,3vw,1.75rem);
+  padding:.7rem 1.3rem;
+  border-radius:999px;
+  background:var(--kv-tan);
+  color:var(--kv-ink-deep);
   font-size:var(--kvp-small);
-  font-weight:600;
-  letter-spacing:.02em;
+  font-weight:700;
+  letter-spacing:.01em;
   text-decoration:none;
-  color:var(--kv-cream);
-  transition:color .2s ease,border-color .2s ease;
+  transition:background .2s ease;
 }
-.kvp-cover__link:hover,.kvp-cover__link:focus-visible{color:var(--kv-tan)}
+.kvp-cover__link:hover,.kvp-cover__link:focus-visible{
+  background:color-mix(in srgb,var(--kv-tan) 78%,white);
+}
 .kvp-cover__link svg{width:.95em;height:.95em;flex:none;transition:transform .2s ease}
 .kvp-cover__link:hover svg{transform:translateX(3px)}
 
-/* Letterhead: who sent this, and how to reach them. Ruled row, label over
-   value, same grammar as the spec rows further down. */
-.kvp-letterhead{
-  display:grid;
-  gap:1.1rem var(--kvp-gutter);
-  grid-template-columns:repeat(auto-fit,minmax(min(100%,11rem),1fr));
-  margin-top:clamp(2.5rem,6vw,4rem);
-  padding-top:1.25rem;
-  border-top:1px solid color-mix(in srgb,var(--kv-tan) 45%,transparent);
+/* Contact bar: who sent this, and how to reach them. Translucent chips, so
+   they sit on the photograph without a second panel. */
+.kvp-contact{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.5rem;
+  margin-top:clamp(1.5rem,4vw,2.25rem);
 }
-.kvp-letterhead__label{
-  display:block;
-  margin-bottom:.3rem;
+.kvp-contact__item{
+  display:inline-flex;
+  align-items:baseline;
+  gap:.45rem;
+  padding:.5rem .9rem;
+  border:1px solid color-mix(in srgb,var(--kv-cream) 32%,transparent);
+  border-radius:999px;
+  background:color-mix(in srgb,var(--kv-cream) 12%,transparent);
+  color:var(--kv-cream);
+  font-size:var(--kvp-small);
+  line-height:1.3;
+  text-decoration:none;
+  overflow-wrap:anywhere;
+  transition:background .2s ease,border-color .2s ease;
+}
+a.kvp-contact__item:hover,a.kvp-contact__item:focus-visible{
+  background:color-mix(in srgb,var(--kv-cream) 22%,transparent);
+  border-color:var(--kv-tan);
+}
+.kvp-contact__tag{
   font-size:var(--kvp-micro);
-  font-weight:600;
+  font-weight:700;
+  letter-spacing:var(--kvp-track);
+  text-transform:uppercase;
+  color:var(--kv-tan);
+  flex:none;
+}
+.kvp-contact__item--lead{font-family:var(--kv-serif);font-size:1rem}
+
+/* --- glance strip ------------------------------------------------------- */
+
+/* Summary band straight under the cover: four small cards, label over value. */
+.kvp-glance{
+  background:var(--kv-cream);
+  padding-block:clamp(2rem,4.5vw,3rem);
+}
+.kvp-glance__grid{
+  display:grid;
+  gap:var(--kvp-gap);
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,12rem),1fr));
+}
+.kvp-glance__item{
+  background:var(--kvp-surface);
+  border:1px solid var(--kvp-border);
+  border-radius:var(--kvp-radius-sm);
+  box-shadow:var(--kvp-shadow);
+  padding:1rem 1.1rem 1.15rem;
+}
+.kvp-glance__label{
+  margin:0 0 .45rem;
+  font-size:var(--kvp-micro);
+  font-weight:700;
   letter-spacing:var(--kvp-track);
   text-transform:uppercase;
   color:var(--kv-tan);
 }
-.kvp-letterhead__val{
-  display:block;
-  font-size:var(--kvp-small);
-  line-height:1.35;
-  color:var(--kv-cream);
-  text-decoration:none;
-  overflow-wrap:anywhere;
-}
-a.kvp-letterhead__val{transition:color .2s ease}
-a.kvp-letterhead__val:hover,a.kvp-letterhead__val:focus-visible{color:var(--kv-tan)}
-
-/* --- glance strip ------------------------------------------------------- */
-
-/* The summary band, straight under the cover: four ruled cells, label over a
-   value set in the serif. Wraps to two columns, then one, without leaving an
-   orphan rule anywhere. */
-.kvp-glance{
-  background:var(--kv-cream);
-  padding-block:clamp(2.25rem,5vw,3.5rem);
-}
-.kvp-glance__grid{
-  display:grid;
-  gap:1.5rem var(--kvp-gutter);
-  grid-template-columns:repeat(auto-fit,minmax(min(100%,13rem),1fr));
-}
-.kvp-glance__item{
-  padding-top:.9rem;
-  border-top:1px solid var(--kvp-rule);
-}
 .kvp-glance__val{
-  margin:.45rem 0 0;
-  font-family:var(--kv-serif);
-  font-weight:300;
-  font-optical-sizing:auto;
-  font-size:clamp(1.05rem,.95rem + .55vw,1.4rem);
-  line-height:1.22;
-  letter-spacing:-.01em;
+  margin:0;
+  font-size:var(--kvp-small);
+  font-weight:600;
+  line-height:1.4;
   color:var(--kv-ink-deep);
   text-wrap:balance;
 }
 
 /* --- section system ----------------------------------------------------- */
 
-/* Generic rhythm. A section is: a rule, a folio numeral in the rail, a label
-   on the rule, then everything else on one left axis. Bands alternate ground
-   through --kvp-ground so cards and table affordances keep matching. */
+/* A section is: a kicker, an h2, an optional note, then its components.
+   Bands alternate ground through --kvp-ground so table affordances keep
+   matching the surface behind them. */
 .kvp-section{
   padding-block:var(--kvp-section-y);
   background:var(--kvp-ground);
 }
-.kvp-section--band{
-  --kvp-ground:var(--kv-cream-deep);
-  --kvp-paper:color-mix(in srgb,var(--kv-cream-deep) 55%,white);
-}
+.kvp-section--band{--kvp-ground:var(--kv-cream-deep)}
 .kvp-section--dark{
   --kvp-ground:var(--kv-ink-deep);
-  --kvp-paper:color-mix(in srgb,var(--kv-ink-deep) 88%,var(--kv-cream));
-  --kvp-muted:color-mix(in srgb,var(--kv-cream) 72%,transparent);
+  --kvp-surface:color-mix(in srgb,var(--kv-ink-deep) 86%,var(--kv-cream));
+  --kvp-border:color-mix(in srgb,var(--kv-tan) 30%,transparent);
+  --kvp-border-soft:color-mix(in srgb,var(--kv-tan) 18%,transparent);
+  --kvp-muted:color-mix(in srgb,var(--kv-cream) 78%,transparent);
   --kvp-rule:color-mix(in srgb,var(--kv-tan) 55%,transparent);
   --kvp-rule-soft:color-mix(in srgb,var(--kv-tan) 28%,transparent);
   color:var(--kv-cream);
@@ -569,44 +676,17 @@ a.kvp-letterhead__val:hover,a.kvp-letterhead__val:focus-visible{color:var(--kv-t
 .kvp-section--dark .kvp-table th,
 .kvp-section--dark .kvp-table caption{color:var(--kv-tan)}
 
-.kvp-section__head{
-  display:grid;
-  grid-template-columns:auto 1fr;
-  align-items:baseline;
-  gap:0 .75rem;
-  padding-top:.85rem;
-  border-top:1px solid var(--kvp-rule);
-  margin-bottom:clamp(1.5rem,3.5vw,2.75rem);
-}
-.kvp-section__folio{
-  font-family:var(--kv-serif);
-  font-weight:300;
-  font-optical-sizing:auto;
-  font-size:var(--kvp-folio);
-  line-height:1;
-  color:var(--kv-tan);
-  letter-spacing:.01em;
-}
-
-/* One alignment axis: on wide screens the folio moves out into the rail and
-   the label, heading and body all start at the same left edge. */
-@media(min-width:900px){
-  .kvp-section__head{
-    grid-template-columns:var(--kvp-rail) 1fr;
-    gap:0 var(--kvp-gutter);
-  }
-  .kvp-section__inner{padding-left:calc(var(--kvp-rail) + var(--kvp-gutter))}
-}
+.kvp-section__head{margin-bottom:clamp(1.5rem,3.5vw,2.5rem)}
 
 .kvp-h2{
   font-size:var(--kvp-h2);
-  line-height:1.06;
+  line-height:1.1;
   letter-spacing:-.02em;
   color:var(--kv-ink-deep);
-  max-width:22ch;
+  max-width:24ch;
   text-wrap:balance;
-  margin-bottom:clamp(1.1rem,2.4vw,1.6rem);
 }
+.kvp-h2 + .kvp-lede{margin-top:clamp(.9rem,2vw,1.25rem)}
 .kvp-h3{
   font-size:var(--kvp-h3);
   line-height:1.25;
@@ -615,13 +695,393 @@ a.kvp-letterhead__val:hover,a.kvp-letterhead__val:focus-visible{color:var(--kv-t
 
 /* Vertical rhythm between blocks inside a section, so later sections do not
    each invent their own margins. */
-.kvp-block{margin-top:clamp(2rem,4.5vw,3.25rem)}
-.kvp-block--tight{margin-top:clamp(1.25rem,2.5vw,1.75rem)}
+.kvp-block{margin-top:clamp(1.75rem,4vw,2.75rem)}
+.kvp-block--tight{margin-top:clamp(1rem,2.2vw,1.5rem)}
+
+/* --- feature block ------------------------------------------------------ */
+
+/* The homepage walkthrough. Each block pairs one real asset off the live site
+   with the copy describing that feature, so the reader can check every claim
+   against the page they have already scrolled. */
+.kvp-features{display:flex;flex-direction:column;gap:var(--kvp-gap)}
+
+.kvp-feature{
+  display:grid;
+  grid-template-columns:clamp(140px,17vw,190px) 1fr;
+  gap:clamp(1rem,2.4vw,1.5rem);
+  align-items:center;
+  background:var(--kvp-surface);
+  border:1px solid var(--kvp-border);
+  border-radius:var(--kvp-radius);
+  box-shadow:var(--kvp-shadow);
+  padding:clamp(1rem,2.2vw,1.35rem);
+}
+
+/* Photographic media: portrait plate, cropped, ringed in tan. */
+.kvp-feature__media{
+  position:relative;
+  width:100%;
+  aspect-ratio:5/7;
+  border-radius:var(--kvp-radius-sm);
+  overflow:hidden;
+  box-shadow:0 0 0 2px var(--kv-tan);
+  /* house.webp is a transparent cutout -- without a ground behind it the
+     knocked-out sky would read as a hole in the card. */
+  background:var(--kv-cream-deep);
+}
+.kvp-feature__media img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.kvp-feature__media--contain img{object-fit:contain}
+
+/* Slow drift, for a photograph that benefits from it. Opt in, never default. */
+.kvp-feature__media--drift img{animation:kvp-kenburns 11s ease-in-out infinite alternate}
+@keyframes kvp-kenburns{
+  from{transform:scale(1) translateY(0)}
+  to{transform:scale(1.08) translateY(-2%)}
+}
+
+/* Hover-swap, for the two places where a second asset genuinely shows a
+   second state. Never decorative. */
+.kvp-feature__media--swap{cursor:pointer;outline-offset:3px}
+.kvp-feature__media--swap .kvp-feature__media-alt{opacity:0;transition:opacity .42s ease}
+.kvp-feature__media--swap:hover .kvp-feature__media-alt,
+.kvp-feature__media--swap:focus-visible .kvp-feature__media-alt{opacity:1}
+
+/* DRAWING MODE. Floor plates, site layouts and location maps are wide and
+   dense: in the 190px portrait rail they are unreadable, and a cover crop
+   throws away the legend that makes them worth showing. So the drawing goes
+   full width ACROSS the card, contained on its own ground, with the copy
+   beneath it. Photographs keep the default side-by-side rail. */
+.kvp-feature--plan{grid-template-columns:1fr}
+.kvp-feature--plan .kvp-feature__media{
+  aspect-ratio:16/9;
+  background:var(--kv-cream-deep);
+  box-shadow:inset 0 0 0 1px var(--kvp-border);
+}
+.kvp-feature--plan .kvp-feature__media img{
+  object-fit:contain;
+  padding:clamp(.4rem,1.2vw,.75rem);
+}
+/* The drawing links to the full asset -- a real affordance for something this
+   dense, not decoration. */
+a.kvp-feature__media{display:block;text-decoration:none;transition:box-shadow .2s ease}
+a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
+  box-shadow:inset 0 0 0 1px var(--kv-tan),0 0 0 2px var(--kv-tan);
+}
+
+.kvp-feature__copy{min-width:0}
+.kvp-feature__tag{
+  display:inline-block;
+  margin:0 0 .6rem;
+  padding:.2em .7em .25em;
+  border:1px solid var(--kv-tan);
+  border-radius:999px;
+  font-size:var(--kvp-micro);
+  font-weight:700;
+  letter-spacing:var(--kvp-track);
+  text-transform:uppercase;
+  color:var(--kv-brown);
+}
+.kvp-feature__name{
+  margin:0 0 .35rem;
+  font-family:var(--kv-sans);
+  font-size:clamp(1rem,.95rem + .25vw,1.1rem);
+  font-weight:700;
+  line-height:1.3;
+  color:var(--kv-ink-deep);
+}
+.kvp-feature__desc{
+  margin:0;
+  max-width:var(--kvp-measure);
+  font-size:var(--kvp-small);
+  line-height:1.65;
+  color:var(--kvp-muted);
+}
+.kvp-feature__hint{
+  margin:.6rem 0 0;
+  font-size:var(--kvp-micro);
+  font-weight:700;
+  letter-spacing:.04em;
+  color:var(--kv-brown);
+}
+
+/* Below the phone breakpoint the rail stops being a rail: 140px of image
+   beside 150px of copy crushes both. The block stacks, and the portrait plate
+   is capped so it does not blow up to the full card width. Drawings keep the
+   full width -- that is the whole point of --plan. */
+@media(max-width:640px){
+  .kvp-feature{grid-template-columns:1fr}
+  .kvp-feature__media{max-width:200px}
+  .kvp-feature--plan .kvp-feature__media{max-width:none}
+}
+
+/* --- market row --------------------------------------------------------- */
+
+/* One card per competitor. Our row takes the tan border, the cream-deep ground
+   and no shadow, so it reads as the answer without shouting. */
+.kvp-market{display:flex;flex-direction:column;gap:.75rem}
+.kvp-market-row{
+  background:var(--kvp-surface);
+  border:1px solid var(--kvp-border);
+  border-radius:var(--kvp-radius);
+  box-shadow:var(--kvp-shadow);
+  padding:clamp(1rem,2.2vw,1.25rem);
+}
+.kvp-market-row--us{
+  border:2px solid var(--kv-tan);
+  background:var(--kv-cream-deep);
+  box-shadow:none;
+}
+.kvp-market-row__head{
+  display:grid;
+  grid-template-columns:1fr auto;
+  align-items:start;
+  column-gap:1rem;
+  row-gap:.25rem;
+  margin-bottom:.75rem;
+}
+.kvp-market-row__name{
+  font-size:var(--kvp-small);
+  font-weight:700;
+  line-height:1.35;
+  color:var(--kv-ink-deep);
+}
+.kvp-market-row--us .kvp-market-row__name{
+  font-family:var(--kv-serif);
+  font-weight:300;
+  font-size:1.15rem;
+  color:var(--kv-brown);
+}
+.kvp-market-row__price{
+  font-size:var(--kvp-small);
+  font-weight:600;
+  color:var(--kvp-muted);
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+  text-align:right;
+}
+.kvp-market-row--us .kvp-market-row__price{color:var(--kv-brown);font-weight:700}
+.kvp-market-row__body{display:grid;grid-template-columns:1fr;gap:.75rem 1.5rem}
+@media(min-width:640px){
+  .kvp-market-row__body--split{grid-template-columns:1fr 1fr}
+}
+.kvp-market-row__label{
+  display:block;
+  margin-bottom:.25rem;
+  font-size:var(--kvp-micro);
+  font-weight:700;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:var(--kvp-muted);
+}
+.kvp-market-row__label--win{color:var(--kv-brown)}
+.kvp-market-row__text{
+  margin:0;
+  font-size:var(--kvp-small);
+  line-height:1.6;
+  color:var(--kvp-muted);
+}
+.kvp-market-row__eg{
+  display:block;
+  margin-top:.4rem;
+  font-style:italic;
+  font-size:var(--kvp-micro);
+  opacity:.85;
+}
+
+/* --- impact row --------------------------------------------------------- */
+
+/* A large tan Fraunces numeral, then the claim, key phrase in full ink.
+   One citation line under the group -- never an uncited figure. */
+.kvp-impact{display:flex;flex-direction:column;gap:.6rem}
+.kvp-impact-row{
+  display:flex;
+  align-items:baseline;
+  gap:1rem;
+  padding:.9rem 1.1rem;
+  background:var(--kvp-surface);
+  border:1px solid var(--kvp-border);
+  border-radius:var(--kvp-radius-sm);
+}
+.kvp-impact-row__num{
+  flex:none;
+  min-width:4.5rem;
+  font-family:var(--kv-serif);
+  font-weight:300;
+  font-optical-sizing:auto;
+  font-size:clamp(1.35rem,1.15rem + .7vw,1.75rem);
+  line-height:1.1;
+  letter-spacing:-.015em;
+  color:var(--kv-tan);
+  font-variant-numeric:tabular-nums;
+}
+/* THE PAGE'S ONE RUST ELEMENT. Budgeted, currently unspent. Intended for the
+   single figure that states the problem being solved. Use once. */
+.kvp-impact-row--alert .kvp-impact-row__num{color:var(--kv-rust)}
+.kvp-impact-row__text{
+  margin:0;
+  font-size:var(--kvp-small);
+  line-height:1.6;
+  color:var(--kvp-muted);
+}
+.kvp-impact-row__text strong{color:var(--kv-ink);font-weight:600}
+@media(max-width:520px){
+  .kvp-impact-row{flex-direction:column;gap:.35rem}
+}
+
+/* --- tier cards --------------------------------------------------------- */
+
+.kvp-tiers{
+  display:grid;
+  gap:var(--kvp-gap);
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr));
+}
+.kvp-tier{
+  position:relative;
+  overflow:hidden;
+  background:var(--kvp-surface);
+  border:1px solid var(--kvp-border);
+  border-radius:var(--kvp-radius);
+  box-shadow:var(--kvp-shadow);
+  padding:clamp(1.35rem,2.6vw,1.75rem);
+  display:flex;
+  flex-direction:column;
+}
+/* The 4px bar across the top. Tan into brown -- the palette's own gradient. */
+.kvp-tier::before{
+  content:"";
+  position:absolute;
+  top:0;left:0;right:0;
+  height:4px;
+  background:linear-gradient(90deg,var(--kv-tan),var(--kv-brown));
+}
+.kvp-tier__name{
+  margin:.5rem 0 .15rem;
+  font-size:clamp(1.15rem,1.05rem + .5vw,1.4rem);
+  line-height:1.2;
+  color:var(--kv-ink-deep);
+}
+.kvp-tier__sub{
+  margin:0 0 1rem;
+  font-size:var(--kvp-micro);
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  color:var(--kvp-muted);
+}
+
+/* The spotlight: the Signature tier. Tan border, a cream-deep gradient ground,
+   a real shadow, and the "most picked" tag. */
+.kvp-tier--spotlight{
+  border:2px solid var(--kv-tan);
+  background:linear-gradient(165deg,var(--kv-cream-deep),var(--kvp-surface));
+  box-shadow:var(--kvp-shadow-lift);
+}
+
+/* Receipt: label left, figure right, baseline aligned. */
+.kvp-receipt{display:flex;flex-direction:column;margin-top:auto}
+.kvp-rline{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:.6rem;
+  padding:.5rem 0;
+  font-size:var(--kvp-small);
+  color:var(--kvp-muted);
+}
+.kvp-rline__amt{font-variant-numeric:tabular-nums;white-space:nowrap}
+.kvp-rline--final{
+  margin-top:.5rem;
+  padding-top:1rem;
+  border-top:2px solid var(--kv-tan);
+  font-weight:700;
+  color:var(--kv-ink-deep);
+}
+.kvp-rline--final .kvp-rline__amt{
+  font-family:var(--kv-serif);
+  font-weight:300;
+  font-optical-sizing:auto;
+  font-size:clamp(1.5rem,1.25rem + .9vw,1.9rem);
+  letter-spacing:-.015em;
+  color:var(--kv-brown);
+}
+
+/* --- closing CTA -------------------------------------------------------- */
+
+.kvp-cta-final{
+  background:var(--kv-cream-deep);
+  border:1px solid var(--kvp-border-soft);
+  border-radius:var(--kvp-radius);
+  padding:clamp(2rem,5vw,3rem) clamp(1.25rem,4vw,2.5rem);
+  text-align:center;
+}
+.kvp-cta-final .kvp-h2{max-width:none;margin-inline:auto}
+.kvp-cta-final__sub{
+  max-width:46ch;
+  margin:.75rem auto 0;
+  font-size:var(--kvp-small);
+  line-height:1.6;
+  color:var(--kvp-muted);
+}
+.kvp-cta-buttons{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:.75rem;
+  margin-top:1.5rem;
+}
+.kvp-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:.5rem;
+  padding:.8rem 1.5rem;
+  border:1px solid transparent;
+  border-radius:999px;
+  background:var(--kv-ink-deep);
+  color:var(--kv-cream);
+  font-size:var(--kvp-small);
+  font-weight:700;
+  text-decoration:none;
+  box-shadow:var(--kvp-shadow);
+  transition:background .2s ease,color .2s ease,border-color .2s ease;
+}
+.kvp-btn:hover,.kvp-btn:focus-visible{background:var(--kv-brown)}
+.kvp-btn--secondary{
+  background:transparent;
+  border-color:var(--kv-tan);
+  color:var(--kv-ink-deep);
+  box-shadow:none;
+}
+.kvp-btn--secondary:hover,.kvp-btn--secondary:focus-visible{
+  background:transparent;
+  border-color:var(--kv-brown);
+  color:var(--kv-brown);
+}
+
+/* --- document footer ---------------------------------------------------- */
+
+.kvp-foot{
+  margin-top:clamp(2.5rem,6vw,4rem);
+  padding-top:1.5rem;
+  border-top:1px solid var(--kvp-border);
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
+  gap:.5rem 1.5rem;
+  font-size:var(--kvp-small);
+  color:var(--kvp-muted);
+}
 
 /* --- motion / print ----------------------------------------------------- */
 
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
+  .kvp-feature__media--drift img{animation:none}
   *,*::before,*::after{
     animation-duration:.01ms !important;
     animation-iteration-count:1 !important;
@@ -631,11 +1091,14 @@ a.kvp-letterhead__val:hover,a.kvp-letterhead__val:focus-visible{color:var(--kv-t
 
 @media print{
   .kvp-back{display:none}
+  body{background:none}
   .kvp-cover{min-height:auto;color:var(--kv-ink);background:none;padding-block:0 2rem}
   .kvp-cover__img,.kvp-cover__scrim{display:none}
-  .kvp-cover__title,.kvp-cover__sub,.kvp-letterhead__val{color:var(--kv-ink)}
-  .kvp-letterhead__label{color:var(--kv-brown)}
-  .kvp-section{padding-block:1.5rem;break-inside:avoid}
-  .kvp-card,.kvp-specs__row,.kvp-table tr{break-inside:avoid}
+  .kvp-cover__title,.kvp-cover__sub{color:var(--kv-ink)}
+  .kvp-cover__link{display:none}
+  .kvp-contact__item{color:var(--kv-ink);border-color:var(--kv-brown);background:none}
+  .kvp-section{padding-block:1.5rem;background:none}
+  .kvp-card,.kvp-feature,.kvp-tier,.kvp-market-row,.kvp-impact-row,
+  .kvp-specs__row,.kvp-table tr{break-inside:avoid;box-shadow:none}
   .kvp-tablewrap{overflow:visible;background:none}
 }
