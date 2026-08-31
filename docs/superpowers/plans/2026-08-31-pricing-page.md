@@ -46,6 +46,15 @@ Then parse the `<title>PROBE::{...}</title>` JSON out of `out.html` with Node �
 
 **Reading the source is not verification.** Every claim that a task is done cites probe output.
 
+## Amendment, after Tasks 1-4 shipped
+
+Tasks 1-4 below are complete, but two of their assertions were wrong and have since been fixed in the code. The task text is left as written for history; **these corrections win**:
+
+1. **`tag:a.tagName` was a vacuous assertion and no longer exists.** `next/link` renders an `<a>` itself, so `tagName === "A"` for both branches of the ternary — the test could not fail. It is replaced by `prevented`, which dispatches a cancelable click and reports `event.defaultPrevented`: `Link` calls `preventDefault()` to route, a plain anchor does not. **Correct output is `prevented:true` for every `#` anchor and `prevented:false` for every Pricing entry.** A Pricing entry reporting `true` means the fallback is broken.
+2. **The page-error baseline is two distinct errors, not three.** Two collectors were registered on the same target in different formats, so React #418 was counted once each. The real baseline is a `core-en.js` TypeError on `'lang'` and one React #418.
+
+Also fixed: the header logo was a fourth, missed render site still hard-coding `Link` with `href:"/"`. It is now a plain anchor to `index.html`. This was not theoretical — with `Link` in place, the probe's click sweep triggered a real router navigation that destroyed the run.
+
 ---
 
 ### Task 1: Extend the probe harness
@@ -107,7 +116,7 @@ node -e "const m=require('fs').readFileSync('out.html','utf8').match(/PROBE::(\{
 
 Expected: `nav` and `burger` each list five items — Overview, Amenities, Residences, Site Layout, Why Vista — each with `tag:"A"`. `footer` lists the same five — the footer's pre-hydration HTML snapshot shows only four, but React renders five, and the probe reads post-hydration state. **No Pricing item yet.** That absence is the failing test the next task fixes.
 
-`pageErrors` will show three pre-existing errors on `master` — a React #418 hydration mismatch and a `lang` property read. They are not yours and not in scope. Record them as the baseline; later tasks assert no errors are added beyond these three.
+`pageErrors` will show two pre-existing errors on `master` — a React #418 hydration mismatch and a `lang` property read. They are not yours and not in scope. Record them as the baseline; later tasks assert no errors are added beyond these two.
 
 - [ ] **Step 5: Commit**
 
@@ -312,7 +321,7 @@ Expected: `IDENTICAL`.
 
 - [ ] **Step 5: Probe — first paint and post-hydration agree**
 
-Re-run the probe. Expected: unchanged from Task 3 — six header items, six burger items, six footer items, all `tag:"A"`. A regression here means the HTML edit broke markup React then choked on; check `pageErrors`, which must still show only the three pre-existing baseline errors from Task 1 and nothing new. A fourth error means your markup edit caused it.
+Re-run the probe. Expected: unchanged from Task 3 — six header items, six burger items, six footer items, all reporting `prevented:false` for Pricing. A regression here means the HTML edit broke markup React then choked on; check `pageErrors`, which must still show only the two pre-existing baseline errors from Task 1 and nothing new. A third error means your markup edit caused it.
 
 - [ ] **Step 6: Commit**
 
@@ -605,7 +614,7 @@ Overflow at 360px almost always traces to a table that escaped its scrolling wra
 node -e "const m=require('fs').readFileSync('out.html','utf8').match(/PROBE::(\{.*?\})<\/title>/s);const o=JSON.parse(m[1]);console.log(JSON.stringify({nav:o.navItems,burger:o.burgerItems,footer:o.footerNav,errs:o.pageErrors},null,1));"
 ```
 
-Expected: six header items, six burger items, six footer items, all `tag:"A"`, Pricing pointing at `pricing.html`, and `pageErrors` showing only the three pre-existing baseline errors — nothing new.
+Expected: six header items, six burger items, six footer items, all reporting `prevented:false` for Pricing, Pricing pointing at `pricing.html`, and `pageErrors` showing only the two pre-existing baseline errors — nothing new.
 
 - [ ] **Step 4: Confirm the site still works as plain static files**
 
