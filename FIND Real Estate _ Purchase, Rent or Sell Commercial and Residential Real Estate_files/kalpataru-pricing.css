@@ -48,11 +48,12 @@
 
    ACCENT DISCIPLINE. Tan is the single accent and is spent on exactly four
    things: the spotlight tier, the "us" market row, the impact numerals, and
-   the image rings. Rust is the page's one alert colour and is budgeted for
-   ONE element on the whole page -- it is currently UNSPENT. The hook is
-   .kvp-impact-row--alert, intended for the single figure that states the
-   problem being solved. Do not spend it twice, and do not add a colour that
-   is not mixed from the seven brand tokens.
+   the image rings. Rust is the page's one alert colour, budgeted for ONE
+   element on the whole page -- it is now SPENT, on the 917-minute average
+   reply time in section 5 (.kvp-impact-row--alert), the single figure that
+   states the problem being solved. The budget is closed: do not add a second
+   --alert row, and do not add a colour that is not mixed from the seven
+   brand tokens.
    =========================================================================== */
 
 /* --- tokens ------------------------------------------------------------- */
@@ -894,6 +895,29 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
   font-size:var(--kvp-micro);
   opacity:.85;
 }
+/* Standing alone as the last child of a row, __eg is the verdict line: the
+   one sentence saying when THAT option is genuinely the right call. Every
+   row carries one, in the same voice and at the same weight -- the symmetry
+   is the argument, so it cannot be a caption on two rows and a headline on
+   the third. Ruled off the comparison grid above it, and brought up to the
+   body size the grid uses; the italic and the inherited ink stay. */
+.kvp-market-row__body + .kvp-market-row__eg{
+  margin-top:1rem;
+  padding-top:.85rem;
+  border-top:1px solid var(--kvp-border-soft);
+  font-size:var(--kvp-small);
+  line-height:1.6;
+}
+
+/* MEASURED at 330px: the head is 1fr auto with a nowrap price, and the
+   longest price on the page (a two-ended range) leaves the name column
+   under its own min-content width -- the card widens and the BODY scrolls
+   sideways. Below that the head stacks and the price returns to the left
+   axis. */
+@media(max-width:520px){
+  .kvp-market-row__head{grid-template-columns:1fr}
+  .kvp-market-row__price{text-align:left}
+}
 
 /* --- impact row --------------------------------------------------------- */
 
@@ -921,9 +945,15 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
   color:var(--kv-tan);
   font-variant-numeric:tabular-nums;
 }
-/* THE PAGE'S ONE RUST ELEMENT. Budgeted, currently unspent. Intended for the
-   single figure that states the problem being solved. Use once. */
+/* THE PAGE'S ONE RUST ELEMENT. SPENT: section 5, the 917-minute average
+   first-reply time -- the single figure that states the problem being solved.
+   Used once, budget closed. */
 .kvp-impact-row--alert .kvp-impact-row__num{color:var(--kv-rust)}
+/* The citation sits ON the numeral, so the figure itself is visibly cited
+   rather than the sentence beside it. .kvp-fn is sized in em, so against a
+   1.75rem numeral its .62em would render larger than the body copy; scaled
+   here to match the footnote marks in running text. */
+.kvp-impact-row__num .kvp-fn{font-size:.34em;vertical-align:.7em}
 .kvp-impact-row__text{
   margin:0;
   font-size:var(--kvp-small);
