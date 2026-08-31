@@ -1041,6 +1041,43 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
   color:var(--kv-brown);
 }
 
+/* The ladder line: "Everything in Essential, plus". EVERY card carries one,
+   including the first -- three cards that each state what they start from
+   read as one ladder, where two continuations beside a card that starts from
+   nothing read as an odd card out. Ruled off the list beneath it, because
+   that is exactly what the sentence means: what is above this rule is
+   already in, and the bullets are only what the rung adds. */
+.kvp-tier__inherit{
+  margin:0 0 .9rem;
+  padding-bottom:.75rem;
+  border-bottom:1px solid var(--kvp-border);
+  font-size:var(--kvp-micro);
+  font-weight:700;
+  letter-spacing:var(--kvp-track);
+  text-transform:uppercase;
+  color:var(--kv-brown);
+}
+
+/* "Most picked". Taken OUT of the flow on purpose: .kvp-tag is inline-block,
+   so in a column flex container it would both stretch to the card's full
+   width and push the Signature name half a line below the other two. Three
+   prices are only comparable at a glance if the three names sit on one axis,
+   so the tag is pinned into the card's top corner instead. Offset matches
+   the card's own padding, plus the .5rem the name already carries. */
+.kvp-tier__flag{
+  position:absolute;
+  top:calc(clamp(1.35rem,2.6vw,1.75rem) + .4rem);
+  right:clamp(1.35rem,2.6vw,1.75rem);
+}
+/* ...and the name and timeline keep clear of it rather than running under. */
+.kvp-tier--spotlight .kvp-tier__name,
+.kvp-tier--spotlight .kvp-tier__sub{padding-right:7.75rem}
+
+/* .kvp-receipt is pushed to the foot of the card by margin-top:auto. In the
+   TALLEST card of the row that auto resolves to zero, which lands the tan
+   rule directly under the last line of the list. This is the floor. */
+.kvp-tier .kvp-list + .kvp-receipt{padding-top:.75rem}
+
 /* --- closing CTA -------------------------------------------------------- */
 
 .kvp-cta-final{
