@@ -112,12 +112,15 @@ const server = http.createServer((req, res) => {
         var hlr=headerLogoA.getBoundingClientRect();
         out.headerLogo={bgImage:(hls.backgroundImage||'').slice(0,200),bgSize:hls.backgroundSize,rect:hlr.toJSON(),display:hls.display};
       } else { out.headerLogo='not found'; }
-      var navItems=Array.prototype.map.call(document.querySelectorAll('.header_nav-item__Wn05d'),function(n){var a=n.querySelector('a');return a?{text:a.textContent,href:a.getAttribute('href')}:null;});
+      var navItems=Array.prototype.map.call(document.querySelectorAll('.header_nav-item__Wn05d'),function(n){var a=n.querySelector('a');return a?{text:a.textContent,href:a.getAttribute('href'),tag:a.tagName}:null;});
       out.navItems=navItems;
       var actionsBtn=document.querySelector('.header_actions__Sv09J a');
       out.actionsBtn=actionsBtn?{text:actionsBtn.textContent,href:actionsBtn.getAttribute('href')}:'not found';
-      var burgerItems=Array.prototype.map.call(document.querySelectorAll('.burger-menu_nav-item__mCA9u'),function(n){var a=n.querySelector('a');return a?{text:a.textContent,href:a.getAttribute('href')}:null;});
+      var burgerItems=Array.prototype.map.call(document.querySelectorAll('.burger-menu_nav-item__mCA9u'),function(n){var a=n.querySelector('a');return a?{text:a.textContent,href:a.getAttribute('href'),tag:a.tagName}:null;});
       out.burgerItems=burgerItems;
+      var footerItems=Array.prototype.map.call(document.querySelectorAll('.footer_nav-link__LFUNG'),function(a){return {text:a.textContent,href:a.getAttribute('href'),tag:a.tagName};});
+      out.footerItems=footerItems;
+      out.pageErrors=(window.__kvErrs||[]).concat(window.__jsErrors||[]);
       var burgerActionsBtn=document.querySelector('.burger-menu_actions__In3qE a');
       out.burgerActionsBtn=burgerActionsBtn?{text:burgerActionsBtn.textContent,href:burgerActionsBtn.getAttribute('href')}:'not found';
       var footerNav=Array.prototype.map.call(document.querySelectorAll('.footer_nav-link__LFUNG'),function(a){return {text:a.textContent,href:a.getAttribute('href')};});
@@ -815,6 +818,28 @@ const server = http.createServer((req, res) => {
     const patched = html.replace("<head>", "<head>" + errCatch).replace("</body>", probe);
     res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
     res.end(patched);
+    return;
+  }
+
+  if (pathname === "/pricing.html" && url.parse(reqUrl, true).query.probe) {
+    const pricingPath = path.join(ROOT, "pricing.html");
+    if (!fs.existsSync(pricingPath)) {
+      res.writeHead(404); res.end("pricing.html not created yet"); return;
+    }
+    const html = fs.readFileSync(pricingPath, "utf8");
+    const probe = `<script>
+      setTimeout(function(){
+        var out={};
+        out.headings=Array.prototype.map.call(document.querySelectorAll('h1,h2'),function(h){return h.textContent.trim().slice(0,80);});
+        out.bodyScrollW=document.documentElement.scrollWidth;
+        out.viewportW=document.documentElement.clientWidth;
+        out.hasHorizontalScroll=document.documentElement.scrollWidth>document.documentElement.clientWidth+1;
+        out.brokenImages=Array.prototype.map.call(document.images,function(i){return (i.complete&&i.naturalWidth>0)?null:(i.getAttribute('src')||'?');}).filter(Boolean);
+        out.imageCount=document.images.length;
+        document.title='PROBE::'+JSON.stringify(out);
+      },2000)</script></body>`;
+    res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+    res.end(html.replace("</body>", probe));
     return;
   }
 
