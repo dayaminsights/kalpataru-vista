@@ -155,9 +155,46 @@ Palette drawn from `kalpataru-brand.css`:
 
 Type: Fraunces (already loaded from Google Fonts in `index.html` at weight 300, `opsz 9..144`) for headings; Instrument Sans (local woff2 files in the `_files` directory) for body. Reuse the existing font loading so the page reads as the same brand.
 
-A light page on cream with a dark cover photo under a scrim — matching the reference's structure, not its colours. Generous whitespace, left-aligned body copy, hairline section dividers in tan. Tables scroll inside their own container on narrow screens; the page body never scrolls horizontally.
+### The layout system — taken from the World of Anush proposal
 
-Cover image: `kv-why-landscape.jpg` from the `_files` directory, with `bg.jpg` as a fallback if the crop reads wrong. No new assets are added to the repo.
+That page is Dayam Insights' own house style for a client proposal, and this page is its sibling. Reuse its structural grammar directly, restyled in the Kalpataru palette. It is a **card system**, not a hairline specification sheet: white surfaces floating on cream, each with a `1px` cream-deep border, a small radius and a soft shadow; accent borders reserved for the two rows that matter.
+
+| Component | Structure |
+|---|---|
+| `feature-block` | Grid, `190px 1fr`, image column beside copy, on a white card. Below ~640px it stacks. |
+| `feature-media` | `aspect-ratio: 5/7` portrait, `object-fit: cover`, `2px` tan ring. Optional slow Ken Burns drift; optional hover-swap to a second image. |
+| `feature-copy` | A pill tag in uppercase tracked sans with an accent border, then a bold sans name, then soft-ink body copy, then an optional accent hint line. |
+| `market-row` | White card per competitor. **Our row** takes a `2px` tan border, the cream-deep ground and no shadow, so it reads as the answer without shouting. |
+| `impact-row` | Flex, baseline-aligned: a large Fraunces tabular numeral in tan, then the claim in soft ink with the key phrase in full ink. One citation line under the group. |
+| `tier-card` | White card with a `4px` gradient bar across the top. Price built from `receipt`/`rline` rows — label left, figure right, baseline-aligned. |
+| `price-spotlight` | The Signature tier: `2px` tan border, a subtle cream-deep gradient ground, a real shadow, and an uppercase tag reading "most picked". |
+| `cta-final` | Cream-deep panel, centred, closing the page. |
+
+Keep the accent discipline of the reference: tan is the single accent, spent on the spotlight tier, the "us" market row, the impact numerals and image rings. Rust is for at most one thing on the page. Everything else is ink, soft brown and cream.
+
+Tables scroll inside their own container on narrow screens; the page body never scrolls horizontally at any width.
+
+### Imagery — evidence, not decoration
+
+The reference carries only six images, and every one is proof of the thing described beside it, with a caption that names it precisely. Match that discipline: an image earns its place by showing something the copy claims. No stock, no filler, no image without a real alt description.
+
+All assets already exist in the `_files` directory. Nothing new is added to the repo. **Every image must be visually checked before placement** — filenames in this repo are not always reliable descriptions.
+
+| Where | Image | Shows |
+|---|---|---|
+| Cover | `kv-why-architect.jpg` | The twin towers over the golf course — verified: exterior render, wide, works full-bleed under a scrim |
+| "What's actually in it" — hero | `house.webp` | The building cutout that the hero scrub animates |
+| — amenities | `amenities-1--big.avif` | The amenities photo panels |
+| — residences | `kv-residence-plan-1.jpg` | A unit plan as the plan explorer shows it |
+| — site layout | `site-layout.webp` | The site layout plate |
+| — location | `map-direction.webp` | The location/connectivity map |
+| — interiors | `kv-why-interior.jpg` | The interior photography in the Why Vista essay |
+| Flagship tier | `apartment-video-poster.jpg` | The show-apartment walkthrough — verified: interior still, Vista logo watermarked |
+| Closing CTA | `kv-why-golf-course.jpg` | The golf frontage |
+
+Two images may use the reference's hover-swap (`demo` / `hover-img`) where a second asset genuinely shows a second state — for example a residence plan swapping to another unit type. Do not use it decoratively.
+
+**The AI section gets no photograph.** There is no asset for a product that does not exist yet, and a stock chatbot image would be a lie. Build the widget as real markup instead — a short, brand-styled mock conversation showing a buyer asking about a 4 BHK and the agent answering with a floor plate, capturing a phone number, and scoring intent. This is the page's centrepiece and the thing being sold; it should be the most designed object on the page. Label it plainly as an illustration of the proposed agent, not a live product.
 
 ## Technical approach
 
