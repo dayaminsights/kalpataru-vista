@@ -43,11 +43,28 @@ Every number is a researched Gurgaon/NCR market baseline multiplied by 1.2. **Th
 | Line | Baseline | x1.2 | Quote |
 |---|---|---|---|
 | **The website build** | Rs 1,15,000 | Rs 1,38,000 | **Rs 1,38,000** |
-| AI agent setup | Rs 75,000 | Rs 90,000 | **Rs 90,000** |
-| AI Starter, up to 500 conversations/mo | Rs 10,000/mo | Rs 12,000 | **Rs 12,000/mo** |
-| AI Growth, up to 1,500/mo | Rs 18,000/mo | Rs 21,600 | **Rs 22,000/mo** |
-| AI Scale, up to 4,000/mo | Rs 32,000/mo | Rs 38,400 | **Rs 38,000/mo** |
-| Beyond Scale | — | — | **Rs 8 per conversation** |
+| AI agent setup | Rs 30,000 | Rs 36,000 | **Rs 36,000** |
+| AI Starter, up to 500 conversations/mo | Rs 6,250/mo | Rs 7,500 | **Rs 7,500/mo** |
+| AI Growth, up to 1,500/mo | Rs 11,250/mo | Rs 13,500 | **Rs 13,500/mo** |
+| AI Scale, up to 4,000/mo | Rs 20,000/mo | Rs 24,000 | **Rs 24,000/mo** |
+| Beyond Scale | — | — | **Rs 6 per conversation** |
+
+**Website plus agent, one-time: Rs 1,38,000 + Rs 36,000 = Rs 1,74,000.**
+
+### The AI setup price was corrected downward
+
+The first draft quoted Rs 90,000, benchmarked against a Rs 3,10,000 Gurugram build. That comparable was wrong: it was a WhatsApp system wired into Facebook ad campaigns with CRM lead routing, a seven-week project. This scope is a retrieval widget reading one project's documents on one landing page.
+
+Researched India rates for that actual scope:
+
+| Scope | One-time | Source |
+|---|---|---|
+| Basic custom website chatbot | Rs 15,000 – Rs 25,000 | aichatbot.com.in/blog/ai-chatbot-pricing-guide-2026 |
+| Website LLM widget | Rs 20,000 setup, Rs 3,000–8,000/mo | cyfuture.ai/blog/ai-chatbot-pricing |
+| Advanced, with CRM integration | Rs 35,000 – Rs 60,000 | aichatbot.com.in/blog/ai-chatbot-pricing-guide-2026 |
+| Ongoing API cost | Rs 1,000 – Rs 5,000/mo | cyfuture.ai/blog/ai-chatbot-pricing |
+
+Rs 36,000 sits at the bottom of the advanced-with-CRM band — a deliberate decision to price for the yes, since the client is expected to bring repeat work and seeing the agent live is what sells the next one. The monthly ladder is repriced against the Rs 3,000–8,000 widget band on the same basis.
 
 AI add-ons (flat, not derived): voice agent Rs 1,40,000 setup plus Rs 18,000/mo; WhatsApp Business API agent Rs 45,000 setup plus Rs 6,000/mo with Meta conversation fees at cost; additional languages Rs 35,000 one-time.
 
@@ -63,7 +80,7 @@ The baseline and the ×1.2 columns above are **how the price was arrived at, not
 
 The page quotes **one number for the website: Rs 1,38,000.** The three-tier ladder is retired. A single confident figure is easier to say yes to than a menu, and this client is expected to bring repeat work.
 
-The AI sales agent is **a separate, optional add-on. It is explicitly not in the website quote.** Its price is revealed on its own, after its own case is made, and only then are the two shown together.
+The AI sales agent is **a separate, optional add-on. It is explicitly not in the website quote.** Its case is made early; both prices are revealed together at the end, side by side.
 
 ## What the website build covers — Rs 1,38,000, 3 to 4 weeks
 
@@ -79,9 +96,9 @@ Plus: basic SEO (meta, Open Graph, sitemap), GA4, the RERA footer block, QA at p
 
 ## AI sales agent — an optional add-on, priced separately
 
-**Not included in the Rs 1,38,000.** It is pitched on its own merits, its price is revealed after its case is made, and only then is it shown added to the quote.
+**Not included in the Rs 1,38,000.** It is pitched on its own merits in section 3, which states plainly that it is an extra and that it is quoted at the end. **Its price appears only in section 7**, alongside the website price and the two-option comparison.
 
-Setup Rs 90,000 covers:
+Setup Rs 36,000 covers:
 - Trained on the price sheet, floor plans, RERA filings, payment plan and locality data
 - Chat widget styled in the site's own type and palette
 - Lead capture writing to CRM, WhatsApp and email
@@ -132,14 +149,17 @@ Presentation rule: every figure carries a visible superscript footnote number li
 
 | # | Section | Words | Content |
 |---|---|---|---|
-| 1 | **Cover** | ~80 | Full-bleed render, eyebrow "Website & AI Investment Proposal", H1 "Kalpataru Vista", one-sentence subhead, "View the live site" link, contact bar: Dayam Insights, +91 78776 40693, +351 913 212 367, dayaminsights@gmail.com |
-| 2 | **"Your investment"** | ~180 | Immediately after the cover. **One price — Rs 1,38,000 — and no derivation.** See the price-prominence rules below. |
-| 3 | **"What we build"** | ~200 | Image-led. Names the hero, amenities, FAQs written for GEO/AEO and SEO, and forms with WhatsApp integration. Captions do the talking, not paragraphs. |
-| 4 | **"An AI that talks to your buyers"** | ~350 | The optional add-on, and the largest section. Keeps the built mock conversation. Makes its case, **then** reveals its price. Closes with the side-by-side block below. |
-| 4b | **"Website, or website and agent"** | ~120 | Sits at the foot of section 4, not as its own section. Two cards side by side, styled exactly like the section 2 price card: website alone at Rs 1,38,000, website plus agent at Rs 2,28,000 one-time with the agent's monthly shown separately. The client asked for this comparison explicitly. |
-| 5 | **"Why this price is fair"** | ~180 | A single three-column comparison — template shop, Dayam Insights, full-service agency. Cites published Gurgaon rates. **Shows no arithmetic.** |
-| 6 | **"What this does for sales"** | ~150 | Four cited figures, no more. |
-| 7 | **"What's included, and the terms"** | ~180 | Hosting & care against support & maintenance as two distinct products, plus the domain being the client's. |
+**The price now comes last.** The running order builds the case, then names the number.
+
+| # | Section | Words | Content |
+|---|---|---|---|
+| 1 | **Cover** | ~80 | Full-bleed render, eyebrow "Website & AI Investment Proposal", H1 "Kalpataru Vista", one-sentence subhead, "View the live site" link, contact bar: Dayam Insights, +91 78776 40693, +351 913 212 367, dayaminsights@gmail.com. **No figure.** |
+| 2 | **"What we build"** | ~200 | Image-led. Names the hero, amenities, FAQs written for GEO/AEO and SEO, and forms with WhatsApp integration. Captions do the talking, not paragraphs. |
+| 3 | **"An AI that talks to your buyers"** | ~300 | The optional add-on. Keeps the built mock conversation. Makes its case only — **states no price**, but says plainly that it is extra and quoted at the end. |
+| 4 | **"Where this sits in the market"** | ~180 | A single three-column comparison — template shop, Dayam Insights, full-service agency. Cites published Gurgaon rates. **Shows no arithmetic.** Retitled from "Why this price is fair", which presumed a price the reader has not yet seen. |
+| 5 | **"What this does for sales"** | ~150 | Four cited figures, no more. |
+| 6 | **"What's included, and the terms"** | ~180 | Hosting & care against support & maintenance as two distinct products, plus the domain being the client's. |
+| 7 | **"The price"** | ~220 | The reveal, and the only place a figure appears. The website at Rs 1,38,000, then the agent at Rs 36,000 setup plus its monthly ladder, then the two side by side — Rs 1,38,000 alone against **Rs 1,74,000** together, monthly kept visibly separate. Payment split beneath. Final amount at 28px per the type scale. |
 | 8 | **"Ready to move forward?"** | ~50 | Phone and email. |
 
 ### Vertical rhythm — a specific fix, not a general aspiration
@@ -154,12 +174,37 @@ A back-link to the site sits fixed at top-left, matching the reference page's `p
 
 ### Price prominence
 
-The prices are the point of the document, and in the first build they read as one more table on a long page. They now lead.
+**This reverses an earlier decision.** The page briefly led with the price. It no longer does. The price is revealed **at the end**, after the scope, the agent, the market context, the impact figures and the terms have all been read.
 
-- Section 2 sits directly under the cover, before any justification. A firm confident in its price states it first; the market comparison and the impact figures then read as support rather than as build-up.
-- **One figure, and it is the largest thing on the page after the cover headline.** Fraunces at display size. With the tier ladder retired there is no menu to compare against, so the number carries the section by itself and should be set that way — generous space around it, nothing competing.
-- **No derivation line.** The baseline and the multiplier are internal. What sits beneath the figure is the timeline (3 to 4 weeks) and what it covers, not the working.
-- The AI agent's price gets the same typographic treatment when it is finally revealed in section 4, so the two read as comparable figures rather than a headline price and a footnote.
+- **No figure appears in the cover or the upper half of the document.** Not as a headline, not in a glance strip, not as a teaser. The reader reaches the number having already seen what it buys.
+- The cover may say the site is quoted below and that an AI agent is available. It states no amount.
+- **The price is not set at display size.** It is the closing line of a quiet document — a receipt, not a billboard. Per the type scale below the final amount is 28px, not 60px. Restraint is the premium signal; a huge number on a small, tight page reads as a discount banner.
+- **No derivation line.** The baseline and the multiplier are internal. What sits with the figure is the timeline and what it covers, not the working.
+- The website price and the website-plus-agent price sit together at the end, side by side, sharing one baseline.
+
+### Type and spacing — taken from the World of Anush pricing page
+
+The client has asked for that page's typography and gaps specifically. The values below are lifted from their own local copy at `C:\Users\USER\Documents\GitHub\World of anush\css\pricing.css` and `tokens.css`, and translated to the Kalpataru palette and fonts. **These are exact targets, not inspiration.**
+
+| Property | Value |
+|---|---|
+| Content column | `max-width: 800px`, centred — a document, not a landing page |
+| Page padding | `clamp(48px, 6vw, 72px) clamp(20px, 5vw, 40px) 80px` |
+| Between sections | `margin: 56px 0`; first section `margin-top: 0` |
+| `h2` | serif, 25px, line-height 1.25, `margin: 0 0 8px` |
+| Section note under `h2` | sans 15px, line-height 1.6, `margin: 0 0 24px`, `max-width: 62ch` |
+| Kicker / eyebrow | 11px, weight 700, `letter-spacing: 0.14em`, uppercase |
+| Body | 14px |
+| Secondary text | 12–13.5px |
+| Micro labels | 10–11.5px |
+| Impact numeral | 22px |
+| **Final price amount** | **28px** |
+| Radius | 14px, small 10px |
+| Shadow | two-layer, a tight 1px and a soft 24px, both at very low alpha — restated in Kalpataru ink |
+| Card surface | white, `1px solid` cream-deep, 16px padding |
+| Grid gaps | 12px general, 16px between price cards, 10px between add-on rows |
+
+This is a substantially tighter document than the current build, which runs a ~1250px shell, 88px section padding, 41.6px headings and a 60.8px price figure. Retypeset to the scale above throughout. Fraunces stands in for the reference's Playfair and Instrument Sans for its Inter, but every size, gap and margin comes from this table.
 
 ### What was cut, and why
 
@@ -197,7 +242,7 @@ That page is Dayam Insights' own house style for a client proposal, and this pag
 | `feature-copy` | A pill tag in uppercase tracked sans with an accent border, then a bold sans name, then soft-ink body copy, then an optional accent hint line. |
 | `market-row` | White card per competitor. **Our row** takes a `2px` tan border, the cream-deep ground and no shadow, so it reads as the answer without shouting. |
 | `impact-row` | Flex, baseline-aligned: a large Fraunces tabular numeral in tan, then the claim in soft ink with the key phrase in full ink. One citation line under the group. |
-| `price-card` | White card, tan rule, the figure at display size. Used for the single quote in section 2 and reused for the two comparison cards at the foot of section 4. |
+| `price-card` | White card, tan rule. Holds the website quote, the agent quote and the two comparison cards, all in section 7. The final amount is 28px per the type scale -- never display size. |
 | `price-compare` | The side-by-side pair: website alone against website plus agent. Figures share one baseline whether or not a card carries a tag. |
 | `cta-final` | Cream-deep panel, centred, closing the page. |
 
