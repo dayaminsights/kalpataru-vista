@@ -33,18 +33,16 @@
        .kvp-feature__copy ......... feature-copy    (tag / name / desc / hint)
      .kvp-market-row .............. market-row      (+ --us for our row)
      .kvp-impact-row .............. impact-row      (tan numeral + claim)
-     .kvp-tier .................... tier-card       (+ .kvp-receipt/.kvp-rline)
+     .kvp-tier .................... tier-card       (label / figure / derivation)
      .kvp-tier--spotlight ......... price-spotlight (the Signature tier)
      .kvp-agent ................... the section 9 widget: a built mock of the
                                     proposed chat agent, ink-deep plate on
                                     cream. Carries its "illustration" label
                                     twice, inside the frame and beneath it.
      .kvp-cta-final ............... cta-final       (closing panel)
-     .kvp-glance .................. the at-a-glance strip under the cover
      .kvp-cover / .kvp-back ....... title page and the fixed back-link
      .kvp-panel ................... generic tinted panel (perks, add-ons)
      .kvp-addon-row ............... label left, price right, baseline aligned
-     .kvp-card / .kvp-cards ....... generic surface + auto-fit grid
      .kvp-specs ................... key/value rows (terms, tier contents)
      .kvp-list .................... tan-marked checklist
      .kvp-tablewrap / .kvp-table .. every table on the page sits in the wrapper
@@ -296,26 +294,6 @@ a{color:inherit}
   color:var(--kv-ink-deep);
 }
 
-/* Generic surface + auto-fit grid. */
-.kvp-cards{
-  display:grid;
-  gap:var(--kvp-gap);
-  grid-template-columns:repeat(auto-fit,minmax(min(100%,16rem),1fr));
-}
-.kvp-cards--wide{grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr))}
-.kvp-cards--three{grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr))}
-.kvp-card{
-  background:var(--kvp-surface);
-  border:1px solid var(--kvp-border);
-  border-radius:var(--kvp-radius);
-  box-shadow:var(--kvp-shadow);
-  padding:clamp(1.1rem,2.2vw,1.6rem);
-  display:flex;
-  flex-direction:column;
-  gap:.6rem;
-}
-.kvp-card__title{font-size:var(--kvp-h3);line-height:1.25;color:var(--kv-ink-deep)}
-.kvp-card__text{font-size:var(--kvp-small);line-height:1.6;color:var(--kvp-muted);margin:0}
 
 /* Tinted panel: perks box, add-on box. Ground, no shadow -- it recedes. */
 /* MEASURED FIX, section 9: the panel was a flat cream-deep fill, which is
@@ -631,42 +609,6 @@ a.kvp-contact__item:hover,a.kvp-contact__item:focus-visible{
 }
 .kvp-contact__item--lead{font-family:var(--kv-serif);font-size:1rem}
 
-/* --- glance strip ------------------------------------------------------- */
-
-/* Summary band straight under the cover: four small cards, label over value. */
-.kvp-glance{
-  background:var(--kv-cream);
-  padding-block:clamp(2rem,4.5vw,3rem);
-}
-.kvp-glance__grid{
-  display:grid;
-  gap:var(--kvp-gap);
-  grid-template-columns:repeat(auto-fit,minmax(min(100%,12rem),1fr));
-}
-.kvp-glance__item{
-  background:var(--kvp-surface);
-  border:1px solid var(--kvp-border);
-  border-radius:var(--kvp-radius-sm);
-  box-shadow:var(--kvp-shadow);
-  padding:1rem 1.1rem 1.15rem;
-}
-.kvp-glance__label{
-  margin:0 0 .45rem;
-  font-size:var(--kvp-micro);
-  font-weight:700;
-  letter-spacing:var(--kvp-track);
-  text-transform:uppercase;
-  color:var(--kv-tan);
-}
-.kvp-glance__val{
-  margin:0;
-  font-size:var(--kvp-small);
-  font-weight:600;
-  line-height:1.4;
-  color:var(--kv-ink-deep);
-  text-wrap:balance;
-}
-
 /* --- section system ----------------------------------------------------- */
 
 /* A section is: a kicker, an h2, an optional note, then its components.
@@ -691,7 +633,7 @@ a.kvp-contact__item:hover,a.kvp-contact__item:focus-visible{
 .kvp-section--dark .kvp-h3,
 .kvp-section--dark .kvp-lede,
 .kvp-section--dark .kvp-price,
-.kvp-section--dark .kvp-card__title{color:var(--kv-cream)}
+.kvp-section--dark .kvp-price{color:var(--kv-cream)}
 .kvp-section--dark .kvp-eyebrow,
 .kvp-section--dark .kvp-specs__key,
 .kvp-section--dark .kvp-table th,
@@ -1011,18 +953,65 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
   height:4px;
   background:linear-gradient(90deg,var(--kv-tan),var(--kv-brown));
 }
-.kvp-tier__name{
-  margin:.5rem 0 .15rem;
-  font-size:clamp(1.15rem,1.05rem + .5vw,1.4rem);
-  line-height:1.2;
-  color:var(--kv-ink-deep);
+/* THE FIGURE IS THE HERO OF THE CARD.
+
+   The first build put the prices seventh of nine sections, behind 1,800 words
+   of preamble, and set them no louder than anything else on the sheet. They
+   now open the document, and inside the card the money leads: a small
+   uppercase LABEL naming the tier, then the figure at display size, then the
+   derivation under it.
+
+   MEASURED against the rest of the page: 3.4rem here, 2.6rem for .kvp-price
+   (the agent setup fee), 1.75rem for an impact numeral. Several steps larger
+   than any other number, so three cards put three big numerals on one
+   horizontal axis and the comparison is instant.
+
+   The tier name is deliberately NOT a heading: a 1.4rem serif name sitting
+   above a 3.4rem serif figure competes with it. It is a label. */
+.kvp-tier__top{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:space-between;
+  gap:.5rem .75rem;
+  /* The two unflagged cards hold the axis the flagged one's tag sets. */
+  min-height:1.9rem;
+  margin-bottom:.55rem;
 }
-.kvp-tier__sub{
-  margin:0 0 1rem;
+.kvp-tier__label{
+  margin:0;
   font-size:var(--kvp-micro);
-  letter-spacing:.04em;
+  font-weight:700;
+  letter-spacing:var(--kvp-track);
   text-transform:uppercase;
+  color:var(--kv-brown);
+}
+.kvp-tier__fig{
+  margin:0;
+  font-family:var(--kv-serif);
+  font-weight:300;
+  font-optical-sizing:auto;
+  font-size:clamp(2.3rem,1.45rem + 2.6vw,3.4rem);
+  line-height:.98;
+  letter-spacing:-.025em;
+  color:var(--kv-ink-deep);
+  font-variant-numeric:tabular-nums;
+  /* At 330px the card is ~247px wide and the widest figure sets ~165px, so
+     this never fires. It is here so that a longer figure would wrap inside
+     the card rather than widen the page. */
+  overflow-wrap:break-word;
+}
+/* The derivation line. It is what makes the figure defensible, so it stays --
+   at micro size against a 3.4rem figure, so it cannot compete with it. The
+   2px tan rule beneath is the one the old receipt carried above its price. */
+.kvp-tier__deriv{
+  margin:.45rem 0 0;
+  padding-bottom:1rem;
+  border-bottom:2px solid var(--kv-tan);
+  font-size:var(--kvp-micro);
+  letter-spacing:.03em;
   color:var(--kvp-muted);
+  font-variant-numeric:tabular-nums;
 }
 
 /* The spotlight: the Signature tier. Tan border, a cream-deep gradient ground,
@@ -1033,33 +1022,6 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
   box-shadow:var(--kvp-shadow-lift);
 }
 
-/* Receipt: label left, figure right, baseline aligned. */
-.kvp-receipt{display:flex;flex-direction:column;margin-top:auto}
-.kvp-rline{
-  display:flex;
-  justify-content:space-between;
-  align-items:baseline;
-  gap:.6rem;
-  padding:.5rem 0;
-  font-size:var(--kvp-small);
-  color:var(--kvp-muted);
-}
-.kvp-rline__amt{font-variant-numeric:tabular-nums;white-space:nowrap}
-.kvp-rline--final{
-  margin-top:.5rem;
-  padding-top:1rem;
-  border-top:2px solid var(--kv-tan);
-  font-weight:700;
-  color:var(--kv-ink-deep);
-}
-.kvp-rline--final .kvp-rline__amt{
-  font-family:var(--kv-serif);
-  font-weight:300;
-  font-optical-sizing:auto;
-  font-size:clamp(1.5rem,1.25rem + .9vw,1.9rem);
-  letter-spacing:-.015em;
-  color:var(--kv-brown);
-}
 
 /* The ladder line: "Everything in Essential, plus". EVERY card carries one,
    including the first -- three cards that each state what they start from
@@ -1068,7 +1030,7 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
    that is exactly what the sentence means: what is above this rule is
    already in, and the bullets are only what the rung adds. */
 .kvp-tier__inherit{
-  margin:0 0 .9rem;
+  margin:.9rem 0 .9rem;
   padding-bottom:.75rem;
   border-bottom:1px solid var(--kvp-border);
   font-size:var(--kvp-micro);
@@ -1078,25 +1040,7 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
   color:var(--kv-brown);
 }
 
-/* "Most picked". Taken OUT of the flow on purpose: .kvp-tag is inline-block,
-   so in a column flex container it would both stretch to the card's full
-   width and push the Signature name half a line below the other two. Three
-   prices are only comparable at a glance if the three names sit on one axis,
-   so the tag is pinned into the card's top corner instead. Offset matches
-   the card's own padding, plus the .5rem the name already carries. */
-.kvp-tier__flag{
-  position:absolute;
-  top:calc(clamp(1.35rem,2.6vw,1.75rem) + .4rem);
-  right:clamp(1.35rem,2.6vw,1.75rem);
-}
-/* ...and the name and timeline keep clear of it rather than running under. */
-.kvp-tier--spotlight .kvp-tier__name,
-.kvp-tier--spotlight .kvp-tier__sub{padding-right:7.75rem}
 
-/* .kvp-receipt is pushed to the foot of the card by margin-top:auto. In the
-   TALLEST card of the row that auto resolves to zero, which lands the tan
-   rule directly under the last line of the list. This is the floor. */
-.kvp-tier .kvp-list + .kvp-receipt{padding-top:.75rem}
 
 /* --- the agent, illustrated --------------------------------------------- */
 
@@ -1383,7 +1327,7 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
   .kvp-cover__link{display:none}
   .kvp-contact__item{color:var(--kv-ink);border-color:var(--kv-brown);background:none}
   .kvp-section{padding-block:1.5rem;background:none}
-  .kvp-card,.kvp-feature,.kvp-tier,.kvp-market-row,.kvp-impact-row,
+  .kvp-feature,.kvp-tier,.kvp-market-row,.kvp-impact-row,
   .kvp-specs__row,.kvp-table tr,.kvp-agent__frame{break-inside:avoid;box-shadow:none}
   /* The one dark object on the page, laid back onto paper rather than printed
      as a slab of toner. The "illustration" label survives the conversion --
