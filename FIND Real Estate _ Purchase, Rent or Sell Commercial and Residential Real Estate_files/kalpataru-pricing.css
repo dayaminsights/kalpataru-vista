@@ -35,6 +35,10 @@
      .kvp-impact-row .............. impact-row      (tan numeral + claim)
      .kvp-tier .................... tier-card       (+ .kvp-receipt/.kvp-rline)
      .kvp-tier--spotlight ......... price-spotlight (the Signature tier)
+     .kvp-agent ................... the section 9 widget: a built mock of the
+                                    proposed chat agent, ink-deep plate on
+                                    cream. Carries its "illustration" label
+                                    twice, inside the frame and beneath it.
      .kvp-cta-final ............... cta-final       (closing panel)
      .kvp-glance .................. the at-a-glance strip under the cover
      .kvp-cover / .kvp-back ....... title page and the fixed back-link
@@ -314,8 +318,14 @@ a{color:inherit}
 .kvp-card__text{font-size:var(--kvp-small);line-height:1.6;color:var(--kvp-muted);margin:0}
 
 /* Tinted panel: perks box, add-on box. Ground, no shadow -- it recedes. */
+/* MEASURED FIX, section 9: the panel was a flat cream-deep fill, which is
+   invisible on a --band section -- whose ground IS cream-deep (the same trap
+   the note in section 7 of pricing.html warns about for this component). It
+   is now a warm tint OF WHATEVER GROUND IT SITS ON, so it recedes correctly
+   on cream, on the band and on --dark alike. Nothing used .kvp-panel before
+   section 9, so this changes no existing surface. */
 .kvp-panel{
-  background:var(--kv-cream-deep);
+  background:color-mix(in srgb,var(--kv-brown) 8%,var(--kvp-ground));
   border:1px solid var(--kvp-border-soft);
   border-radius:var(--kvp-radius);
   padding:clamp(1.25rem,3vw,1.75rem);
@@ -341,6 +351,16 @@ a{color:inherit}
   color:var(--kv-brown);
   white-space:nowrap;
   font-variant-numeric:tabular-nums;
+  text-align:right;
+}
+/* An add-on that carries BOTH a setup fee and a monthly is two figures, and
+   at 330px one nowrap string holding both is the widest thing in the panel.
+   Break it with a <br> in the markup -- a <br> still breaks under nowrap --
+   and let the whole row stack below the phone breakpoint, the same move
+   .kvp-impact-row already makes at the same width. */
+@media(max-width:520px){
+  .kvp-addon-row{flex-direction:column;align-items:flex-start;gap:.35rem}
+  .kvp-addon-row__price{text-align:left}
 }
 
 /* Hairline key/value rows: terms, tier contents, volume steps. */
@@ -1078,6 +1098,204 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
    rule directly under the last line of the list. This is the floor. */
 .kvp-tier .kvp-list + .kvp-receipt{padding-top:.75rem}
 
+/* --- the agent, illustrated --------------------------------------------- */
+
+/* Section 9's centrepiece, and the one place on this page where the boldness
+   is spent. The product being sold does not exist yet, so there is nothing to
+   photograph, and a stock chatbot picture would be a lie on a document that
+   has spent five sections earning trust with citations. So the widget is
+   BUILT: real markup, in the page's own type and palette, showing the thing
+   working.
+
+   It is the only ink-deep object on the cream pages -- the one screen in a
+   paper document, which is exactly what a chat widget is. Everything else in
+   section 9 is deliberately the quietest components on the sheet (.kvp-specs
+   rows, two .kvp-tables, .kvp-addon-rows) so that this is the thing the
+   reader remembers.
+
+   IT CARRIES ITS LABEL TWICE, and both are load-bearing rather than
+   decorative: .kvp-agent__flag sits INSIDE the frame, so a cropped screenshot
+   of the widget is still marked as an illustration, and .kvp-agent__cap
+   states it in full underneath. Do not remove either one.
+
+   No new colour: the plate is --kv-ink-deep, the same ground as the cover, so
+   the document's two dark moments are its opening and its centrepiece. */
+
+.kvp-agent{margin:0}
+
+.kvp-agent__frame{
+  background:var(--kv-ink-deep);
+  border:1px solid color-mix(in srgb,var(--kv-tan) 34%,transparent);
+  border-radius:var(--kvp-radius);
+  box-shadow:var(--kvp-shadow-lift);
+  color:var(--kv-cream);
+  overflow:hidden;
+}
+
+/* Header bar. Left, what the thing would be called. Right, what it is. */
+.kvp-agent__bar{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:space-between;
+  gap:.5rem .75rem;
+  padding:.8rem clamp(.9rem,2.4vw,1.35rem);
+  border-bottom:1px solid color-mix(in srgb,var(--kv-tan) 26%,transparent);
+  background:color-mix(in srgb,var(--kv-cream) 5%,transparent);
+}
+.kvp-agent__mark{
+  font-family:var(--kv-serif);
+  font-weight:300;
+  font-optical-sizing:auto;
+  font-size:1.05rem;
+  letter-spacing:-.01em;
+  color:var(--kv-cream);
+}
+/* THE LABEL, inside the frame. MEASURED: tan on ink-deep is 6.9:1, so it
+   clears AA at this size rather than being a whispered disclaimer. */
+.kvp-agent__flag{
+  padding:.25em .7em .3em;
+  border:1px solid color-mix(in srgb,var(--kv-tan) 60%,transparent);
+  border-radius:999px;
+  font-size:var(--kvp-micro);
+  font-weight:700;
+  letter-spacing:var(--kvp-track);
+  text-transform:uppercase;
+  color:var(--kv-tan);
+  white-space:nowrap;
+}
+
+/* The conversation, and beside it what the conversation produced. Side by side
+   on a wide screen so the causal relationship is spatial -- the left column
+   writes the right one -- and stacked below it. minmax(0,...) on both tracks:
+   a grid child defaults to min-content, and one long unbroken token in a
+   bubble would otherwise widen the track and push the BODY sideways. */
+.kvp-agent__body{display:grid;grid-template-columns:minmax(0,1fr)}
+@media(min-width:820px){
+  .kvp-agent__body{grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr)}
+}
+
+/* The transcript is an ordered list, because that is what a transcript is. */
+.kvp-agent__log{
+  list-style:none;
+  margin:0;
+  padding:clamp(.9rem,2.6vw,1.4rem);
+  display:flex;
+  flex-direction:column;
+  gap:.9rem;
+}
+.kvp-msg{max-width:min(100%,32rem)}
+.kvp-msg--buyer{margin-left:auto}
+/* No avatar column and no timestamp column: at 330px a fixed rail beside a
+   bubble is what breaks a chat layout. Speaker and time are one flowing line
+   above the bubble instead, so they wrap like anything else. */
+.kvp-msg__who{
+  display:block;
+  margin-bottom:.3rem;
+  font-size:var(--kvp-micro);
+  font-weight:700;
+  letter-spacing:var(--kvp-track);
+  text-transform:uppercase;
+  color:var(--kv-tan);
+}
+.kvp-msg--buyer .kvp-msg__who{text-align:right}
+.kvp-msg__body{
+  margin:0;
+  padding:.7rem .95rem .75rem;
+  border-radius:var(--kvp-radius-sm);
+  font-size:var(--kvp-small);
+  line-height:1.55;
+  overflow-wrap:anywhere;
+}
+/* Two registers, no second accent colour: the visitor speaks in the document's
+   own paper, the agent in the device's voice. */
+.kvp-msg--buyer .kvp-msg__body{
+  background:var(--kvp-surface);
+  color:var(--kv-ink-deep);
+  border-end-end-radius:4px;
+}
+.kvp-msg--agent .kvp-msg__body{
+  background:color-mix(in srgb,var(--kv-cream) 10%,transparent);
+  border:1px solid color-mix(in srgb,var(--kv-cream) 14%,transparent);
+  color:color-mix(in srgb,var(--kv-cream) 92%,transparent);
+  border-end-start-radius:4px;
+}
+
+/* What the agent hands over. A span, never an anchor: it is a drawing of an
+   attachment, not a download, and a proposal should not offer a link that
+   goes nowhere. Solid border on purpose -- dashed means "optional" on this
+   page (.kvp-panel--dashed) and that word is spoken for. */
+.kvp-agent__file{
+  display:inline-flex;
+  align-items:center;
+  gap:.5rem;
+  max-width:100%;
+  margin-top:.6rem;
+  padding:.45rem .8rem;
+  border:1px solid color-mix(in srgb,var(--kv-tan) 45%,transparent);
+  border-radius:999px;
+  font-size:var(--kvp-micro);
+  font-weight:700;
+  letter-spacing:.03em;
+  color:var(--kv-tan);
+  overflow-wrap:anywhere;
+}
+.kvp-agent__file svg{width:.95em;height:.95em;flex:none}
+
+/* The payoff. Deeper ground, so it reads as the machinery rather than as more
+   conversation -- this is the half a competitor's screenshot does not have. */
+.kvp-agent__out{
+  padding:clamp(.9rem,2.6vw,1.4rem);
+  border-top:1px solid color-mix(in srgb,var(--kv-tan) 26%,transparent);
+  background:color-mix(in srgb,var(--kv-ink) 62%,var(--kv-ink-deep));
+}
+@media(min-width:820px){
+  .kvp-agent__out{
+    border-top:0;
+    border-inline-start:1px solid color-mix(in srgb,var(--kv-tan) 26%,transparent);
+  }
+}
+.kvp-agent__out-title{
+  margin:0 0 .9rem;
+  font-size:var(--kvp-micro);
+  font-weight:700;
+  letter-spacing:var(--kvp-track);
+  text-transform:uppercase;
+  color:var(--kv-tan);
+}
+.kvp-agent__fields{
+  display:grid;
+  gap:.85rem 1.25rem;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,11rem),1fr));
+}
+.kvp-agent__k{
+  display:block;
+  margin-bottom:.15rem;
+  font-size:var(--kvp-micro);
+  letter-spacing:.05em;
+  text-transform:uppercase;
+  color:color-mix(in srgb,var(--kv-cream) 62%,transparent);
+}
+.kvp-agent__v{
+  display:block;
+  font-size:var(--kvp-small);
+  font-weight:600;
+  line-height:1.4;
+  color:var(--kv-cream);
+  overflow-wrap:anywhere;
+}
+
+/* THE LABEL, in full. The figcaption of a figure, so assistive tech gets it
+   as the description of the thing above rather than as stray body copy. */
+.kvp-agent__cap{
+  max-width:var(--kvp-measure);
+  margin:.9rem 0 0;
+  font-size:var(--kvp-small);
+  line-height:1.6;
+  color:var(--kvp-muted);
+}
+.kvp-agent__cap strong{color:var(--kv-ink-deep);font-weight:700}
+
 /* --- closing CTA -------------------------------------------------------- */
 
 .kvp-cta-final{
@@ -1166,6 +1384,17 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
   .kvp-contact__item{color:var(--kv-ink);border-color:var(--kv-brown);background:none}
   .kvp-section{padding-block:1.5rem;background:none}
   .kvp-card,.kvp-feature,.kvp-tier,.kvp-market-row,.kvp-impact-row,
-  .kvp-specs__row,.kvp-table tr{break-inside:avoid;box-shadow:none}
+  .kvp-specs__row,.kvp-table tr,.kvp-agent__frame{break-inside:avoid;box-shadow:none}
+  /* The one dark object on the page, laid back onto paper rather than printed
+     as a slab of toner. The "illustration" label survives the conversion --
+     it is the one thing in here that must not be lost to a print stylesheet. */
+  .kvp-agent__frame{background:none;color:var(--kv-ink);border-color:var(--kv-brown)}
+  .kvp-agent__bar,.kvp-agent__out{background:none;border-color:var(--kv-brown)}
+  .kvp-agent__mark,.kvp-agent__v,
+  .kvp-msg--agent .kvp-msg__body{color:var(--kv-ink)}
+  .kvp-msg--agent .kvp-msg__body{background:none;border-color:var(--kvp-border)}
+  .kvp-msg--buyer .kvp-msg__body{background:none;border:1px solid var(--kvp-border)}
+  .kvp-agent__flag,.kvp-agent__file,.kvp-agent__out-title,
+  .kvp-msg__who,.kvp-agent__k{color:var(--kv-brown)}
   .kvp-tablewrap{overflow:visible;background:none}
 }
