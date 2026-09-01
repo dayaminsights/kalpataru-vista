@@ -109,6 +109,8 @@ AI agent setup: 50% on signing, 50% on go-live. Retainer billed monthly in advan
 
 ## Business impact — every claim cited on-page
 
+**Only four of the eight below now appear on the page** — see "What was cut, and why". The four that ship are the 78% first-responder figure, the 917-minute average, the 21× five-minute figure, and the 20–35% chat uplift. They chain into one argument. The other four remain here as reserve, in case a figure needs swapping.
+
 | Claim | Number | Source |
 |---|---|---|
 | Buyers go with whoever replies first | 78% | sierrainteractive.com/insights/blog/speed-to-lead-real-estate/ |
@@ -124,20 +126,40 @@ Presentation rule: every figure carries a visible superscript footnote number li
 
 ## Page structure
 
-Mirrors the World of Anush proposal, header for header:
+**This is a sales pitch, not a dossier.** The first build ran to 3,990 words — a sixteen-minute read that buried the prices two-thirds down. It has been restructured to lead with price and to fit a single sitting.
 
-1. **Cover** — full-bleed Kalpataru render, eyebrow "Website & AI Investment Proposal", H1 "Kalpataru Vista", a one-sentence subhead, a "View the live site" link back to `index.html`, and a contact bar: prepared by Dayam Insights, +91 78776 40693, +351 913 212 367, dayaminsights@gmail.com
-2. **Glance strip** — four items: Already live / Next to build / Priced by / Optional
-3. **"The site you've already seen — what's actually in it"** — feature breakdown of the built homepage
-4. **"Where this sits in the Gurgaon market"** — the baseline table above, plus a three-column positioning comparison: template shop, Dayam Insights, full-service agency
-5. **"Tentative business impact"** — cited benchmark cards
-6. **"Everything in the price below"** — feature checklist
-7. **"Good to know"** — hosting, revisions, ownership, payment terms, timeline
-8. **"Three prices, by scope of build"** — three tier cards, Signature flagged "most picked"
-9. **"An AI that talks to your buyers"** — what it does, setup price, the volume table, add-ons
-10. **"Ready to move forward?"** — closing CTA with phone and email
+**Total word budget: ~1,400. This is a hard constraint, not a target to drift past.** Per-section budgets below are the discipline that keeps it there. If a section wants more room, something else gives it up.
+
+| # | Section | Words | Content |
+|---|---|---|---|
+| 1 | **Cover** | ~80 | Full-bleed render, eyebrow "Website & AI Investment Proposal", H1 "Kalpataru Vista", one-sentence subhead, "View the live site" link, contact bar: Dayam Insights, +91 78776 40693, +351 913 212 367, dayaminsights@gmail.com |
+| 2 | **"Three prices, by scope of build"** | ~320 | Immediately after the cover. Three tier cards, Signature flagged "most picked". See the price-prominence rules below. |
+| 3 | **"The site you've already seen"** | ~180 | Image-led. The pictures carry it; captions do the talking, not paragraphs. |
+| 4 | **"An AI that talks to your buyers"** | ~350 | The differentiator, and the largest remaining section. Keeps the built mock conversation. |
+| 5 | **"Why this price is fair"** | ~200 | A single three-column comparison — template shop, Dayam Insights, full-service agency. |
+| 6 | **"What this does for sales"** | ~150 | Four cited figures, no more. |
+| 7 | **"What's included, and the terms"** | ~150 | Inclusions and terms merged into one section. |
+| 8 | **"Ready to move forward?"** | ~50 | Phone and email. |
 
 A back-link to the site sits fixed at top-left, matching the reference page's `pricing-back` element.
+
+### Price prominence
+
+The prices are the point of the document, and in the first build they read as one more table on a long page. They now lead.
+
+- Section 2 sits directly under the cover, before any justification. A firm confident in its price states it first; the market comparison and the impact figures then read as support rather than as build-up.
+- The figure itself is the hero of each card: Fraunces at display size, several steps larger than any other number on the page. The tier name is a label above it, not a competing headline.
+- The derivation line (baseline × 1.2) stays, small, beneath each price — it is what makes the number defensible — but it must not compete with the figure.
+- Signature keeps `--spotlight` and the "most picked" tag.
+
+### What was cut, and why
+
+- **The eight-row market baseline table.** Two comparison structures were doing one job. The three-column grid survives; the baselines compress into one cited sentence, so the sourcing survives without the table.
+- **Four of the eight impact figures.** The four that remain form the actual argument chain: buyers go with whoever answers first (78%), the industry average reply is 917 minutes, answering inside five minutes qualifies 21× more, and site chat delivers 20–35% more leads. The rest were corroboration nobody needed.
+- **Most of "what's actually in it".** The reader has seen the site. Images and captions, not 677 words of prose.
+- **The separate inclusions and terms sections.** Both answered "what is the deal"; they are now one.
+
+Citations are **not** cut. Every figure that remains keeps its footnote and its source link — the sourcing is what makes the price defensible, and it costs almost no words.
 
 ## Visual design
 
