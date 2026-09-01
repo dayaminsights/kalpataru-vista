@@ -16,11 +16,11 @@
    This page is the sibling of the World of Anush proposal, which is Dayam
    Insights' house style for a client proposal. It is a CARD SYSTEM: warm-white
    surfaces floating on cream, each with a 1px hairline, a small radius and a
-   soft shadow. Accent borders are reserved for the two rows that matter -- the
-   spotlight tier and the "us" market row. It is NOT a hairline specification
+   soft shadow. Accent borders are reserved for the rows that matter -- the price
+   cards and the "us" market row. It is NOT a hairline specification
    sheet; an earlier draft of this file was, and was replaced.
 
-   Component inventory. Sections 4-10 should REUSE these, not reinvent them.
+   Component inventory. New sections should REUSE these, not reinvent them.
    The right-hand column is the name the design spec uses for each.
 
      .kvp-feature ................. feature-block   (image beside copy)
@@ -30,32 +30,67 @@
                                     dense line drawings (floor plates, site
                                     layouts, maps) -- they are illegible in a
                                     190px rail. Photographs use the default.
+       .kvp-feature--drawn ........ the same full-width mode, but the plate is
+                                    BUILT MARKUP rather than an image file --
+                                    for the parts of the scope that have no
+                                    photograph because they are structural
+                                    (the FAQ answer, the form handoff).
+       .kvp-feature__plate ........ the built plate itself (.kvp-plate__*)
        .kvp-feature__copy ......... feature-copy    (tag / name / desc / hint)
+     .kvp-quote ................... price-card: label / figure / meta / note.
+                                    THE ONE PRICE COMPONENT ON THIS PAGE. Used
+                                    for the website quote, the agent setup fee
+                                    and both comparison cards, so every figure
+                                    on the sheet reads at the same weight.
+     .kvp-compare ................. price-compare: the side-by-side pair. Two
+                                    .kvp-quote cards on a subgrid, so their
+                                    figures share one baseline.
      .kvp-market-row .............. market-row      (+ --us for our row)
      .kvp-impact-row .............. impact-row      (tan numeral + claim)
-     .kvp-tier .................... tier-card       (label / figure / derivation)
-     .kvp-tier--spotlight ......... price-spotlight (the Signature tier)
-     .kvp-agent ................... the section 9 widget: a built mock of the
+     .kvp-agent ................... the section 4 widget: a built mock of the
                                     proposed chat agent, ink-deep plate on
                                     cream. Carries its "illustration" label
                                     twice, inside the frame and beneath it.
      .kvp-cta-final ............... cta-final       (closing panel)
      .kvp-cover / .kvp-back ....... title page and the fixed back-link
-     .kvp-panel ................... generic tinted panel (perks, add-ons)
-     .kvp-addon-row ............... label left, price right, baseline aligned
-     .kvp-specs ................... key/value rows (terms, tier contents)
+     .kvp-specs ................... key/value rows (the terms)
      .kvp-list .................... tan-marked checklist
      .kvp-tablewrap / .kvp-table .. every table on the page sits in the wrapper
      .kvp-fn / .kvp-sources ....... superscript citation + numbered source list
 
+   RETIRED, and deliberately not left in the sheet: .kvp-tier (the three-tier
+   ladder), .kvp-tag, .kvp-panel, .kvp-addon-row, .kvp-foot. The page quotes
+   one price now. If a tier ladder ever comes back, do not resurrect the old
+   card -- its "most picked" tag sat in the flow above the figure and knocked
+   the flagged card's price a line lower than its neighbours. Build it on
+   .kvp-compare's subgrid instead, which cannot do that.
+
    ACCENT DISCIPLINE. Tan is the single accent and is spent on exactly four
-   things: the spotlight tier, the "us" market row, the impact numerals, and
-   the image rings. Rust is the page's one alert colour, budgeted for ONE
-   element on the whole page -- it is now SPENT, on the 917-minute average
-   reply time in section 5 (.kvp-impact-row--alert), the single figure that
-   states the problem being solved. The budget is closed: do not add a second
-   --alert row, and do not add a colour that is not mixed from the seven
-   brand tokens.
+   things: the price cards' rules and accent borders, the "us" market row, the
+   impact numerals, and the image rings. Rust is the page's one alert colour,
+   budgeted for ONE element on the whole page -- it is SPENT, on the
+   917-minute average reply time (.kvp-impact-row--alert), the single figure
+   that states the problem being solved. The budget is closed: do not add a
+   second --alert row, and do not add a colour that is not mixed from the
+   seven brand tokens.
+
+   ---------------------------------------------------------------------------
+   VERTICAL RHYTHM: FOUR TOKENS, AND NOTHING ELSE.
+
+   The first build set section padding, heading margins and card gaps ad hoc,
+   so the interval between a heading and its content varied section to section
+   and some bands sat much further apart than others. The client called it out.
+
+   Every vertical gap BETWEEN BLOCKS now comes from one of exactly four tokens
+   -- --kvp-space-section, --kvp-space-block, --kvp-space-head,
+   --kvp-space-card -- declared once below and used nowhere else from a raw
+   value. If you need a gap this scale does not offer, you have found a fifth
+   rhythm the page does not want: use the nearest token instead.
+
+   What is NOT on this scale, on purpose: padding INSIDE a component (a card's
+   own inset), and line-level gaps inside a run of text (list items, chips).
+   Those are component scale, not document rhythm, and putting them on the
+   block scale would blow every card open.
    =========================================================================== */
 
 /* --- tokens ------------------------------------------------------------- */
@@ -123,8 +158,22 @@
   --kvp-h1:clamp(2.6rem,1.8rem + 4.2vw,5rem);
 
   --kvp-track:.13em;   /* tracking on uppercase micro-labels */
-  --kvp-gap:clamp(1rem,2.2vw,1.5rem);
-  --kvp-section-y:clamp(3rem,7vw,5.5rem);
+
+  /* ---- THE SPACING SCALE. Four values. See the doctrine at the top. ------
+     Read them as one ladder: a section break is roughly double a block break,
+     a block break is roughly double a head break, and cards sit close enough
+     to read as one group. Nothing below this block writes a vertical gap
+     between two blocks from a raw number. */
+
+  /* between sections: the padding-block on every .kvp-section */
+  --kvp-space-section:clamp(3.5rem,7vw,5.5rem);
+  /* body to component: head block to its content, and block to block */
+  --kvp-space-block:clamp(1.75rem,3.4vw,2.5rem);
+  /* heading to body: kicker to h2, h2 to lede, h3 to its first line.
+     This one is why every h2 on the page has an identical gap above it. */
+  --kvp-space-head:clamp(.85rem,1.5vw,1.15rem);
+  /* between cards inside one group */
+  --kvp-space-card:clamp(.75rem,1.4vw,1rem);
 }
 
 /* --- type --------------------------------------------------------------- */
@@ -229,7 +278,7 @@ a{color:inherit}
 /* Section kicker: the eyebrow that sits above an h2. */
 .kvp-kicker{
   display:block;
-  margin:0 0 .55rem;
+  margin:0 0 var(--kvp-space-head);
   font-size:var(--kvp-micro);
   font-weight:700;
   letter-spacing:var(--kvp-track);
@@ -274,80 +323,13 @@ a{color:inherit}
   padding-inline-end:.06em;
 }
 
-/* Small pill tag. */
-.kvp-tag{
-  display:inline-block;
-  padding:.25em .75em .3em;
-  border:1px solid var(--kv-tan);
-  border-radius:999px;
-  font-size:var(--kvp-micro);
-  font-weight:700;
-  letter-spacing:var(--kvp-track);
-  text-transform:uppercase;
-  color:var(--kv-brown);
-  white-space:nowrap;
-}
-/* Solid tag -- the spotlight tier's "most picked". */
-.kvp-tag--accent{
-  border-color:transparent;
-  background:var(--kv-tan);
-  color:var(--kv-ink-deep);
-}
-
-
-/* Tinted panel: perks box, add-on box. Ground, no shadow -- it recedes. */
-/* MEASURED FIX, section 9: the panel was a flat cream-deep fill, which is
-   invisible on a --band section -- whose ground IS cream-deep (the same trap
-   the note in section 7 of pricing.html warns about for this component). It
-   is now a warm tint OF WHATEVER GROUND IT SITS ON, so it recedes correctly
-   on cream, on the band and on --dark alike. Nothing used .kvp-panel before
-   section 9, so this changes no existing surface. */
-.kvp-panel{
-  background:color-mix(in srgb,var(--kv-brown) 8%,var(--kvp-ground));
-  border:1px solid var(--kvp-border-soft);
-  border-radius:var(--kvp-radius);
-  padding:clamp(1.25rem,3vw,1.75rem);
-}
-.kvp-panel--dashed{border-style:dashed;border-color:var(--kv-tan)}
-
-/* Label left, figure right, baseline aligned. Add-ons, volume steps. */
-.kvp-addon-rows{display:flex;flex-direction:column;gap:.6rem}
-.kvp-addon-row{
-  display:flex;
-  justify-content:space-between;
-  align-items:baseline;
-  gap:1rem;
-  padding:.85rem 1rem;
-  background:var(--kvp-surface);
-  border:1px solid var(--kvp-border);
-  border-radius:var(--kvp-radius-sm);
-}
-.kvp-addon-row__name{font-size:var(--kvp-small);font-weight:600}
-.kvp-addon-row__price{
-  font-family:var(--kv-serif);
-  font-size:1rem;
-  color:var(--kv-brown);
-  white-space:nowrap;
-  font-variant-numeric:tabular-nums;
-  text-align:right;
-}
-/* An add-on that carries BOTH a setup fee and a monthly is two figures, and
-   at 330px one nowrap string holding both is the widest thing in the panel.
-   Break it with a <br> in the markup -- a <br> still breaks under nowrap --
-   and let the whole row stack below the phone breakpoint, the same move
-   .kvp-impact-row already makes at the same width. */
-@media(max-width:520px){
-  .kvp-addon-row{flex-direction:column;align-items:flex-start;gap:.35rem}
-  .kvp-addon-row__price{text-align:left}
-}
-
 /* Hairline key/value rows: terms, tier contents, volume steps. */
 .kvp-specs{margin:0;padding:0}
 .kvp-specs__row{
   display:grid;
   grid-template-columns:1fr;
   gap:.3rem var(--kvp-gutter);
-  padding:1.1rem 0;
+  padding:var(--kvp-space-card) 0;
   border-top:1px solid var(--kvp-rule-soft);
 }
 .kvp-specs__row:first-child{border-top-color:var(--kvp-rule)}
@@ -450,8 +432,8 @@ a{color:inherit}
 }
 .kvp-fn:hover,.kvp-fn:focus-visible{color:var(--kv-tan)}
 .kvp-sources{
-  margin:clamp(1.25rem,2.5vw,1.75rem) 0 0;
-  padding:1rem 0 0 1.4rem;
+  margin:var(--kvp-space-block) 0 0;
+  padding:var(--kvp-space-head) 0 0 1.4rem;
   border-top:1px solid var(--kvp-rule-soft);
   font-size:var(--kvp-micro);
   line-height:1.6;
@@ -505,6 +487,10 @@ a{color:inherit}
   display:flex;
   align-items:flex-end;
   min-height:min(88svh,46rem);
+  /* NOT on the block scale, deliberately: this is the cover plate's own
+     bleed height -- how much photograph sits above the type -- not a gap
+     between two blocks in the document. The rhythm INSIDE the cover is on
+     the scale; the plate itself is a hero. */
   padding-block:clamp(6rem,14vw,9rem) clamp(2.5rem,6vw,4rem);
   background:var(--kv-ink-deep);
   color:var(--kv-cream);
@@ -541,12 +527,12 @@ a{color:inherit}
   font-size:var(--kvp-h1);
   line-height:.92;
   letter-spacing:-.025em;
-  margin:.5rem 0 0;
+  margin:var(--kvp-space-head) 0 0;
   color:var(--kv-cream);
 }
 .kvp-cover__sub{
   max-width:46ch;
-  margin:clamp(.9rem,2.2vw,1.25rem) 0 0;
+  margin:var(--kvp-space-head) 0 0;
   font-size:var(--kvp-lede);
   line-height:1.42;
   color:color-mix(in srgb,var(--kv-cream) 86%,transparent);
@@ -555,7 +541,7 @@ a{color:inherit}
   display:inline-flex;
   align-items:center;
   gap:.55rem;
-  margin-top:clamp(1.25rem,3vw,1.75rem);
+  margin-top:var(--kvp-space-block);
   padding:.7rem 1.3rem;
   border-radius:999px;
   background:var(--kv-tan);
@@ -578,7 +564,7 @@ a{color:inherit}
   display:flex;
   flex-wrap:wrap;
   gap:.5rem;
-  margin-top:clamp(1.5rem,4vw,2.25rem);
+  margin-top:var(--kvp-space-block);
 }
 .kvp-contact__item{
   display:inline-flex;
@@ -615,7 +601,7 @@ a.kvp-contact__item:hover,a.kvp-contact__item:focus-visible{
    Bands alternate ground through --kvp-ground so table affordances keep
    matching the surface behind them. */
 .kvp-section{
-  padding-block:var(--kvp-section-y);
+  padding-block:var(--kvp-space-section);
   background:var(--kvp-ground);
 }
 .kvp-section--band{--kvp-ground:var(--kv-cream-deep)}
@@ -632,14 +618,15 @@ a.kvp-contact__item:hover,a.kvp-contact__item:focus-visible{
 .kvp-section--dark .kvp-h2,
 .kvp-section--dark .kvp-h3,
 .kvp-section--dark .kvp-lede,
-.kvp-section--dark .kvp-price,
-.kvp-section--dark .kvp-price{color:var(--kv-cream)}
+.kvp-section--dark .kvp-quote__fig{color:var(--kv-cream)}
 .kvp-section--dark .kvp-eyebrow,
+.kvp-section--dark .kvp-quote__label,
+.kvp-section--dark .kvp-quote__meta,
 .kvp-section--dark .kvp-specs__key,
 .kvp-section--dark .kvp-table th,
 .kvp-section--dark .kvp-table caption{color:var(--kv-tan)}
 
-.kvp-section__head{margin-bottom:clamp(1.5rem,3.5vw,2.5rem)}
+.kvp-section__head{margin-bottom:var(--kvp-space-block)}
 
 .kvp-h2{
   font-size:var(--kvp-h2);
@@ -649,7 +636,7 @@ a.kvp-contact__item:hover,a.kvp-contact__item:focus-visible{
   max-width:24ch;
   text-wrap:balance;
 }
-.kvp-h2 + .kvp-lede{margin-top:clamp(.9rem,2vw,1.25rem)}
+.kvp-h2 + .kvp-lede{margin-top:var(--kvp-space-head)}
 .kvp-h3{
   font-size:var(--kvp-h3);
   line-height:1.25;
@@ -658,15 +645,15 @@ a.kvp-contact__item:hover,a.kvp-contact__item:focus-visible{
 
 /* Vertical rhythm between blocks inside a section, so later sections do not
    each invent their own margins. */
-.kvp-block{margin-top:clamp(1.75rem,4vw,2.75rem)}
-.kvp-block--tight{margin-top:clamp(1rem,2.2vw,1.5rem)}
+.kvp-block{margin-top:var(--kvp-space-block)}
+.kvp-block--tight{margin-top:var(--kvp-space-head)}
 
 /* --- feature block ------------------------------------------------------ */
 
 /* The homepage walkthrough. Each block pairs one real asset off the live site
    with the copy describing that feature, so the reader can check every claim
    against the page they have already scrolled. */
-.kvp-features{display:flex;flex-direction:column;gap:var(--kvp-gap)}
+.kvp-features{display:flex;flex-direction:column;gap:var(--kvp-space-card)}
 
 .kvp-feature{
   display:grid;
@@ -784,11 +771,89 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
   .kvp-feature--plan .kvp-feature__media{max-width:none}
 }
 
+/* --- built plates ------------------------------------------------------- */
+
+/* Two of the four things the client asked to see named -- the FAQs written
+   for both kinds of search, and the form handoff to WhatsApp -- are
+   STRUCTURAL rather than photographic. There is no picture of "one answer
+   serving three destinations", and a stock illustration of one would be
+   decoration on a page whose argument is that everything on it is checkable.
+
+   The page already has a rule for this, set by the agent widget: photograph
+   what exists, DRAW what is structural. So these plates are built in the
+   page's own type, and they are deliberately the quietest surface on the
+   sheet -- cream-deep ground, hairline, no shadow, nothing ink-deep -- so
+   that the agent widget stays the one designed object here.
+
+   They use the full-width --drawn mode for the same reason --plan exists: a
+   row of chips is unreadable in a 190px portrait rail. */
+.kvp-feature--drawn{grid-template-columns:1fr}
+
+.kvp-feature__plate{
+  background:var(--kv-cream-deep);
+  border:1px solid var(--kvp-border);
+  border-radius:var(--kvp-radius-sm);
+  padding:clamp(.9rem,2.4vw,1.25rem);
+}
+.kvp-plate__q{
+  margin:0;
+  font-family:var(--kv-serif);
+  font-weight:300;
+  font-optical-sizing:auto;
+  font-size:clamp(1rem,.94rem + .32vw,1.2rem);
+  line-height:1.35;
+  letter-spacing:-.01em;
+  color:var(--kv-ink-deep);
+}
+/* Flows and wraps like text rather than sitting in tracks, so at 330px it
+   becomes a stack of chips instead of a rail that widens the card. */
+.kvp-plate__flow{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:.4rem .5rem;
+}
+.kvp-plate__q + .kvp-plate__flow{margin-top:var(--kvp-space-head)}
+.kvp-plate__from{
+  font-size:var(--kvp-micro);
+  font-weight:700;
+  letter-spacing:var(--kvp-track);
+  text-transform:uppercase;
+  color:var(--kv-brown);
+}
+.kvp-plate__arrow{color:var(--kv-tan);line-height:1}
+.kvp-plate__chip{
+  padding:.25em .7em .3em;
+  border:1px solid var(--kv-tan);
+  border-radius:999px;
+  background:var(--kvp-surface);
+  font-size:var(--kvp-micro);
+  font-weight:700;
+  letter-spacing:.04em;
+  color:var(--kv-brown);
+  white-space:nowrap;
+}
+/* The message the sales team actually receives. Capped, and with one corner
+   squared off, so it reads as a chat bubble without borrowing WhatsApp's
+   green -- no colour on this page comes from outside the seven brand tokens. */
+.kvp-plate__msg{
+  max-width:min(100%,24rem);
+  margin:var(--kvp-space-head) 0 0;
+  padding:.55rem .85rem;
+  background:var(--kvp-surface);
+  border:1px solid var(--kvp-border);
+  border-radius:var(--kvp-radius-sm);
+  border-end-start-radius:4px;
+  font-size:var(--kvp-small);
+  line-height:1.5;
+  color:var(--kv-ink-deep);
+}
+
 /* --- market row --------------------------------------------------------- */
 
 /* One card per competitor. Our row takes the tan border, the cream-deep ground
    and no shadow, so it reads as the answer without shouting. */
-.kvp-market{display:flex;flex-direction:column;gap:.75rem}
+.kvp-market{display:flex;flex-direction:column;gap:var(--kvp-space-card)}
 .kvp-market-row{
   background:var(--kvp-surface);
   border:1px solid var(--kvp-border);
@@ -807,7 +872,7 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
   align-items:start;
   column-gap:1rem;
   row-gap:.25rem;
-  margin-bottom:.75rem;
+  margin-bottom:var(--kvp-space-card);
 }
 .kvp-market-row__name{
   font-size:var(--kvp-small);
@@ -864,7 +929,7 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
    the third. Ruled off the comparison grid above it, and brought up to the
    body size the grid uses; the italic and the inherited ink stay. */
 .kvp-market-row__body + .kvp-market-row__eg{
-  margin-top:1rem;
+  margin-top:var(--kvp-space-card);
   padding-top:.85rem;
   border-top:1px solid var(--kvp-border-soft);
   font-size:var(--kvp-small);
@@ -885,7 +950,7 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
 
 /* A large tan Fraunces numeral, then the claim, key phrase in full ink.
    One citation line under the group -- never an uncited figure. */
-.kvp-impact{display:flex;flex-direction:column;gap:.6rem}
+.kvp-impact{display:flex;flex-direction:column;gap:var(--kvp-space-card)}
 .kvp-impact-row{
   display:flex;
   align-items:baseline;
@@ -927,124 +992,118 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
   .kvp-impact-row{flex-direction:column;gap:.35rem}
 }
 
-/* --- tier cards --------------------------------------------------------- */
+/* --- the price card ----------------------------------------------------- */
 
-.kvp-tiers{
-  display:grid;
-  gap:var(--kvp-gap);
-  grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr));
-}
-.kvp-tier{
-  position:relative;
-  overflow:hidden;
+/* THE ONE PRICE COMPONENT ON THIS PAGE, and it is used four times: the website
+   quote, the AI agent's setup fee, and both cards of the side-by-side at the
+   foot of section 4. One component means the agent's price reads as a figure
+   comparable with the build's, rather than as a headline price and a footnote
+   -- which is exactly what the client asked for.
+
+   THERE IS NO DERIVATION LINE, and there must never be one. The quote is a
+   researched Gurgaon baseline x 1.2, but that working is internal: showing a
+   client the arithmetic behind their own quote invites them to argue the
+   multiplier instead of judging the price. What sits under the figure is the
+   timeline and the terms.
+
+   MEASURED against the rest of the page: the figure is 3.8rem at desktop,
+   against 2.6rem for the largest h2 and 5rem for the cover headline. So it is
+   the largest thing on the page after the cover headline, and by a clear step
+   -- which is the whole point of retiring the tier ladder. Nothing else
+   competes with it inside the card: the label above it is micro, the meta line
+   below it is micro, and the note is small. */
+.kvp-quote{
   background:var(--kvp-surface);
-  border:1px solid var(--kvp-border);
+  /* 2px on BOTH variants. --accent changes the colour, never the width: a 1px
+     card beside a 2px one is a 1px baseline error in .kvp-compare. */
+  border:2px solid var(--kvp-border);
   border-radius:var(--kvp-radius);
   box-shadow:var(--kvp-shadow);
-  padding:clamp(1.35rem,2.6vw,1.75rem);
-  display:flex;
-  flex-direction:column;
+  padding:clamp(1.35rem,3vw,2rem);
 }
-/* The 4px bar across the top. Tan into brown -- the palette's own gradient. */
-.kvp-tier::before{
-  content:"";
-  position:absolute;
-  top:0;left:0;right:0;
-  height:4px;
-  background:linear-gradient(90deg,var(--kv-tan),var(--kv-brown));
-}
-/* THE FIGURE IS THE HERO OF THE CARD.
+.kvp-quote--accent{border-color:var(--kv-tan)}
 
-   The first build put the prices seventh of nine sections, behind 1,800 words
-   of preamble, and set them no louder than anything else on the sheet. They
-   now open the document, and inside the card the money leads: a small
-   uppercase LABEL naming the tier, then the figure at display size, then the
-   derivation under it.
-
-   MEASURED against the rest of the page: 3.4rem here, 2.6rem for .kvp-price
-   (the agent setup fee), 1.75rem for an impact numeral. Several steps larger
-   than any other number, so three cards put three big numerals on one
-   horizontal axis and the comparison is instant.
-
-   The tier name is deliberately NOT a heading: a 1.4rem serif name sitting
-   above a 3.4rem serif figure competes with it. It is a label. */
-.kvp-tier__top{
-  display:flex;
-  flex-wrap:wrap;
-  align-items:center;
-  justify-content:space-between;
-  gap:.5rem .75rem;
-  /* The two unflagged cards hold the axis the flagged one's tag sets. */
-  min-height:1.9rem;
-  margin-bottom:.55rem;
-}
-.kvp-tier__label{
-  margin:0;
+.kvp-quote__label{
+  margin:0 0 var(--kvp-space-head);
   font-size:var(--kvp-micro);
   font-weight:700;
   letter-spacing:var(--kvp-track);
   text-transform:uppercase;
   color:var(--kv-brown);
 }
-.kvp-tier__fig{
+.kvp-quote__fig{
   margin:0;
   font-family:var(--kv-serif);
   font-weight:300;
   font-optical-sizing:auto;
-  font-size:clamp(2.3rem,1.45rem + 2.6vw,3.4rem);
-  line-height:.98;
-  letter-spacing:-.025em;
+  font-size:clamp(2.4rem,1.4rem + 3.1vw,3.8rem);
+  line-height:.95;
+  letter-spacing:-.03em;
   color:var(--kv-ink-deep);
   font-variant-numeric:tabular-nums;
-  /* At 330px the card is ~247px wide and the widest figure sets ~165px, so
-     this never fires. It is here so that a longer figure would wrap inside
-     the card rather than widen the page. */
+  /* A longer figure wraps inside the card rather than widening the page. */
   overflow-wrap:break-word;
 }
-/* The derivation line. It is what makes the figure defensible, so it stays --
-   at micro size against a 3.4rem figure, so it cannot compete with it. The
-   2px tan rule beneath is the one the old receipt carried above its price. */
-.kvp-tier__deriv{
-  margin:.45rem 0 0;
-  padding-bottom:1rem;
+/* The timeline, or what kind of money this is. Ruled off with the 2px tan the
+   old receipt carried above its price. */
+.kvp-quote__meta{
+  margin:var(--kvp-space-head) 0 0;
+  padding-bottom:var(--kvp-space-head);
   border-bottom:2px solid var(--kv-tan);
-  font-size:var(--kvp-micro);
-  letter-spacing:.03em;
-  color:var(--kvp-muted);
-  font-variant-numeric:tabular-nums;
-}
-
-/* The spotlight: the Signature tier. Tan border, a cream-deep gradient ground,
-   a real shadow, and the "most picked" tag. */
-.kvp-tier--spotlight{
-  border:2px solid var(--kv-tan);
-  background:linear-gradient(165deg,var(--kv-cream-deep),var(--kvp-surface));
-  box-shadow:var(--kvp-shadow-lift);
-}
-
-
-/* The ladder line: "Everything in Essential, plus". EVERY card carries one,
-   including the first -- three cards that each state what they start from
-   read as one ladder, where two continuations beside a card that starts from
-   nothing read as an odd card out. Ruled off the list beneath it, because
-   that is exactly what the sentence means: what is above this rule is
-   already in, and the bullets are only what the rung adds. */
-.kvp-tier__inherit{
-  margin:.9rem 0 .9rem;
-  padding-bottom:.75rem;
-  border-bottom:1px solid var(--kvp-border);
   font-size:var(--kvp-micro);
   font-weight:700;
   letter-spacing:var(--kvp-track);
   text-transform:uppercase;
   color:var(--kv-brown);
 }
+.kvp-quote__note{
+  margin:var(--kvp-space-head) 0 0;
+  max-width:var(--kvp-measure);
+  font-size:var(--kvp-small);
+  line-height:1.6;
+  color:var(--kvp-muted);
+}
 
+/* --- the side-by-side --------------------------------------------------- */
 
+/* THE BUG THIS COMPONENT EXISTS IN ORDER NOT TO REPEAT: in the retired tier
+   cards the "most picked" tag sat in the flow above the price, so the flagged
+   card's figure landed a line lower than its neighbours and the three prices
+   did not share a baseline. A min-height on the label row was the old patch,
+   and it failed the moment a label wrapped.
 
-/* --- the agent, illustrated --------------------------------------------- */
+   Subgrid makes it structural instead. Both cards span all four parent rows
+   and adopt the parent's row lines, so the labels, the figures, the meta lines
+   and the notes each sit on ONE axis -- whatever any of them contains, at any
+   width, tag or no tag.
 
-/* Section 9's centrepiece, and the one place on this page where the boldness
+   Two things would still skew it, so do neither: giving one card a padding or
+   a border width the other does not have (see .kvp-quote), and letting the
+   parent's row-gap through into the cards. The gap is columns-only above the
+   breakpoint; vertical rhythm inside the cards is the elements' own margins,
+   which are the same tokens the single card in section 2 uses. */
+.kvp-compare{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:var(--kvp-space-card);
+}
+@media(min-width:700px){
+  .kvp-compare{
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:auto auto auto auto;
+    row-gap:0;
+    column-gap:var(--kvp-space-card);
+  }
+  .kvp-compare > .kvp-quote{
+    grid-row:1 / -1;
+    display:grid;
+    grid-template-rows:subgrid;
+  }
+}
+
+/* --- the agent, illustrated ---------------------------------------------- */
+
+/* Section 4's centrepiece, and the one place on this page where the boldness
    is spent. The product being sold does not exist yet, so there is nothing to
    photograph, and a stock chatbot picture would be a lie on a document that
    has spent five sections earning trust with citations. So the widget is
@@ -1053,9 +1112,10 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
 
    It is the only ink-deep object on the cream pages -- the one screen in a
    paper document, which is exactly what a chat widget is. Everything else in
-   section 9 is deliberately the quietest components on the sheet (.kvp-specs
-   rows, two .kvp-tables, .kvp-addon-rows) so that this is the thing the
-   reader remembers.
+   the section is deliberately the quietest thing on the sheet (a .kvp-list, a
+   .kvp-table, two .kvp-quote cards) so that this is what the reader
+   remembers -- and the built plates in section 3 are held down to cream-deep
+   hairlines for the same reason.
 
    IT CARRIES ITS LABEL TWICE, and both are load-bearing rather than
    decorative: .kvp-agent__flag sits INSIDE the frame, so a cropped screenshot
@@ -1126,7 +1186,7 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
   padding:clamp(.9rem,2.6vw,1.4rem);
   display:flex;
   flex-direction:column;
-  gap:.9rem;
+  gap:var(--kvp-space-card);
 }
 .kvp-msg{max-width:min(100%,32rem)}
 .kvp-msg--buyer{margin-left:auto}
@@ -1167,8 +1227,7 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
 
 /* What the agent hands over. A span, never an anchor: it is a drawing of an
    attachment, not a download, and a proposal should not offer a link that
-   goes nowhere. Solid border on purpose -- dashed means "optional" on this
-   page (.kvp-panel--dashed) and that word is spoken for. */
+   goes nowhere. */
 .kvp-agent__file{
   display:inline-flex;
   align-items:center;
@@ -1200,7 +1259,7 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
   }
 }
 .kvp-agent__out-title{
-  margin:0 0 .9rem;
+  margin:0 0 var(--kvp-space-card);
   font-size:var(--kvp-micro);
   font-weight:700;
   letter-spacing:var(--kvp-track);
@@ -1233,7 +1292,7 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
    as the description of the thing above rather than as stray body copy. */
 .kvp-agent__cap{
   max-width:var(--kvp-measure);
-  margin:.9rem 0 0;
+  margin:var(--kvp-space-head) 0 0;
   font-size:var(--kvp-small);
   line-height:1.6;
   color:var(--kvp-muted);
@@ -1252,7 +1311,7 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
 .kvp-cta-final .kvp-h2{max-width:none;margin-inline:auto}
 .kvp-cta-final__sub{
   max-width:46ch;
-  margin:.75rem auto 0;
+  margin:var(--kvp-space-head) auto 0;
   font-size:var(--kvp-small);
   line-height:1.6;
   color:var(--kvp-muted);
@@ -1261,8 +1320,8 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
   display:flex;
   justify-content:center;
   flex-wrap:wrap;
-  gap:.75rem;
-  margin-top:1.5rem;
+  gap:var(--kvp-space-card);
+  margin-top:var(--kvp-space-block);
 }
 .kvp-btn{
   display:inline-flex;
@@ -1292,20 +1351,6 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
   color:var(--kv-brown);
 }
 
-/* --- document footer ---------------------------------------------------- */
-
-.kvp-foot{
-  margin-top:clamp(2.5rem,6vw,4rem);
-  padding-top:1.5rem;
-  border-top:1px solid var(--kvp-border);
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:space-between;
-  gap:.5rem 1.5rem;
-  font-size:var(--kvp-small);
-  color:var(--kvp-muted);
-}
-
 /* --- motion / print ----------------------------------------------------- */
 
 @media (prefers-reduced-motion:reduce){
@@ -1327,7 +1372,7 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
   .kvp-cover__link{display:none}
   .kvp-contact__item{color:var(--kv-ink);border-color:var(--kv-brown);background:none}
   .kvp-section{padding-block:1.5rem;background:none}
-  .kvp-feature,.kvp-tier,.kvp-market-row,.kvp-impact-row,
+  .kvp-feature,.kvp-quote,.kvp-market-row,.kvp-impact-row,
   .kvp-specs__row,.kvp-table tr,.kvp-agent__frame{break-inside:avoid;box-shadow:none}
   /* The one dark object on the page, laid back onto paper rather than printed
      as a slab of toner. The "illustration" label survives the conversion --

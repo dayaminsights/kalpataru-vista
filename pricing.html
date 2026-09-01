@@ -50,129 +50,75 @@
 <main>
 
   <!-- =================================================================== -->
-  <!-- 2. Three prices -- FIRST THING AFTER THE COVER, on purpose.          -->
+  <!-- 2. Your investment -- ONE PRICE, FIRST THING AFTER THE COVER.        -->
   <!--                                                                      -->
-  <!-- A firm confident in its price states it first. Everything below this -->
-  <!-- section is support for these three numbers rather than build-up to   -->
-  <!-- them, which is why nothing precedes it -- not even an at-a-glance    -->
-  <!-- strip. The card is built figure-first: .kvp-tier__label is a small   -->
-  <!-- uppercase LABEL, never a competing headline, and .kvp-tier__fig is   -->
-  <!-- the largest number on the page by several steps. The derivation line -->
-  <!-- under it is what makes the figure defensible, so it stays -- small.  -->
+  <!-- The three-tier ladder is retired. A single confident figure is       -->
+  <!-- easier to say yes to than a menu, and everything below this section  -->
+  <!-- is support for this one number rather than build-up to it.           -->
   <!--                                                                      -->
-  <!-- PRICES ARE TRANSCRIBED FROM THE SPEC, NEVER COMPUTED HERE:           -->
-  <!--   Essential  baseline 1,15,000  x1.2  quote 1,38,000                 -->
-  <!--   Signature  baseline 2,00,000  x1.2  quote 2,40,000                 -->
-  <!--   Flagship   baseline 3,25,000  x1.2  quote 3,90,000                 -->
-  <!-- Every one carries .kvp-rupee -- neither bundled woff2 has the rupee  -->
-  <!-- glyph, so it always falls back and has to be sized onto the digits.  -->
+  <!-- THE MULTIPLIER IS INTERNAL AND MUST NEVER APPEAR HERE. The quote is  -->
+  <!-- a researched Gurgaon baseline x 1.2, but showing a client the        -->
+  <!-- arithmetic behind their own quote invites them to argue the          -->
+  <!-- multiplier instead of judging the price. NO BASELINE FIGURE AND NO   -->
+  <!-- "x 1.2" ANYWHERE ON THIS PAGE. Section 5 cites the published ranges  -->
+  <!-- as reassurance; it shows no working. What sits under the figure is   -->
+  <!-- the timeline and the payment split, not the derivation.              -->
+  <!--                                                                      -->
+  <!-- PRICE TRANSCRIBED FROM THE SPEC, NEVER COMPUTED HERE: 1,38,000.      -->
+  <!-- Every price carries .kvp-rupee -- neither bundled woff2 has the      -->
+  <!-- rupee glyph, so it always falls back and has to be sized onto the    -->
+  <!-- digits beside it.                                                    -->
   <!-- =================================================================== -->
   <section class="kvp-section" id="prices">
     <div class="kvp-shell">
 
       <div class="kvp-section__head">
         <span class="kvp-kicker">Your investment</span>
-        <h2 class="kvp-h2">Three prices, by scope of build</h2>
-        <p class="kvp-lede">Three sizes of the same project, each containing the one before it. Every figure is a published Gurgaon rate &#215;&#8201;1.2, and the working is further down.</p>
+        <h2 class="kvp-h2">One price for the website</h2>
+        <p class="kvp-lede">The whole site, built, tested and handed over. Three to four weeks from signing.</p>
       </div>
 
-      <div class="kvp-tiers">
-
-        <article class="kvp-tier">
-          <div class="kvp-tier__top">
-            <p class="kvp-tier__label">Essential</p>
-          </div>
-          <p class="kvp-tier__fig"><span class="kvp-rupee">&#8377;</span>&#8201;1,38,000</p>
-          <p class="kvp-tier__deriv"><span class="kvp-rupee">&#8377;</span>&#8201;1,15,000 baseline &#215;&#8201;1.2 &#183; 3 to 4 weeks</p>
-          <p class="kvp-tier__inherit">Everything already live, plus</p>
-          <ul class="kvp-list kvp-list--tight">
-            <li>The scroll-choreographed site already built</li>
-            <li>Up to 6 sections</li>
-            <li>Enquiry form with WhatsApp handoff</li>
-            <li>SEO, GA4 and the RERA footer block</li>
-            <li>Mobile, tablet and desktop QA</li>
-            <li>1 round of content revisions</li>
-          </ul>
-        </article>
-
-        <article class="kvp-tier kvp-tier--spotlight">
-          <div class="kvp-tier__top">
-            <p class="kvp-tier__label">Signature</p>
-            <span class="kvp-tag kvp-tag--accent">Most picked</span>
-          </div>
-          <p class="kvp-tier__fig"><span class="kvp-rupee">&#8377;</span>&#8201;2,40,000</p>
-          <p class="kvp-tier__deriv"><span class="kvp-rupee">&#8377;</span>&#8201;2,00,000 baseline &#215;&#8201;1.2 &#183; 5 to 7 weeks</p>
-          <p class="kvp-tier__inherit">Everything in Essential, plus</p>
-          <ul class="kvp-list kvp-list--tight">
-            <li>Unit-plan explorer: 3 and 4 BHK, floor plates, carpet-area toggle</li>
-            <li>Photo gallery and location-intelligence map</li>
-            <li>Gated e-brochure download</li>
-            <li>CRM webhook &#8212; Zoho, Salesforce or Sell.Do</li>
-            <li>Two ad landing pages for Meta and Google</li>
-            <li>Core Web Vitals pass</li>
-            <li>3 rounds of revisions</li>
-          </ul>
-        </article>
-
-        <article class="kvp-tier">
-          <div class="kvp-tier__top">
-            <p class="kvp-tier__label">Flagship</p>
-          </div>
-          <p class="kvp-tier__fig"><span class="kvp-rupee">&#8377;</span>&#8201;3,90,000</p>
-          <p class="kvp-tier__deriv"><span class="kvp-rupee">&#8377;</span>&#8201;3,25,000 baseline &#215;&#8201;1.2 &#183; 8 to 11 weeks</p>
-          <p class="kvp-tier__inherit">Everything in Signature, plus</p>
-          <ul class="kvp-list kvp-list--tight">
-            <li>Frame-scrub apartment walkthrough</li>
-            <li>Multi-tower and multi-project template</li>
-            <li>Broker portal: login, inventory, commission documents</li>
-            <li>Sales-team admin for price, availability and copy</li>
-            <li>English and Hindi</li>
-            <li>RealEstateListing schema and locality landing pages</li>
-          </ul>
-        </article>
-
-      </div>
-
-      <!-- Evidence for the top tier, not decoration: the footage the Flagship
-           walkthrough is built from already exists, and this is a still off
-           it. It sits under the grid rather than inside the Flagship card so
-           the three cards stay symmetrical and the tan spotlight keeps
-           pointing at Signature alone. -->
-      <article class="kvp-feature kvp-block">
-        <div class="kvp-feature__media">
-          <img src="./FIND%20Real%20Estate%20_%20Purchase,%20Rent%20or%20Sell%20Commercial%20and%20Residential%20Real%20Estate_files/apartment-video-poster.jpg" alt="Inside the Kalpataru Vista show apartment, looking down the entrance hall into the living room: a chandelier, floor-length curtains, a green rug and a mirrored wall, with the Kalpataru Vista mark in the corner of the frame." loading="lazy">
-        </div>
-        <div class="kvp-feature__copy">
-          <span class="kvp-feature__tag">Flagship</span>
-          <p class="kvp-feature__name">The walkthrough is already shot</p>
-          <p class="kvp-feature__desc">428 frames of the show apartment, filmed and sitting in the project folder. Flagship ties them to the scroll, so a buyer walks the flat at their own pace.</p>
-          <p class="kvp-feature__hint">A still from that footage</p>
-        </div>
+      <article class="kvp-quote kvp-quote--accent">
+        <p class="kvp-quote__label">The website build</p>
+        <p class="kvp-quote__fig"><span class="kvp-rupee">&#8377;</span>&#8201;1,38,000</p>
+        <p class="kvp-quote__meta">One-time &#183; 3 to 4 weeks</p>
+        <p class="kvp-quote__note">Fixed against the scope below; anything outside it is quoted before it is built. 40% on signing, 30% on design approval, 30% on go-live.</p>
       </article>
 
-      <p class="kvp-note kvp-block">Each price is fixed against the scope on its card. Anything not on a card is quoted before it is built.</p>
+      <p class="kvp-note kvp-block">The AI sales agent is an optional extra and is <strong>not</strong> in this figure. It is pitched, and priced, further down.</p>
 
     </div>
   </section>
 
 
   <!-- =================================================================== -->
-  <!-- 3. What is already built -- IMAGE-LED.                               -->
+  <!-- 3. What we build -- IMAGE-LED, AND NAMED.                            -->
   <!--                                                                      -->
-  <!-- The reader has already scrolled the homepage, so this section proves  -->
-  <!-- rather than explains. Every block is one asset lifted off the live    -->
-  <!-- page with a caption naming what it is; the pill tag is the            -->
-  <!-- homepage's OWN section label, so the numbering is the site's and not  -->
-  <!-- a decorative sequence. The pictures carry this section: no            -->
-  <!-- paragraphs, one line of caption each.                                -->
+  <!-- The client asked for four things by name, in this order: the hero,   -->
+  <!-- amenities, FAQs written for GEO/AEO as well as SEO, and forms with   -->
+  <!-- WhatsApp integration. They lead the section. Captions do the talking;-->
+  <!-- there are no paragraphs here.                                        -->
+  <!--                                                                      -->
+  <!-- Two of the four have a photograph on the live site and two do not,   -->
+  <!-- and the page's rule for that is already set by section 4: photograph -->
+  <!-- what exists, DRAW what is structural. So FAQs and forms get built    -->
+  <!-- plates in the page's own type rather than a stock illustration of a  -->
+  <!-- thing we would be inventing. They are kept flat and quiet -- cream-  -->
+  <!-- deep, hairline, no shadow -- so the agent widget stays the one       -->
+  <!-- designed object on the page.                                         -->
+  <!--                                                                      -->
+  <!-- apartment-video-poster.jpg IS DELIBERATELY NOT HERE. It illustrated  -->
+  <!-- the frame-scrub walkthrough, which was a Flagship-tier feature;      -->
+  <!-- retiring the tier ladder puts it out of scope, and a proposal must   -->
+  <!-- not show a still from footage the quote does not pay for.            -->
   <!-- =================================================================== -->
   <section class="kvp-section kvp-section--band" id="built">
     <div class="kvp-shell">
 
       <div class="kvp-section__head">
-        <span class="kvp-kicker">What is already built</span>
-        <h2 class="kvp-h2">The site you've already seen</h2>
-        <p class="kvp-lede">Not a proposal &#8212; what the homepage does today. The first price contains all of it.</p>
+        <span class="kvp-kicker">The scope</span>
+        <h2 class="kvp-h2">What we build</h2>
+        <p class="kvp-lede">Named piece by piece, so there is nothing to discover later.</p>
       </div>
 
       <div class="kvp-features">
@@ -182,21 +128,9 @@
             <img src="./FIND%20Real%20Estate%20_%20Purchase,%20Rent%20or%20Sell%20Commercial%20and%20Residential%20Real%20Estate_files/house.webp" alt="The Kalpataru Vista towers cut out of their sky, standing over the golf course &#8212; the render the hero animation holds and scales." loading="lazy">
           </div>
           <div class="kvp-feature__copy">
-            <span class="kvp-feature__tag">01 &#8212; Hero</span>
-            <p class="kvp-feature__name">Scrubbed to the scroll</p>
-            <p class="kvp-feature__desc">The logotype draws on over the tower render, tied to scroll rather than a timer.</p>
-          </div>
-        </article>
-
-        <article class="kvp-feature kvp-feature--plan">
-          <a class="kvp-feature__media" href="./FIND%20Real%20Estate%20_%20Purchase,%20Rent%20or%20Sell%20Commercial%20and%20Residential%20Real%20Estate_files/map-direction.webp" target="_blank" rel="noopener noreferrer">
-            <img src="./FIND%20Real%20Estate%20_%20Purchase,%20Rent%20or%20Sell%20Commercial%20and%20Residential%20Real%20Estate_files/map-direction.webp" alt="Kalpataru Vista location map: the Sector 128 pin beside the golf course, the Noida&#8211;Greater Noida Expressway and the DND Flyway, with a side panel listing schools, hospitals, malls and metro stations against their drive times." loading="lazy">
-          </a>
-          <div class="kvp-feature__copy">
-            <span class="kvp-feature__tag">02 &#8212; Overview</span>
-            <p class="kvp-feature__name">Three cards, and the map inside one</p>
-            <p class="kvp-feature__desc">Sector 128, the golf course, the residences &#8212; with schools, hospitals and metro against drive times.</p>
-            <p class="kvp-feature__hint">Open full size &#8594;</p>
+            <span class="kvp-feature__tag">The hero</span>
+            <p class="kvp-feature__name">The scroll-choreographed opening</p>
+            <p class="kvp-feature__desc">Built and live: the logotype draws on over the tower render, tied to the scroll rather than to a timer.</p>
           </div>
         </article>
 
@@ -205,9 +139,45 @@
             <img src="./FIND%20Real%20Estate%20_%20Purchase,%20Rent%20or%20Sell%20Commercial%20and%20Residential%20Real%20Estate_files/amenities-2--big.avif" alt="A timber pavilion lit from within at dusk, above a still reflecting pool with mountains behind &#8212; the plate the amenities panel shows for the spa and wellness group." loading="lazy">
           </div>
           <div class="kvp-feature__copy">
-            <span class="kvp-feature__tag">03 &#8212; Amenities</span>
-            <p class="kvp-feature__name">A panel that pins, and steps</p>
-            <p class="kvp-feature__desc">Seventeen amenities in three groups, stepped through on scroll. Placeholder photography; your shoot drops in.</p>
+            <span class="kvp-feature__tag">Amenities</span>
+            <p class="kvp-feature__name">The photo panels</p>
+            <p class="kvp-feature__desc">Seventeen amenities in three groups, stepped through as the panel pins to the screen. Your shoot drops straight in.</p>
+          </div>
+        </article>
+
+        <article class="kvp-feature kvp-feature--drawn">
+          <div class="kvp-feature__plate">
+            <p class="kvp-plate__q">&#8220;Is the 4&nbsp;BHK in Tower&nbsp;B still available?&#8221;</p>
+            <div class="kvp-plate__flow">
+              <span class="kvp-plate__from">One answer</span>
+              <span class="kvp-plate__arrow" aria-hidden="true">&#8594;</span>
+              <span class="kvp-plate__chip">Google</span>
+              <span class="kvp-plate__chip">AI assistants</span>
+              <span class="kvp-plate__chip">FAQPage schema</span>
+            </div>
+          </div>
+          <div class="kvp-feature__copy">
+            <span class="kvp-feature__tag">FAQs</span>
+            <p class="kvp-feature__name">Written for both kinds of search</p>
+            <p class="kvp-feature__desc">Structured for AI answer engines (GEO and AEO) as well as for conventional search (SEO), so the project surfaces when a buyer asks an assistant and not only when they type into Google.</p>
+          </div>
+        </article>
+
+        <article class="kvp-feature kvp-feature--drawn">
+          <div class="kvp-feature__plate">
+            <div class="kvp-plate__flow">
+              <span class="kvp-plate__chip">Name</span>
+              <span class="kvp-plate__chip">Phone</span>
+              <span class="kvp-plate__chip">Unit</span>
+              <span class="kvp-plate__arrow" aria-hidden="true">&#8594;</span>
+              <span class="kvp-plate__from">WhatsApp, sales team</span>
+            </div>
+            <p class="kvp-plate__msg">New enquiry &#8212; 4&nbsp;BHK, Tower&nbsp;B</p>
+          </div>
+          <div class="kvp-feature__copy">
+            <span class="kvp-feature__tag">Forms</span>
+            <p class="kvp-feature__name">Straight onto the sales team's phone</p>
+            <p class="kvp-feature__desc">WhatsApp integration on every enquiry form: it arrives as a message the moment it is submitted, so nobody has to be refreshing an inbox.</p>
           </div>
         </article>
 
@@ -216,49 +186,33 @@
             <img src="./FIND%20Real%20Estate%20_%20Purchase,%20Rent%20or%20Sell%20Commercial%20and%20Residential%20Real%20Estate_files/kv-residence-plan-1.jpg" alt="Tower B's floor plate: four furnished apartments arranged around a central lift lobby and stair core, with the floors the plate applies to listed along the bottom." loading="lazy">
           </a>
           <div class="kvp-feature__copy">
-            <span class="kvp-feature__tag">04 &#8212; Unit Layout Plan</span>
-            <p class="kvp-feature__name">Two configurations, and the plate behind them</p>
-            <p class="kvp-feature__desc">3 and 4 BHK side by side, with a call-back plate under them.</p>
+            <span class="kvp-feature__tag">The rest of the page</span>
+            <p class="kvp-feature__name">Overview, unit layout, and the close</p>
+            <p class="kvp-feature__desc">Sector 128 and the connectivity map, the 3 and 4&nbsp;BHK plates side by side, and the closing call to action.</p>
             <p class="kvp-feature__hint">Open full size &#8594;</p>
-          </div>
-        </article>
-
-        <article class="kvp-feature kvp-feature--plan">
-          <a class="kvp-feature__media" href="./FIND%20Real%20Estate%20_%20Purchase,%20Rent%20or%20Sell%20Commercial%20and%20Residential%20Real%20Estate_files/site-layout.webp" target="_blank" rel="noopener noreferrer">
-            <img src="./FIND%20Real%20Estate%20_%20Purchase,%20Rent%20or%20Sell%20Commercial%20and%20Residential%20Real%20Estate_files/site-layout.webp" alt="The complex layout at ground level: Towers A and B set in landscaped grounds, with a numbered legend running from the entry and security cabin through the community centre, lawn and shaded cabanas to the kids' play area, jacuzzi and swimming pool." loading="lazy">
-          </a>
-          <div class="kvp-feature__copy">
-            <span class="kvp-feature__tag">05 &#8212; Site Layout</span>
-            <p class="kvp-feature__name">The master plan, and the schedule beside it</p>
-            <p class="kvp-feature__desc">Towers and grounds, with the specification schedule in six groups next to them.</p>
-            <p class="kvp-feature__hint">Open full size &#8594;</p>
-          </div>
-        </article>
-
-        <article class="kvp-feature">
-          <div class="kvp-feature__media">
-            <img src="./FIND%20Real%20Estate%20_%20Purchase,%20Rent%20or%20Sell%20Commercial%20and%20Residential%20Real%20Estate_files/kv-why-interior.jpg" alt="Inside the Kalpataru Vista show apartment: a cream and brass living room seen down the entrance hall, with a chandelier, floor-length curtains and a green rug &#8212; the still the Why Vista credits show for interiors." loading="lazy">
-          </div>
-          <div class="kvp-feature__copy">
-            <span class="kvp-feature__tag">06 &#8212; Why Kalpataru Vista</span>
-            <p class="kvp-feature__name">The credits, the record, the close</p>
-            <p class="kvp-feature__desc">Four practices credited, each swapping the photograph beside it, over a record that counts up.</p>
           </div>
         </article>
 
       </div>
 
-      <p class="kvp-note kvp-block">Also live, not pictured: the show-apartment loop, filtered FAQs, two lead forms, the sticky enquire bar and link previews. Not yet built: a sitemap, and any CRM handoff.</p>
+      <p class="kvp-note kvp-block">Also in the price: basic SEO (meta tags, Open Graph, sitemap), GA4, the RERA footer block, QA at phone, tablet and desktop widths, and one round of content revisions.</p>
 
     </div>
   </section>
 
 
   <!-- =================================================================== -->
-  <!-- 4. The AI sales agent                                                -->
+  <!-- 4. The AI sales agent -- THE OPTIONAL ADD-ON.                        -->
   <!--                                                                      -->
-  <!-- The differentiator, and the page's one signature object: .kvp-agent, -->
-  <!-- the widget built as real markup.                                     -->
+  <!-- ORDER IS LOAD-BEARING, and it is the client's: make the case first,  -->
+  <!-- reveal the price second, put the two quotes side by side last. The   -->
+  <!-- "not included in the 1,38,000" line is stated in the lede, early and -->
+  <!-- plainly, so nobody reads the agent as something they are already     -->
+  <!-- paying for.                                                          -->
+  <!--                                                                      -->
+  <!-- The setup fee uses .kvp-quote, the SAME component as the website     -->
+  <!-- price in section 2, so the two read as comparable figures rather     -->
+  <!-- than a headline price and a footnote.                                -->
   <!--                                                                      -->
   <!-- NO PHOTOGRAPH IN THIS SECTION, deliberately. The product does not    -->
   <!-- exist yet, so there is nothing to photograph, and a stock chatbot    -->
@@ -272,19 +226,17 @@
   <!-- The two clock times are the argument: the enquiry lands at three in  -->
   <!-- the morning and is answered in the same minute.                      -->
   <!--                                                                      -->
-  <!-- NO FOOTNOTE MARKS HERE. This section now sits ABOVE both numbered    -->
-  <!-- source lists, so a superscript in it would run backwards. It carries -->
-  <!-- the argument in words instead and points forward to the cited        -->
-  <!-- figures; the setup baseline is likewise cited in section 5 and       -->
-  <!-- linked from here rather than repeated.                               -->
+  <!-- NO FOOTNOTE MARKS HERE. This section sits ABOVE both numbered source -->
+  <!-- lists, so a superscript in it would run backwards. It points forward -->
+  <!-- to the cited Gurgaon rates in section 5 instead.                     -->
   <!-- =================================================================== -->
   <section class="kvp-section" id="agent">
     <div class="kvp-shell">
 
       <div class="kvp-section__head">
-        <span class="kvp-kicker">The optional agent</span>
+        <span class="kvp-kicker">The optional add-on</span>
         <h2 class="kvp-h2">An AI that talks to your buyers</h2>
-        <p class="kvp-lede">A chat agent trained on your own price sheet, floor plates and RERA filing, handing the sales team a qualified lead before anyone opens a laptop.</p>
+        <p class="kvp-lede">A chat agent trained on your own price sheet, floor plates and RERA filing. It is <strong>not included in the <span class="kvp-rupee">&#8377;</span>&#8201;1,38,000</strong> &#8212; it is priced on its own, below.</p>
       </div>
 
       <p class="kvp-prose">Nobody is at a desk at three in the morning. A buyer browsing then does not wait until nine &#8212; they open the next tab.</p>
@@ -344,10 +296,10 @@
       </figure>
 
       <div class="kvp-block">
-        <h3 class="kvp-h3">What the setup fee covers</h3>
+        <h3 class="kvp-h3">What the setup covers</h3>
         <ul class="kvp-list kvp-list--tight kvp-block--tight">
           <li>Trained on your price sheet, floor plans, RERA filing and payment plan &#8212; it answers from those, not from the open internet</li>
-          <li>Your own widget, in the site's type &#8212; not a rented bubble</li>
+          <li>Your own widget, in the site's type and palette &#8212; not a rented bubble</li>
           <li>Every lead written to your CRM, WhatsApp and sales inbox</li>
           <li>Sentiment and intent scored on every conversation</li>
           <li>A hot-lead ping to the sales team while the buyer is still reading</li>
@@ -355,15 +307,16 @@
         </ul>
       </div>
 
-      <div class="kvp-panel kvp-block">
-        <span class="kvp-tag">One-time setup</span>
-        <p class="kvp-price kvp-block--tight"><span class="kvp-rupee">&#8377;</span>&#8201;90,000</p>
-        <p class="kvp-note kvp-block--tight">The <span class="kvp-rupee">&#8377;</span>&#8201;75,000 chatbot baseline &#215;&#8201;1.2, cited under <a href="#fair">why this price is fair</a>. 50% on signing, 50% on go-live.</p>
-      </div>
+      <article class="kvp-quote kvp-quote--accent kvp-block">
+        <p class="kvp-quote__label">The AI agent, setup</p>
+        <p class="kvp-quote__fig"><span class="kvp-rupee">&#8377;</span>&#8201;90,000</p>
+        <p class="kvp-quote__meta">One-time &#183; on top of the website price</p>
+        <p class="kvp-quote__note">50% on signing, 50% on go-live, then the monthly retainer below. Benchmarked against the published Gurgaon chatbot rates in the next section.</p>
+      </article>
 
       <div class="kvp-block">
         <h3 class="kvp-h3">What it costs to run</h3>
-        <p class="kvp-prose kvp-block--tight">One retainer, stepped by use: model usage, hosting, monthly prompt tuning, the dashboard.</p>
+        <p class="kvp-prose kvp-block--tight">One retainer, stepped by use: model usage, hosting, monthly prompt tuning and the dashboard.</p>
 
         <div class="kvp-tablewrap kvp-block--tight">
           <table class="kvp-table">
@@ -401,26 +354,48 @@
         </div>
       </div>
 
-      <div class="kvp-panel kvp-panel--dashed kvp-block">
-        <span class="kvp-tag">Optional add-ons</span>
-        <div class="kvp-addon-rows kvp-block--tight">
-          <div class="kvp-addon-row">
-            <div class="kvp-addon-row__name">Voice agent &#8212; answers the phone too</div>
-            <div class="kvp-addon-row__price"><span class="kvp-rupee">&#8377;</span>&#8201;1,40,000 setup<br>+ <span class="kvp-rupee">&#8377;</span>&#8201;18,000 a month</div>
-          </div>
-          <div class="kvp-addon-row">
-            <div class="kvp-addon-row__name">WhatsApp Business API &#8212; the same agent, inside WhatsApp</div>
-            <div class="kvp-addon-row__price"><span class="kvp-rupee">&#8377;</span>&#8201;45,000 setup<br>+ <span class="kvp-rupee">&#8377;</span>&#8201;6,000 a month</div>
-          </div>
-          <div class="kvp-addon-row">
-            <div class="kvp-addon-row__name">Additional languages &#8212; Hindi, or any you sell in</div>
-            <div class="kvp-addon-row__price"><span class="kvp-rupee">&#8377;</span>&#8201;35,000 one-time</div>
-          </div>
-        </div>
-        <p class="kvp-note kvp-block--tight">Meta's own WhatsApp conversation fee is passed to you at cost.</p>
-      </div>
+      <!-- ================================================================= -->
+      <!-- 4b. The side-by-side, at the FOOT of section 4 and not a section   -->
+      <!-- of its own. The client asked for this comparison explicitly.       -->
+      <!--                                                                    -->
+      <!-- 1,38,000 + 90,000 = 2,28,000. Checked. If either figure ever       -->
+      <!-- changes, redo the addition here rather than trusting this comment. -->
+      <!--                                                                    -->
+      <!-- THE BASELINE BUG THE OLD TIER CARDS HAD MUST NOT COME BACK. There, -->
+      <!-- a "most picked" tag sat in the flow above the price, so the        -->
+      <!-- flagged card's figure landed a line lower than its neighbours.     -->
+      <!-- .kvp-compare fixes that structurally with subgrid: both cards span -->
+      <!-- the same four parent rows, so the labels, the figures, the meta    -->
+      <!-- lines and the notes each share one axis whether or not a card      -->
+      <!-- carries a tag. Do not give one card padding or a border width the  -->
+      <!-- other does not have -- that is the one thing that would skew it.   -->
+      <!--                                                                    -->
+      <!-- The retainer is deliberately its own row, BELOW the one-time       -->
+      <!-- figure and its rule, so 2,28,000 cannot be misread as all-in.      -->
+      <!-- ================================================================= -->
+      <div class="kvp-block">
+        <h3 class="kvp-h3">Website, or website and agent</h3>
 
-      <p class="kvp-note kvp-block">Priced separately from the build, and addable after go-live.</p>
+        <div class="kvp-compare kvp-block--tight">
+
+          <article class="kvp-quote">
+            <p class="kvp-quote__label">Website</p>
+            <p class="kvp-quote__fig"><span class="kvp-rupee">&#8377;</span>&#8201;1,38,000</p>
+            <p class="kvp-quote__meta">One-time</p>
+            <p class="kvp-quote__note">No agent retainer.</p>
+          </article>
+
+          <article class="kvp-quote kvp-quote--accent">
+            <p class="kvp-quote__label">Website and agent</p>
+            <p class="kvp-quote__fig"><span class="kvp-rupee">&#8377;</span>&#8201;2,28,000</p>
+            <p class="kvp-quote__meta">One-time</p>
+            <p class="kvp-quote__note">Plus the agent's monthly retainer, from <span class="kvp-rupee">&#8377;</span>&#8201;12,000.</p>
+          </article>
+
+        </div>
+
+        <p class="kvp-note kvp-block--tight">The retainer is billed monthly and is separate from the one-time figure. Hosting and care applies either way once the first six months are up &#8212; see the terms.</p>
+      </div>
 
     </div>
   </section>
@@ -429,34 +404,33 @@
   <!-- =================================================================== -->
   <!-- 5. Why this price is fair                                            -->
   <!--                                                                      -->
-  <!-- ONE comparison structure, not two. The eight-row baseline table that -->
-  <!-- used to sit here was doing the same job as the three-column grid; it -->
-  <!-- is now a single cited sentence, so the published ranges and all      -->
-  <!-- three sources survive at a fraction of the words.                    -->
+  <!-- THE REASSURANCE, NOT THE WORKING. This section cites the published    -->
+  <!-- Gurgaon and NCR ranges to show the quote sits inside them. It must    -->
+  <!-- never state a baseline figure for our own work, and never the         -->
+  <!-- multiplier -- see the note on section 2.                              -->
   <!--                                                                      -->
-  <!-- The grid gets the same voice and the same four dimensions for all    -->
-  <!-- three columns, and a --win mark wherever a competitor genuinely      -->
-  <!-- wins. A rigged comparison would spend the trust the citations just   -->
-  <!-- bought.                                                              -->
+  <!-- The grid gets the same voice and the same four dimensions for all     -->
+  <!-- three columns, and a --win mark wherever a competitor genuinely wins. -->
+  <!-- A rigged comparison would spend the trust the citations just bought.  -->
   <!--                                                                      -->
-  <!-- Ground note: this section stays on plain cream. .kvp-market-row--us  -->
-  <!-- distinguishes itself with a cream-deep ground, which would vanish if -->
-  <!-- the section were --band.                                             -->
+  <!-- Ground note: this section stays on plain cream. .kvp-market-row--us   -->
+  <!-- distinguishes itself with a cream-deep ground, which would vanish if  -->
+  <!-- the section were --band.                                              -->
   <!--                                                                      -->
-  <!-- FOOTNOTES 1-3 live here; 4-7 are in the next section, whose list     -->
-  <!-- carries start="4". Numbering runs in order of appearance down the    -->
-  <!-- page, and no mark points at an id that is not printed.               -->
+  <!-- FOOTNOTES 1-3 live here; 4-7 are in the next section, whose list      -->
+  <!-- carries start="4". Numbering runs in order of appearance down the     -->
+  <!-- page, and no mark points at an id that is not printed.                -->
   <!-- =================================================================== -->
   <section class="kvp-section" id="fair">
     <div class="kvp-shell">
 
       <div class="kvp-section__head">
-        <span class="kvp-kicker">How the price was set</span>
+        <span class="kvp-kicker">Where the price sits</span>
         <h2 class="kvp-h2">Why this price is fair</h2>
         <p class="kvp-lede">Published rates for comparable work, and the honest alternatives to hiring us.</p>
       </div>
 
-      <p class="kvp-prose">Gurgaon and Delhi&nbsp;NCR going rates: <span class="kvp-rupee">&#8377;</span>&#8201;60,000 to <span class="kvp-rupee">&#8377;</span>&#8201;2,50,000 for a custom brochure site<a class="kvp-fn" href="#kvp-s1">1</a>, <span class="kvp-rupee">&#8377;</span>&#8201;50,000 to <span class="kvp-rupee">&#8377;</span>&#8201;2,00,000 for a standard custom site<a class="kvp-fn" href="#kvp-s2">2</a>, <span class="kvp-rupee">&#8377;</span>&#8201;2,00,000 to <span class="kvp-rupee">&#8377;</span>&#8201;10,00,000 for a web application<a class="kvp-fn" href="#kvp-s2">2</a>, <span class="kvp-rupee">&#8377;</span>&#8201;30,000 to <span class="kvp-rupee">&#8377;</span>&#8201;75,000 for an entry-level AI chatbot<a class="kvp-fn" href="#kvp-s3">3</a>, <span class="kvp-rupee">&#8377;</span>&#8201;3,10,000 for a Gurugram lead-qualification bot<a class="kvp-fn" href="#kvp-s3">3</a>, and <span class="kvp-rupee">&#8377;</span>&#8201;5,000 to <span class="kvp-rupee">&#8377;</span>&#8201;20,000 a month to run one<a class="kvp-fn" href="#kvp-s3">3</a>. Every price on this page is one of those baselines &#215;&#8201;1.2.</p>
+      <p class="kvp-prose">Gurgaon and Delhi&nbsp;NCR going rates: <span class="kvp-rupee">&#8377;</span>&#8201;60,000 to <span class="kvp-rupee">&#8377;</span>&#8201;2,50,000 for a custom brochure site<a class="kvp-fn" href="#kvp-s1">1</a>, <span class="kvp-rupee">&#8377;</span>&#8201;50,000 to <span class="kvp-rupee">&#8377;</span>&#8201;2,00,000 for a standard custom site<a class="kvp-fn" href="#kvp-s2">2</a>, <span class="kvp-rupee">&#8377;</span>&#8201;2,00,000 to <span class="kvp-rupee">&#8377;</span>&#8201;10,00,000 for a web application<a class="kvp-fn" href="#kvp-s2">2</a>, <span class="kvp-rupee">&#8377;</span>&#8201;30,000 to <span class="kvp-rupee">&#8377;</span>&#8201;75,000 for an entry-level AI chatbot<a class="kvp-fn" href="#kvp-s3">3</a>, <span class="kvp-rupee">&#8377;</span>&#8201;3,10,000 for a Gurugram lead-qualification bot<a class="kvp-fn" href="#kvp-s3">3</a>, and <span class="kvp-rupee">&#8377;</span>&#8201;5,000 to <span class="kvp-rupee">&#8377;</span>&#8201;20,000 a month to run one<a class="kvp-fn" href="#kvp-s3">3</a>. Both of our figures sit inside those published ranges.</p>
 
       <div class="kvp-market kvp-block">
 
@@ -489,12 +463,12 @@
         <article class="kvp-market-row kvp-market-row--us">
           <div class="kvp-market-row__head">
             <div class="kvp-market-row__name">Dayam Insights</div>
-            <div class="kvp-market-row__price"><span class="kvp-rupee">&#8377;</span>&#8201;1,38,000 &#8211; <span class="kvp-rupee">&#8377;</span>&#8201;3,90,000</div>
+            <div class="kvp-market-row__price"><span class="kvp-rupee">&#8377;</span>&#8201;1,38,000</div>
           </div>
           <div class="kvp-market-row__body kvp-market-row__body--split">
             <div>
               <span class="kvp-market-row__label">Timeline</span>
-              <p class="kvp-market-row__text">3 to 11 weeks by scope, with no bench to absorb a surprise</p>
+              <p class="kvp-market-row__text">3 to 4 weeks, with no bench to absorb a surprise</p>
             </div>
             <div>
               <span class="kvp-market-row__label kvp-market-row__label--win">Custom animation</span>
@@ -502,7 +476,7 @@
             </div>
             <div>
               <span class="kvp-market-row__label kvp-market-row__label--win">AI agent</span>
-              <p class="kvp-market-row__text">Trained on your own price sheet and plates</p>
+              <p class="kvp-market-row__text">Optional, and trained on your own price sheet</p>
             </div>
             <div>
               <span class="kvp-market-row__label kvp-market-row__label--win">Code ownership</span>
@@ -556,8 +530,7 @@
   <!-- FOUR figures, chained into one argument in this order: buyers go     -->
   <!-- with whoever answers first, the industry average reply is 917        -->
   <!-- minutes, answering inside five minutes qualifies 21x more, and site  -->
-  <!-- chat delivers 20-35% more leads. The other four figures the first    -->
-  <!-- build carried were corroboration nobody needed.                      -->
+  <!-- chat delivers 20-35% more leads.                                     -->
   <!--                                                                      -->
   <!-- The framing stays explicitly tentative -- benchmarks, not promises   -->
   <!-- -- and every figure keeps its superscript and its source link.       -->
@@ -610,44 +583,51 @@
   <!-- =================================================================== -->
   <!-- 7. What's included, and the terms                                    -->
   <!--                                                                      -->
-  <!-- The first build ran these as two sections answering the same         -->
-  <!-- question -- what is the deal -- so they are one. .kvp-specs is the   -->
-  <!-- component for it: hairline key/value rows, no card, nothing dressed  -->
-  <!-- up. Nothing here is conditional on which tier is chosen.             -->
+  <!-- TWO RECURRING CHARGES, AND THEY ARE DIFFERENT PRODUCTS. Hosting and  -->
+  <!-- care KEEPS THE SITE UP. Support and maintenance CHANGES THE SITE.    -->
+  <!-- They have different free periods (six months and three months) and   -->
+  <!-- different rates, and a reader who thinks they are being billed twice -->
+  <!-- for one job will say so at the worst possible moment. The lede says  -->
+  <!-- the distinction outright and each row repeats it in its own words.   -->
+  <!-- Do not merge these two rows.                                         -->
   <!--                                                                      -->
-  <!-- Do NOT put a .kvp-panel in here if this section is ever given        -->
-  <!-- --band: the panel tints its ground, and a band's ground is           -->
-  <!-- cream-deep.                                                          -->
+  <!-- THE DOMAIN IS THE CLIENT'S, and it gets its own row rather than a    -->
+  <!-- clause inside another one. An unstated assumption about who buys the -->
+  <!-- domain is exactly the kind of thing that sours a handover.           -->
+  <!--                                                                      -->
+  <!-- Do NOT put a .kvp-quote in here if this section is ever given        -->
+  <!-- --band: the card tints its own ground, and a band's ground is        -->
+  <!-- already cream-deep.                                                  -->
   <!-- =================================================================== -->
   <section class="kvp-section" id="included">
     <div class="kvp-shell">
 
       <div class="kvp-section__head">
-        <span class="kvp-kicker">The same in all three tiers</span>
+        <span class="kvp-kicker">The deal</span>
         <h2 class="kvp-h2">What's included, and the terms</h2>
-        <p class="kvp-lede">None of this changes with the tier.</p>
+        <p class="kvp-lede">Two recurring charges, and they are separate jobs: one keeps the site running, the other changes it. Neither bills for the other's work.</p>
       </div>
 
       <dl class="kvp-specs">
 
         <div class="kvp-specs__row">
-          <dt class="kvp-specs__key">In every price</dt>
+          <dt class="kvp-specs__key">Hosting &amp; care</dt>
           <dd class="kvp-specs__val">
-            <p>Six months hosting (VPS, SSL, CDN, daily backups) and three months hands-on management, both from go-live. Plus SEO, GA4, the RERA footer block, QA at phone, tablet and desktop widths, and launch support.</p>
+            <p><strong>Keeping the site up:</strong> VPS, SSL, CDN, daily backups and uptime monitoring. <strong>Free for six months</strong> from go-live, then <span class="kvp-rupee">&#8377;</span>&#8201;4,000 to <span class="kvp-rupee">&#8377;</span>&#8201;6,000 a month, month to month, no lock-in. Stopping it does not cost you the site.</p>
           </dd>
         </div>
 
         <div class="kvp-specs__row">
-          <dt class="kvp-specs__key">Care after that</dt>
+          <dt class="kvp-specs__key">Support &amp; maintenance</dt>
           <dd class="kvp-specs__val">
-            <p><span class="kvp-rupee">&#8377;</span>&#8201;4,000 to <span class="kvp-rupee">&#8377;</span>&#8201;6,000 a month, month to month, no lock-in. Stopping it does not cost you the site.</p>
+            <p><strong>Changing the site:</strong> content edits, new sections, fixes and new work. <strong>Free for three months</strong> from go-live, then <span class="kvp-rupee">&#8377;</span>&#8201;3,000 an hour, billed against the hours actually worked.</p>
           </dd>
         </div>
 
         <div class="kvp-specs__row">
-          <dt class="kvp-specs__key">Revisions</dt>
+          <dt class="kvp-specs__key">The domain</dt>
           <dd class="kvp-specs__val">
-            <p>One round on Essential, three on Signature and Flagship.</p>
+            <p>Yours. You buy it and it stays registered in your name; we point it at the site and set up the records.</p>
           </dd>
         </div>
 
@@ -668,7 +648,7 @@
         <div class="kvp-specs__row">
           <dt class="kvp-specs__key">Payment</dt>
           <dd class="kvp-specs__val">
-            <p>Build: 40% on signing, 30% on design approval, 30% on go-live. Agent: 50/50, with the retainer billed monthly in advance.</p>
+            <p>Build: 40% on signing, 30% on design approval, 30% on go-live. Agent: 50% on signing, 50% on go-live, with the retainer billed monthly in advance.</p>
           </dd>
         </div>
 
@@ -681,8 +661,11 @@
   <!-- =================================================================== -->
   <!-- 8. The close                                                         -->
   <!--                                                                      -->
-  <!-- One reader, one decision. .kvp-cta-final is a cream-deep panel, so   -->
-  <!-- this section stays on plain cream -- on a --band it would vanish.    -->
+  <!-- One reader, one decision, and with the tier ladder retired the       -->
+  <!-- decision is now binary: the build, and the agent in or out.          -->
+  <!--                                                                      -->
+  <!-- .kvp-cta-final is a cream-deep panel, so this section stays on plain -->
+  <!-- cream -- on a --band it would vanish.                                -->
   <!--                                                                      -->
   <!-- The three contact routes are the cover's, character for character.   -->
   <!-- If one set ever changes, both change.                                -->
@@ -693,7 +676,7 @@
       <div class="kvp-cta-final">
         <span class="kvp-kicker">Next step</span>
         <h2 class="kvp-h2">Ready to move forward?</h2>
-        <p class="kvp-cta-final__sub">Name the tier, and say whether the agent is in or out. The scope goes back to you in writing the same day, and the build slot is held from the first stage payment.</p>
+        <p class="kvp-cta-final__sub">Say whether the agent is in or out. The scope goes back to you in writing the same day, and the build slot is held from the first stage payment.</p>
         <div class="kvp-cta-buttons">
           <a class="kvp-btn" href="tel:+917877640693">Call +91 78776 40693</a>
           <a class="kvp-btn kvp-btn--secondary" href="tel:+351913212367">Call +351 913 212 367</a>
