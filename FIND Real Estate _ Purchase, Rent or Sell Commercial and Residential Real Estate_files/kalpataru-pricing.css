@@ -84,14 +84,31 @@
    Do not reintroduce a dense drawing at this width.
 
    ---------------------------------------------------------------------------
-   ACCENT DISCIPLINE. Tan is the single accent and is spent on exactly four
-   things: the price cards' rules and accent borders, the "us" market row, the
-   impact numerals, and the image rings. Rust is the page's one alert colour,
-   budgeted for ONE element on the whole page -- it is SPENT, on the
-   917-minute average reply time (.kvp-impact-row--alert), the single figure
-   that states the problem being solved. The budget is closed: do not add a
-   second --alert row, and do not add a colour that is not mixed from the
-   seven brand tokens.
+   ACCENT DISCIPLINE -- THE SINGLE-ACCENT RULE IS RETIRED.
+
+   This sheet was built to one accent (tan) with rust capped at exactly one
+   element. The client's verdict on the result: "very unattractive and dead
+   with numbers only." They were right, and the cap was the cause. Restraint
+   stops reading as premium the moment it reads as unfinished.
+
+   TAN AND RUST ARE AN ACCENT PAIR, the way the sibling World of Anush proposal
+   pairs rani and marigold. The pair is spent as a GRADIENT (--kvp-accent-bar),
+   left to right, tan into rust, and it appears on exactly one component: the
+   price card. Money is what the pair marks.
+
+   BROWN IS THE HAIRLINE AND DASHED-BORDER COLOUR, playing the reference's
+   antique gold: the dashed edge of the detachable add-on panel, and the icon
+   discs' rule.
+
+   RUST ALONE MARKS A COST. Every impact numeral is tan except the ones that
+   state what the reader is losing -- .kvp-impact-row--cost. That is a semantic
+   rule, not a quota, and it is why rust appears twice per impact group rather
+   than once per page: the reader can tell at a glance which figures are the
+   bill and which are the upside. Do not paint a gain rust to balance a row.
+
+   WHAT IS STILL FORBIDDEN. A gradient added because a card looked plain. An
+   accent on a card that means nothing in particular. A colour that is not
+   mixed from the seven brand tokens. A livelier page is not a busier one.
 
    VERTICAL RHYTHM. Every gap between two blocks comes from a token declared
    below and from nowhere else. Sections are 56px apart, and that interval is
@@ -133,6 +150,16 @@
 
   --kvp-rule:color-mix(in srgb,var(--kv-tan) 62%,transparent);       /* hairlines */
   --kvp-rule-soft:color-mix(in srgb,var(--kv-tan) 34%,transparent);  /* table rows */
+
+  /* THE ACCENT PAIR. Tan into rust, left to right -- the page's answer to the
+     reference's rani-into-marigold bar. It is a component-level mark, not a
+     texture: it belongs to .kvp-quote and to nothing else. */
+  --kvp-accent-bar:linear-gradient(90deg,var(--kv-tan),var(--kv-rust));
+
+  /* The tinted ground, 165deg cream-deep into the card surface. Reserved for
+     the two rows that carry a recommendation: the accent price card and the
+     "us" market row. A tint on every card is wallpaper. */
+  --kvp-tint:linear-gradient(165deg,var(--kv-cream-deep),var(--kvp-surface));
 
   /* MEASURED: 72% ink over cream clears AA for body-size text. Do not lighten. */
   --kvp-muted:color-mix(in srgb,var(--kv-ink) 72%,var(--kv-cream));
@@ -347,6 +374,45 @@ a{color:inherit}
   .kvp-specs__row{grid-template-columns:minmax(8rem,11rem) 1fr}
 }
 
+/* --- iconic specs ------------------------------------------------------- */
+
+/* The terms section was the deadest thing on the page: five key/value rows of
+   grey text between grey hairlines, and nothing for the eye to land on. It
+   gets one small filled icon per row, in a disc, so the five obligations are
+   scannable as a set -- what keeps the site up, what changes it, the domain,
+   the code, and what you supply.
+
+   THIS MODIFIER IS FOR THE TERMS ONLY. The other .kvp-specs on the page is the
+   payment split in section 7, and it stays plain: two rows do not make a set,
+   and an icon beside a payment schedule would be decoration.
+
+   ONE WEIGHT, ONE SIZE, so they read as a set rather than as five drawings.
+   19px, filled, currentColor, on a cream-deep disc with a brown hairline. */
+.kvp-specs--iconic .kvp-specs__row{
+  grid-template-columns:auto 1fr;
+  column-gap:14px;
+}
+.kvp-specs__icon{
+  grid-row:1 / span 2;
+  align-self:start;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  background:var(--kv-cream-deep);
+  border:1px solid color-mix(in srgb,var(--kv-brown) 26%,transparent);
+  color:var(--kv-tan);
+}
+.kvp-specs__icon svg{width:19px;height:19px;display:block}
+@media(min-width:640px){
+  .kvp-specs--iconic .kvp-specs__row{
+    grid-template-columns:auto minmax(8rem,10rem) 1fr;
+  }
+  .kvp-specs__icon{grid-row:auto}
+}
+
 /* Checklist. Tan mark, no bullet glyph, hanging indent. */
 .kvp-list{list-style:none;margin:0;padding:0;display:grid;gap:var(--kvp-space-row)}
 .kvp-list>li{
@@ -534,11 +600,18 @@ a{color:inherit}
   filter:saturate(.55) contrast(1.03) brightness(.68) sepia(.14);
   z-index:-2;
 }
+/* LAYERED, not flat: two linears for the reading contrast, then a radial
+   pooled at the base so the type sits in a well of shadow rather than under an
+   even wash. The radial is the reference's own move and it is what stops a
+   full-bleed render reading as a stock header. */
 .kvp-cover__scrim{
   position:absolute;
   inset:0;
   z-index:-1;
   background:
+    radial-gradient(ellipse 78% 58% at 30% 104%,
+      color-mix(in srgb,var(--kv-ink) 62%,transparent),
+      transparent 72%),
     linear-gradient(to top,
       color-mix(in srgb,var(--kv-ink-deep) 94%,transparent) 0%,
       color-mix(in srgb,var(--kv-ink-deep) 70%,transparent) 45%,
@@ -839,7 +912,10 @@ a.kvp-contact__item:hover,a.kvp-contact__item:focus-visible{
 }
 .kvp-market-row--us{
   border:2px solid var(--kv-tan);
-  background:var(--kv-cream-deep);
+  /* Tinted rather than flat -- 165deg, cream-deep falling into the card
+     surface, so the row lifts off the stack of white cards without a second
+     border colour or a shadow. */
+  background:var(--kvp-tint);
   box-shadow:none;
   /* The 2px border would otherwise push this row 1px narrower than its
      neighbours and knock the whole stack off one axis. */
@@ -950,10 +1026,14 @@ a.kvp-contact__item:hover,a.kvp-contact__item:focus-visible{
   color:var(--kv-tan);
   font-variant-numeric:tabular-nums;
 }
-/* THE PAGE'S ONE RUST ELEMENT. SPENT: the 917-minute average first-reply time
-   -- the single figure that states the problem being solved. Used once,
-   budget closed. */
-.kvp-impact-row--alert .kvp-impact-row__num{color:var(--kv-rust)}
+/* RUST MARKS A COST. Tan is the default numeral; rust is reserved for the
+   figures that state what the reader is losing rather than what they stand to
+   gain -- 75% judging on design alone, 7% of conversions per second of load,
+   the 917-minute average reply. The rule is semantic, so a reader scanning
+   only the numerals still reads the argument: two red figures are the problem,
+   the tan ones are the answer. Do not paint a gain rust for balance, and do
+   not paint a cost tan to keep the count down. */
+.kvp-impact-row--cost .kvp-impact-row__num{color:var(--kv-rust)}
 /* NOTHING ATTACHES TO THE NUMERAL. A superscript hard against a figure reads
    as arithmetic, not as a citation -- "21x" with a raised 6 beside it looks
    like an exponent, and "917" with a raised 5 looks like a power. The client
@@ -994,16 +1074,39 @@ a.kvp-contact__item:hover,a.kvp-contact__item:focus-visible{
    client the arithmetic behind their own quote invites them to argue the
    multiplier instead of judging the price. What sits under the figure is the
    timeline and the terms. */
+/* THE 4px GRADIENT BAR, tan into rust, is the accent pair's one home on this
+   page. It rides the top edge of every price card, so the four cards read as
+   one component and the pair means "this is money" rather than "this card is
+   important". overflow:hidden is what clips the bar to the 14px radius; the
+   top padding is a step deeper than --kvp-card-pad so the label still has its
+   full inset under the bar rather than 12px of it. */
 .kvp-quote{
+  position:relative;
+  overflow:hidden;
   background:var(--kvp-surface);
-  /* 1px on BOTH variants. --accent changes the colour, never the width: a 1px
-     card beside a 2px one is a 1px baseline error in .kvp-compare. */
+  /* 1px on BOTH variants. --accent changes the colour, NEVER the width: a 1px
+     card beside a 2px one is a 1px baseline error in .kvp-compare. The accent
+     card gets its second pixel from an INSET SHADOW instead, which paints
+     inside the border box and so costs the layout nothing. */
   border:1px solid var(--kvp-border);
   border-radius:var(--kvp-radius);
   box-shadow:var(--kvp-shadow);
-  padding:var(--kvp-card-pad);
+  padding:20px var(--kvp-card-pad) var(--kvp-card-pad);
 }
-.kvp-quote--accent{border-color:var(--kv-tan)}
+.kvp-quote::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:4px;
+  background:var(--kvp-accent-bar);
+}
+.kvp-quote--accent{
+  border-color:var(--kv-tan);
+  background:var(--kvp-tint);
+  box-shadow:var(--kvp-shadow),inset 0 0 0 1px var(--kv-tan);
+}
 
 .kvp-quote__label{
   margin:0 0 var(--kvp-space-head);
@@ -1079,6 +1182,50 @@ a.kvp-contact__item:hover,a.kvp-contact__item:focus-visible{
     display:grid;
     grid-template-rows:subgrid;
   }
+}
+
+/* --- the detachable add-on ----------------------------------------------- */
+
+/* THE DASHED EDGE IS AN ARGUMENT, not an ornament. The AI agent is the one
+   thing in this document the client can strike out and still have a deal, and
+   the page says so three times in words. This says it once in structure: the
+   whole section sits inside a perforated card on a different ground, the way a
+   detachable coupon sits inside a printed brochure. Cut along the dotted line
+   and the website quote is untouched.
+
+   IT WRAPS THE WHOLE SECTION, head included, and that is the point -- a dashed
+   box around only the feature list would read as a callout, which is the
+   opposite of what it has to mean. The h2 therefore sits inset from the other
+   h2s on the page. Deliberate: this section is not on the document's spine
+   because it is not part of the document's obligation.
+
+   BROWN, NOT TAN, on the dash. Brown is this page's hairline colour -- it is
+   playing the antique gold the reference dashes its own add-on panel in -- and
+   a tan dash here would spend an accent on a border rather than on a meaning. */
+.kvp-addon{
+  background:var(--kv-cream-deep);
+  border:1px dashed color-mix(in srgb,var(--kv-brown) 55%,transparent);
+  border-radius:var(--kvp-radius);
+  padding:var(--kvp-space-block) clamp(16px,3.4vw,26px);
+}
+.kvp-addon__tag{
+  display:inline-block;
+  margin:0 0 var(--kvp-space-block);
+  padding:5px 13px;
+  border-radius:999px;
+  background:var(--kv-rust);
+  color:var(--kv-cream);
+  font-size:var(--kvp-micro);
+  font-weight:700;
+  letter-spacing:var(--kvp-track);
+  text-transform:uppercase;
+}
+/* Cards inside the panel sit on cream-deep, not on cream. --kvp-border is
+   mixed FROM cream-deep, so on this ground it is very nearly the ground: the
+   white cards would be held by the white/grey step alone and read edgeless.
+   One step firmer, and only inside the panel. */
+.kvp-addon .kvp-impact-row{
+  border-color:color-mix(in srgb,var(--kv-brown) 26%,var(--kv-cream-deep));
 }
 
 /* --- the agent, illustrated ---------------------------------------------- */
@@ -1347,6 +1494,13 @@ a.kvp-contact__item:hover,a.kvp-contact__item:focus-visible{
   .kvp-wrap > .kvp-section{margin:24px 0}
   .kvp-feature,.kvp-quote,.kvp-market-row,.kvp-impact-row,
   .kvp-specs__row,.kvp-table tr,.kvp-agent__frame{break-inside:avoid;box-shadow:none}
+  /* THE DASHED EDGE SURVIVES PRINTING, and the ground does not. On paper a
+     dotted rule around a block is already the universal mark for "cut here",
+     which is exactly what this panel means -- so it is the one ornament worth
+     the toner. The accent card loses its inset second pixel to the box-shadow
+     reset above and keeps its tan border, which is enough on paper. */
+  .kvp-addon{background:none}
+  .kvp-specs__icon{background:none}
   /* The one dark object on the page, laid back onto paper rather than printed
      as a slab of toner. The "illustration" label survives the conversion --
      it is the one thing in here that must not be lost to a print stylesheet. */
