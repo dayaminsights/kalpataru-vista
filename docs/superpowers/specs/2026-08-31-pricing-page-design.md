@@ -96,7 +96,7 @@ Plus: basic SEO (meta, Open Graph, sitemap), GA4, the RERA footer block, QA at p
 
 ## AI sales agent — an optional add-on, priced separately
 
-**Not included in the Rs 1,38,000.** It is pitched on its own merits in section 3, which states plainly that it is an extra and that it is quoted at the end. **Its price appears only in section 7**, alongside the website price and the two-option comparison.
+**Not included in the Rs 1,38,000.** It is pitched on its own merits in section 5, which carries the four speed-to-lead figures as its evidence and states plainly that it is an extra quoted at the end. **Its price appears only in section 7**, alongside the website price and the two-option comparison.
 
 Setup Rs 36,000 covers:
 - Trained on the price sheet, floor plans, RERA filings, payment plan and locality data
@@ -149,18 +149,35 @@ Presentation rule: every figure carries a visible superscript footnote number li
 
 | # | Section | Words | Content |
 |---|---|---|---|
-**The price now comes last.** The running order builds the case, then names the number.
+**The price comes last, and the market section comes before the add-on.** The running order builds the case for the website, places its price in the market, then pitches the agent with its own evidence, then names the numbers.
+
+**The impact evidence is split in two, because the two arguments are not the same argument.** The speed-to-lead figures — 78% first responder, 917-minute average, 21× inside five minutes, 20–35% from chat — are all arguments for *the agent*, not for the website. They move into the agent section, where they do real work. The website gets its own impact figures, taken from the sibling World of Anush proposal, which are about design credibility and speed rather than lead response.
 
 | # | Section | Words | Content |
 |---|---|---|---|
 | 1 | **Cover** | ~80 | Full-bleed render, eyebrow "Website & AI Investment Proposal", H1 "Kalpataru Vista", one-sentence subhead, "View the live site" link, contact bar: Dayam Insights, +91 78776 40693, +351 913 212 367, dayaminsights@gmail.com. **No figure.** |
 | 2 | **"What we build"** | ~200 | Image-led. Names the hero, amenities, FAQs written for GEO/AEO and SEO, and forms with WhatsApp integration. Captions do the talking, not paragraphs. |
-| 3 | **"An AI that talks to your buyers"** | ~300 | The optional add-on. Keeps the built mock conversation. Makes its case only — **states no price**, but says plainly that it is extra and quoted at the end. |
-| 4 | **"Where this sits in the market"** | ~180 | A single three-column comparison — template shop, Dayam Insights, full-service agency. Cites published Gurgaon rates. **Shows no arithmetic.** Retitled from "Why this price is fair", which presumed a price the reader has not yet seen. |
-| 5 | **"What this does for sales"** | ~150 | Four cited figures, no more. |
+| 3 | **"What a site like this is worth"** | ~150 | The **website's** impact figures — the four from the World of Anush proposal, on credibility and speed. Not lead response; that belongs to the agent. |
+| 4 | **"Where this sits in the market"** | ~180 | A single three-column comparison — template shop, Dayam Insights, full-service agency. Cites published Gurgaon rates. **Shows no arithmetic.** Now sits *before* the add-on, so the website's case closes before a second product opens. |
+| 5 | **"An AI that talks to your buyers"** | ~340 | The optional add-on. Keeps the built mock conversation, and now **carries the four speed-to-lead figures**, which are its argument, not the website's. **States no price**, but says plainly it is extra and quoted at the end. |
 | 6 | **"What's included, and the terms"** | ~180 | Hosting & care against support & maintenance as two distinct products, plus the domain being the client's. |
 | 7 | **"The price"** | ~220 | The reveal, and the only place a figure appears. The website at Rs 1,38,000, then the agent at Rs 36,000 setup plus its monthly ladder, then the two side by side — Rs 1,38,000 alone against **Rs 1,74,000** together, monthly kept visibly separate. Payment split beneath. Final amount at 28px per the type scale. |
 | 8 | **"Ready to move forward?"** | ~50 | Phone and email. |
+
+### The website's impact figures
+
+Taken from the sibling World of Anush proposal, which cites them to the Stanford Web Credibility Project and to VWO's web design statistics. They argue that design quality and speed decide whether an enquiry happens at all — which is the website's case, distinct from the agent's.
+
+| Figure | Claim | Source |
+|---|---|---|
+| 75% | of people judge a company's credibility on website design alone | Stanford Web Credibility Project |
+| 0.05s | how fast a first impression forms — and it is overwhelmingly design, not copy | Stanford Web Credibility Project |
+| 40% | higher conversion on mobile-optimised sites | VWO web design statistics |
+| 7% | drop in conversions per extra second of load time; 40% leave a site slower than three seconds | VWO web design statistics |
+
+**Do not carry over the Anush page's fifth figure** — the 0.8–1.2% luxury fashion conversion benchmark. It is specific to fashion e-commerce and means nothing on a residential real-estate proposal. Reciting it here would be the kind of borrowed statistic a careful reader catches.
+
+Cite these the same way as everything else: a short attribution inline, a sources line under the group. **No superscript marks against numerals** — see the note under "Price prominence".
 
 ### Vertical rhythm — a specific fix, not a general aspiration
 
@@ -227,7 +244,7 @@ Palette drawn from `kalpataru-brand.css`:
 | `--kv-tan` | `#c89b6e` | accent: eyebrows, rules, price emphasis, focus ring |
 | `--kv-cream` | `#FBF1EA` | base section ground |
 | `--kv-cream-deep` | `#f1f1ef` | alternate band |
-| `--kv-rust` | `#9d3a2c` | single alert accent, used sparingly |
+| `--kv-rust` | `#9d3a2c` | accent, paired with tan in gradients and used to mark the figure that states a problem |
 
 Type: Fraunces (already loaded from Google Fonts in `index.html` at weight 300, `opsz 9..144`) for headings; Instrument Sans (local woff2 files in the `_files` directory) for body. Reuse the existing font loading so the page reads as the same brand.
 
@@ -246,7 +263,33 @@ That page is Dayam Insights' own house style for a client proposal, and this pag
 | `price-compare` | The side-by-side pair: website alone against website plus agent. Figures share one baseline whether or not a card carries a tag. |
 | `cta-final` | Cream-deep panel, centred, closing the page. |
 
-Keep the accent discipline of the reference: tan is the single accent, spent on the price figures, the "us" market row, the impact numerals and image rings. Rust is for at most one thing on the page. Everything else is ink, soft brown and cream.
+### Accent pair — the single-accent rule is retired
+
+The page was built to a rule of one accent (tan) plus rust on exactly one element. **That rule is now the problem.** The client's verdict on the result: "very unattractive and dead with numbers only." A page of grey rules and cream cards has no life in it, and restraint stops being premium once it reads as unfinished.
+
+The reference is not restrained in this way. Its life comes from an **accent pair** — rani and marigold — spent on gradients, plus antique gold for hairlines and dashed borders, small filled icons, and pill-shaped tags.
+
+Kalpataru gets the same structure from its own palette:
+
+- **Tan `--kv-tan` and rust `--kv-rust` are an accent pair.** Rust is no longer capped at one element. Use the pair in gradients the way the reference uses rani→marigold.
+- **Brown `--kv-brown` is the hairline and dashed-border colour**, playing the reference's antique gold.
+- Ink, cream and cream-deep remain the grounds.
+
+Devices to bring across, all present in the reference:
+
+| Device | Where |
+|---|---|
+| A 4px gradient bar across the top of a card, tan→rust | The price cards |
+| A tinted gradient ground, `165deg` cream-deep→white, with a 2px accent border | The recommended option and the "us" market row |
+| A dashed accent border on a cream-deep ground | The optional add-on panel — it should read as detachable |
+| Small filled SVG icons, ~19px, in the accent | The inclusions grid and the glance items |
+| Pill tags, `border-radius: 999px`, accent border and accent text | Feature labels and the "optional" flag |
+| A slow Ken Burns drift on a photograph, disabled under `prefers-reduced-motion` | One hero-ish image, not several |
+| A layered gradient scrim, linear plus a radial pooled at the base | The cover |
+
+Draw the icons inline as SVG; do not add an icon font or a dependency. Keep them one weight and one size so they read as a set.
+
+The discipline that stays: accents mark *meaning* — the recommended option, the figure that states a problem, a label. They are never decoration sprayed across every card. A livelier page is not a busier one.
 
 Tables scroll inside their own container on narrow screens; the page body never scrolls horizontally at any width.
 
