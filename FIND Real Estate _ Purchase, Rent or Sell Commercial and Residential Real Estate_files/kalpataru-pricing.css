@@ -457,6 +457,19 @@ a{color:inherit}
 .kvp-sources li{margin-bottom:4px}
 .kvp-sources li::marker{color:var(--kv-brown)}
 
+/* A single sources line, for a group whose figures carry inline attributions
+   instead of numbered marks -- see .kvp-impact-row__src. Same size and colour
+   as the numbered list so the two citation styles read as one system. */
+.kvp-cite{
+  margin:var(--kvp-space-block) 0 0;
+  padding:var(--kvp-space-card) 0 0;
+  border-top:1px solid var(--kvp-border);
+  font-size:var(--kvp-cite);
+  line-height:1.6;
+  color:var(--kvp-muted);
+  overflow-wrap:anywhere;
+}
+
 /* --- back link ---------------------------------------------------------- */
 
 /* Fixed top-left, and it has to read on both grounds: the dark cover photo at
@@ -941,11 +954,13 @@ a.kvp-contact__item:hover,a.kvp-contact__item:focus-visible{
    -- the single figure that states the problem being solved. Used once,
    budget closed. */
 .kvp-impact-row--alert .kvp-impact-row__num{color:var(--kv-rust)}
-/* The citation sits ON the numeral, so the figure itself is visibly cited
-   rather than the sentence beside it. .kvp-fn is sized in em, so against a
-   22px numeral its .62em would render larger than the body copy; scaled here
-   to match the footnote marks in running text. */
-.kvp-impact-row__num .kvp-fn{font-size:.4em;vertical-align:.7em}
+/* NOTHING ATTACHES TO THE NUMERAL. A superscript hard against a figure reads
+   as arithmetic, not as a citation -- "21x" with a raised 6 beside it looks
+   like an exponent, and "917" with a raised 5 looks like a power. The client
+   flagged exactly this confusion. So the mark comes off the number entirely
+   and the attribution moves inline to the end of the sentence, with the full
+   source list under the group -- which is also how the sibling World of Anush
+   proposal handles it. Do not reintroduce .kvp-fn inside .kvp-impact-row__num. */
 .kvp-impact-row__text{
   margin:0;
   font-size:var(--kvp-secondary);
@@ -953,6 +968,10 @@ a.kvp-contact__item:hover,a.kvp-contact__item:focus-visible{
   color:var(--kvp-muted);
 }
 .kvp-impact-row__text strong{color:var(--kv-ink);font-weight:600}
+.kvp-impact-row__src{
+  font-style:italic;
+  color:var(--kv-brown);
+}
 @media(max-width:520px){
   .kvp-impact-row{flex-direction:column;gap:4px}
 }
