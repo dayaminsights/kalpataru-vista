@@ -14,57 +14,76 @@
    THE SYSTEM, for whoever extends this.
 
    This page is the sibling of the World of Anush proposal, which is Dayam
-   Insights' house style for a client proposal. It is a CARD SYSTEM: warm-white
+   Insights' house style for a client proposal. It is a CARD SYSTEM: white
    surfaces floating on cream, each with a 1px hairline, a small radius and a
-   soft shadow. Accent borders are reserved for the rows that matter -- the price
-   cards and the "us" market row. It is NOT a hairline specification
-   sheet; an earlier draft of this file was, and was replaced.
+   soft two-layer shadow. Accent borders are reserved for the rows that matter
+   -- the price cards and the "us" market row.
 
    Component inventory. New sections should REUSE these, not reinvent them.
    The right-hand column is the name the design spec uses for each.
 
+     .kvp-wrap .................... the document column. 800px, centred. Every
+                                    section is a DIRECT child of it.
      .kvp-feature ................. feature-block   (image beside copy)
        .kvp-feature__media ........ feature-media   (5/7 portrait, tan ring)
-       .kvp-feature--plan ......... drawing mode: media goes full width ACROSS
-                                    the card instead of beside it. Use for
-                                    dense line drawings (floor plates, site
-                                    layouts, maps) -- they are illegible in a
-                                    190px rail. Photographs use the default.
-       .kvp-feature--drawn ........ the same full-width mode, but the plate is
-                                    BUILT MARKUP rather than an image file --
-                                    for the parts of the scope that have no
+       .kvp-feature--drawn ........ full-width mode where the plate is BUILT
+                                    MARKUP rather than an image file -- for
+                                    the parts of the scope that have no
                                     photograph because they are structural
                                     (the FAQ answer, the form handoff).
        .kvp-feature__plate ........ the built plate itself (.kvp-plate__*)
-       .kvp-feature__copy ......... feature-copy    (tag / name / desc / hint)
+       .kvp-feature__copy ......... feature-copy    (tag / name / desc)
      .kvp-quote ................... price-card: label / figure / meta / note.
                                     THE ONE PRICE COMPONENT ON THIS PAGE. Used
-                                    for the website quote, the agent setup fee
-                                    and both comparison cards, so every figure
-                                    on the sheet reads at the same weight.
+                                    four times, ALL of them in section 7.
      .kvp-compare ................. price-compare: the side-by-side pair. Two
                                     .kvp-quote cards on a subgrid, so their
                                     figures share one baseline.
      .kvp-market-row .............. market-row      (+ --us for our row)
      .kvp-impact-row .............. impact-row      (tan numeral + claim)
-     .kvp-agent ................... the section 4 widget: a built mock of the
+     .kvp-agent ................... the section 3 widget: a built mock of the
                                     proposed chat agent, ink-deep plate on
                                     cream. Carries its "illustration" label
                                     twice, inside the frame and beneath it.
      .kvp-cta-final ............... cta-final       (closing panel)
      .kvp-cover / .kvp-back ....... title page and the fixed back-link
-     .kvp-specs ................... key/value rows (the terms)
+     .kvp-specs ................... key/value rows (the terms, the payment)
      .kvp-list .................... tan-marked checklist
      .kvp-tablewrap / .kvp-table .. every table on the page sits in the wrapper
      .kvp-fn / .kvp-sources ....... superscript citation + numbered source list
 
    RETIRED, and deliberately not left in the sheet: .kvp-tier (the three-tier
-   ladder), .kvp-tag, .kvp-panel, .kvp-addon-row, .kvp-foot. The page quotes
-   one price now. If a tier ladder ever comes back, do not resurrect the old
-   card -- its "most picked" tag sat in the flow above the figure and knocked
-   the flagged card's price a line lower than its neighbours. Build it on
-   .kvp-compare's subgrid instead, which cannot do that.
+   ladder), .kvp-section--band / --dark (full-bleed grounds, which an 800px
+   document column cannot have), .kvp-feature--plan (the full-width drawing
+   mode -- see the note on scale below).
 
+   ---------------------------------------------------------------------------
+   THE TYPE AND SPACING SCALE -- LIFTED FROM THE WORLD OF ANUSH PROPOSAL.
+
+   The client asked for that page's typography and gaps specifically, and the
+   values below are its own, translated to the Kalpataru palette and faces:
+   Fraunces stands in for its Playfair, Instrument Sans for its Inter, and the
+   maroon/marigold accent pair is replaced by tan on ink. Nothing else moved.
+
+   This is a SUBSTANTIALLY TIGHTER document than the build it replaces, which
+   ran a ~1250px shell, 88px section padding, 41.6px headings and a 60.8px
+   price figure. Everything came down: 800px column, 56px between sections,
+   25px headings, a 28px price. The restraint IS the premium signal -- a 60px
+   number on an 800px column reads as a discount banner, not a quote.
+
+   Sizes are FIXED PIXELS, not clamps, everywhere except the cover headline.
+   That is the reference's own discipline: a proposal is read at a desk, and a
+   fluid scale would put the h2 and the price figure at a different size on
+   every reader's screen, which is exactly what "exact targets" rules out.
+
+   WHAT THE NARROWER COLUMN COST. The old shell gave a feature card ~931px of
+   inner width; the 800px column gives 686px. The 190px portrait rail is
+   unaffected -- it is the reference's own value, sized for this column -- but
+   full-width line drawings are not. The Tower B floor plate was dropped for
+   that reason and .kvp-feature--plan went with it; see the note in the HTML.
+   Do not reintroduce a dense drawing at this width.
+
+   ---------------------------------------------------------------------------
    ACCENT DISCIPLINE. Tan is the single accent and is spent on exactly four
    things: the price cards' rules and accent borders, the "us" market row, the
    impact numerals, and the image rings. Rust is the page's one alert colour,
@@ -74,23 +93,14 @@
    second --alert row, and do not add a colour that is not mixed from the
    seven brand tokens.
 
-   ---------------------------------------------------------------------------
-   VERTICAL RHYTHM: FOUR TOKENS, AND NOTHING ELSE.
-
-   The first build set section padding, heading margins and card gaps ad hoc,
-   so the interval between a heading and its content varied section to section
-   and some bands sat much further apart than others. The client called it out.
-
-   Every vertical gap BETWEEN BLOCKS now comes from one of exactly four tokens
-   -- --kvp-space-section, --kvp-space-block, --kvp-space-head,
-   --kvp-space-card -- declared once below and used nowhere else from a raw
-   value. If you need a gap this scale does not offer, you have found a fifth
-   rhythm the page does not want: use the nearest token instead.
-
-   What is NOT on this scale, on purpose: padding INSIDE a component (a card's
-   own inset), and line-level gaps inside a run of text (list items, chips).
-   Those are component scale, not document rhythm, and putting them on the
-   block scale would blow every card open.
+   VERTICAL RHYTHM. Every gap between two blocks comes from a token declared
+   below and from nowhere else. Sections are 56px apart, and that interval is
+   a collapsed margin, so it is the same 56px between every pair whatever the
+   sections contain. Inside a section: 8px from a kicker to its h2 and from an
+   h2 to its note, 24px from the head to the content and between blocks, 12px
+   between cards in a group, 10px between rows, 16px between the two price
+   cards. If you need a gap this scale does not offer, you have found a rhythm
+   the page does not want: use the nearest token instead.
    =========================================================================== */
 
 /* --- tokens ------------------------------------------------------------- */
@@ -105,21 +115,19 @@
   --kv-rust:#9d3a2c;
   --kv-serif:"Fraunces",Georgia,"Times New Roman",serif;
   --kv-sans:"Instrument Sans KV","Instrument Sans",-apple-system,"Segoe UI",sans-serif;
-  --kv-pad:clamp(20px,5vw,72px);
-  --kv-measure:68ch;
 }
 
 /* Derived values. Nothing below this block uses a raw colour: every tint is
    mixed from the seven tokens above, so a palette change propagates. */
 :root{
-  /* Card surface. Not pure #fff: a hair of cream keeps the surfaces inside
-     the warm palette, so a white card does not read as a hole in the page. */
-  --kvp-surface:color-mix(in srgb,var(--kv-cream) 16%,white);
+  /* Card surface: white, as the reference has it. The cream ground behind it
+     is what makes the page warm; the cards are the paper laid on top. */
+  --kvp-surface:#fff;
 
-  /* Card hairline. The spec calls for a cream-deep border, but cream-deep
-     (#f1f1ef) is a COOL near-white and disappears against cream -- the cards
-     would read as shadows with no edge. Warmed with a trace of brown so the
-     edge is actually drawn while staying as quiet as the spec intends. */
+  /* Card hairline. The reference borders its cards in its own cream-deep. Ours
+     (#f1f1ef) is a COOL near-white and disappears against #FBF1EA -- the cards
+     would read as shadows with no edge -- so it is warmed with a trace of
+     brown. Still cream-deep, still a hairline, but actually drawn. */
   --kvp-border:color-mix(in srgb,var(--kv-brown) 15%,var(--kv-cream-deep));
   --kvp-border-soft:color-mix(in srgb,var(--kv-brown) 9%,var(--kv-cream-deep));
 
@@ -129,51 +137,46 @@
   /* MEASURED: 72% ink over cream clears AA for body-size text. Do not lighten. */
   --kvp-muted:color-mix(in srgb,var(--kv-ink) 72%,var(--kv-cream));
 
-  --kvp-ground:var(--kv-cream);   /* the ground a section sits on; bands override */
+  --kvp-ground:var(--kv-cream);   /* the ground the table affordances fade into */
 
-  --kvp-shadow:0 1px 2px color-mix(in srgb,var(--kv-ink-deep) 5%,transparent),
-               0 8px 24px color-mix(in srgb,var(--kv-ink-deep) 7%,transparent);
-  --kvp-shadow-lift:0 10px 32px color-mix(in srgb,var(--kv-brown) 18%,transparent);
+  /* The reference's two-layer shadow -- a tight 1px and a soft 24px, both at
+     very low alpha -- restated in Kalpataru ink instead of its maroon. */
+  --kvp-shadow:0 1px 2px color-mix(in srgb,var(--kv-ink-deep) 4%,transparent),
+               0 8px 24px color-mix(in srgb,var(--kv-ink-deep) 6%,transparent);
+  --kvp-shadow-lift:0 10px 32px color-mix(in srgb,var(--kv-brown) 16%,transparent);
+
   --kvp-radius:14px;
   --kvp-radius-sm:10px;
 
-  /* Reading measures, derived from --kv-measure so the token still governs.
-     MEASURED: ch computes at .666em in this stack, so a bare 68ch runs about
-     82 characters a line -- past the comfortable 45-75 for continuous text.
-     These factors bring running prose to roughly 70 characters and the lede
-     to roughly 60. Use them, not --kv-measure, on anything read in sentences;
-     --kv-measure stays the outer cap. */
-  --kvp-measure:calc(var(--kv-measure) * .78);
-  --kvp-measure-lede:calc(var(--kv-measure) * .66);
+  /* ---- layout ---------------------------------------------------------- */
+  --kvp-wrap:800px;
+  --kvp-wrap-pad:clamp(48px,6vw,72px) clamp(20px,5vw,40px) 80px;
+  --kvp-measure:62ch;               /* the reference's reading measure */
 
-  --kvp-shell:70rem;                        /* outer measure of the document */
-  --kvp-gutter:clamp(1rem,2.6vw,2rem);
+  /* ---- type: fixed px, from the reference ------------------------------ */
+  --kvp-h1:clamp(36px,6.5vw,60px);  /* cover only -- a title page, not the doc */
+  --kvp-h2:25px;
+  --kvp-h3:18px;
+  --kvp-note:15px;                  /* the note under an h2 */
+  --kvp-body:14px;
+  --kvp-secondary:13px;
+  --kvp-small:12.5px;
+  --kvp-cite:11.5px;
+  --kvp-micro:11px;
+  --kvp-micro-sm:10px;
+  --kvp-num:22px;                   /* impact numeral */
+  --kvp-fig:28px;                   /* THE FINAL PRICE AMOUNT. Never larger. */
 
-  --kvp-micro:clamp(.66rem,.62rem + .12vw,.74rem);
-  --kvp-small:clamp(.82rem,.78rem + .16vw,.92rem);
-  --kvp-body:clamp(1rem,.95rem + .22vw,1.06rem);
-  --kvp-lede:clamp(1.1rem,1rem + .5vw,1.4rem);
-  --kvp-h3:clamp(1.05rem,.98rem + .34vw,1.24rem);
-  --kvp-h2:clamp(1.7rem,1.35rem + 1.5vw,2.6rem);
-  --kvp-h1:clamp(2.6rem,1.8rem + 4.2vw,5rem);
+  --kvp-track:.14em;                /* tracking on uppercase micro-labels */
 
-  --kvp-track:.13em;   /* tracking on uppercase micro-labels */
-
-  /* ---- THE SPACING SCALE. Four values. See the doctrine at the top. ------
-     Read them as one ladder: a section break is roughly double a block break,
-     a block break is roughly double a head break, and cards sit close enough
-     to read as one group. Nothing below this block writes a vertical gap
-     between two blocks from a raw number. */
-
-  /* between sections: the padding-block on every .kvp-section */
-  --kvp-space-section:clamp(3.5rem,7vw,5.5rem);
-  /* body to component: head block to its content, and block to block */
-  --kvp-space-block:clamp(1.75rem,3.4vw,2.5rem);
-  /* heading to body: kicker to h2, h2 to lede, h3 to its first line.
-     This one is why every h2 on the page has an identical gap above it. */
-  --kvp-space-head:clamp(.85rem,1.5vw,1.15rem);
-  /* between cards inside one group */
-  --kvp-space-card:clamp(.75rem,1.4vw,1rem);
+  /* ---- vertical rhythm ------------------------------------------------- */
+  --kvp-space-section:56px;   /* between sections (collapsed, so exactly 56) */
+  --kvp-space-block:24px;     /* head to content, and block to block */
+  --kvp-space-head:8px;       /* kicker to h2, h2 to note, label to figure */
+  --kvp-space-card:12px;      /* between cards in a group */
+  --kvp-space-row:10px;       /* between rows in a stack */
+  --kvp-space-price:16px;     /* between the two price cards */
+  --kvp-card-pad:16px;        /* every card's own inset */
 }
 
 /* --- type --------------------------------------------------------------- */
@@ -222,7 +225,7 @@ body{
   color:var(--kv-ink);
   font-family:var(--kv-sans);
   font-size:var(--kvp-body);
-  line-height:1.62;
+  line-height:1.6;
   font-synthesis-weight:none;
   -webkit-font-smoothing:antialiased;
   text-rendering:optimizeLegibility;
@@ -254,28 +257,25 @@ a{color:inherit}
   border-radius:2px;
 }
 
+/* --- the document column ------------------------------------------------ */
+
+/* 800px, centred, with the reference's own page padding. Every section is a
+   direct child, so section margins collapse against each other into ONE even
+   56px interval down the whole page -- the specific thing the client called
+   out as wrong in the last build. */
+.kvp-wrap{
+  max-width:var(--kvp-wrap);
+  margin-inline:auto;
+  padding:var(--kvp-wrap-pad);
+}
+.kvp-wrap > .kvp-section{margin:var(--kvp-space-section) 0}
+.kvp-wrap > .kvp-section:first-child{margin-top:0}
+
 /* --- shared primitives -------------------------------------------------- */
 
-/* The document's outer measure. Every band uses it so nothing drifts. */
-.kvp-shell{
-  width:100%;
-  max-width:var(--kvp-shell);
-  margin-inline:auto;
-  padding-inline:var(--kv-pad);
-}
-
-/* Tracked uppercase micro-label: eyebrows, spec keys, table heads, card meta. */
-.kvp-eyebrow{
-  margin:0;
-  font-size:var(--kvp-micro);
-  font-weight:600;
-  letter-spacing:var(--kvp-track);
-  text-transform:uppercase;
-  color:var(--kv-brown);
-}
-.kvp-eyebrow--light{color:var(--kv-tan)}
-
-/* Section kicker: the eyebrow that sits above an h2. */
+/* Tracked uppercase micro-label: the cover eyebrow and the section kicker are
+   one system, at one size, so the document has a single voice for a label. */
+.kvp-eyebrow,
 .kvp-kicker{
   display:block;
   margin:0 0 var(--kvp-space-head);
@@ -285,34 +285,27 @@ a{color:inherit}
   text-transform:uppercase;
   color:var(--kv-tan);
 }
+.kvp-kicker{color:var(--kv-brown)}
 
 .kvp-prose{max-width:var(--kvp-measure)}
+
+/* The note under an h2. 15px, the one step above body on the page. */
 .kvp-lede{
-  max-width:var(--kvp-measure-lede);
-  font-size:var(--kvp-lede);
-  line-height:1.45;
-  color:var(--kv-ink-deep);
-  letter-spacing:-.005em;
+  max-width:var(--kvp-measure);
+  margin:0 0 var(--kvp-space-block);
+  font-size:var(--kvp-note);
+  line-height:1.6;
+  color:var(--kvp-muted);
 }
+.kvp-lede strong{color:var(--kv-ink);font-weight:700}
+
 .kvp-note{
   max-width:var(--kvp-measure);
-  font-size:var(--kvp-small);
+  font-size:var(--kvp-secondary);
   line-height:1.6;
   color:var(--kvp-muted);
 }
 
-/* A price, or any figure that carries weight. Serif, so numbers read as
-   values rather than as body copy. */
-.kvp-price{
-  font-family:var(--kv-serif);
-  font-weight:300;
-  font-optical-sizing:auto;
-  font-size:clamp(1.8rem,1.4rem + 1.6vw,2.6rem);
-  line-height:1.05;
-  color:var(--kv-ink-deep);
-  letter-spacing:-.015em;
-  font-variant-numeric:tabular-nums;
-}
 /* The rupee sign never comes from Instrument Sans (see the @font-face note).
    Wrapping it lets the fallback glyph be nudged onto the same optical size as
    the digits beside it. Use on EVERY price:
@@ -323,12 +316,12 @@ a{color:inherit}
   padding-inline-end:.06em;
 }
 
-/* Hairline key/value rows: terms, tier contents, volume steps. */
+/* Hairline key/value rows: the terms, the payment split. */
 .kvp-specs{margin:0;padding:0}
 .kvp-specs__row{
   display:grid;
   grid-template-columns:1fr;
-  gap:.3rem var(--kvp-gutter);
+  gap:4px 20px;
   padding:var(--kvp-space-card) 0;
   border-top:1px solid var(--kvp-rule-soft);
 }
@@ -342,18 +335,23 @@ a{color:inherit}
   color:var(--kv-brown);
   padding-top:.2em;
 }
-.kvp-specs__val{margin:0;max-width:var(--kvp-measure)}
-.kvp-specs__val>p{margin:0 0 .5em}
-.kvp-specs__val>p:last-child{margin-bottom:0}
-@media(min-width:768px){
-  .kvp-specs__row{grid-template-columns:minmax(9rem,14rem) 1fr}
+.kvp-specs__val{
+  margin:0;
+  max-width:var(--kvp-measure);
+  font-size:var(--kvp-secondary);
+  line-height:1.6;
+  color:var(--kvp-muted);
+}
+.kvp-specs__val strong{color:var(--kv-ink);font-weight:700}
+@media(min-width:640px){
+  .kvp-specs__row{grid-template-columns:minmax(8rem,11rem) 1fr}
 }
 
 /* Checklist. Tan mark, no bullet glyph, hanging indent. */
-.kvp-list{list-style:none;margin:0;padding:0;display:grid;gap:.7rem}
+.kvp-list{list-style:none;margin:0;padding:0;display:grid;gap:var(--kvp-space-row)}
 .kvp-list>li{
   position:relative;
-  padding-left:1.5rem;
+  padding-left:20px;
   max-width:var(--kvp-measure);
 }
 .kvp-list>li::before{
@@ -361,11 +359,11 @@ a{color:inherit}
   position:absolute;
   left:0;
   top:.62em;
-  width:.6rem;
+  width:9px;
   height:1px;
   background:var(--kv-tan);
 }
-.kvp-list--tight>li{font-size:var(--kvp-small);line-height:1.6;color:var(--kvp-muted)}
+.kvp-list--tight>li{font-size:var(--kvp-secondary);line-height:1.6;color:var(--kvp-muted)}
 .kvp-list strong{color:var(--kv-ink);font-weight:600}
 
 /* HARD RULE: every table on this page sits inside .kvp-tablewrap. Wide tables
@@ -385,16 +383,17 @@ a{color:inherit}
 }
 .kvp-table{
   width:100%;
-  min-width:32rem;
+  min-width:26rem;
   border-collapse:collapse;
-  font-size:var(--kvp-small);
+  font-size:var(--kvp-secondary);
   line-height:1.45;
   text-align:left;
 }
 .kvp-table caption{
   caption-side:bottom;
-  padding-top:.9rem;
-  font-size:var(--kvp-micro);
+  padding-top:12px;
+  font-size:var(--kvp-micro-sm);
+  font-weight:700;
   letter-spacing:var(--kvp-track);
   text-transform:uppercase;
   color:var(--kv-brown);
@@ -402,22 +401,37 @@ a{color:inherit}
 }
 .kvp-table th{
   font-weight:700;
-  font-size:var(--kvp-micro);
+  font-size:var(--kvp-micro-sm);
   letter-spacing:var(--kvp-track);
   text-transform:uppercase;
   color:var(--kv-brown);
-  padding:0 1.25rem .7rem 0;
+  padding:0 20px 8px 0;
   border-bottom:1px solid var(--kvp-rule);
   vertical-align:bottom;
 }
 .kvp-table td{
-  padding:.85rem 1.25rem .85rem 0;
+  padding:12px 20px 12px 0;
   border-bottom:1px solid var(--kvp-rule-soft);
   vertical-align:top;
+  color:var(--kvp-muted);
 }
-.kvp-table tr:last-child td{border-bottom:0}
+.kvp-table tbody th{
+  padding:12px 20px 12px 0;
+  border-bottom:1px solid var(--kvp-rule-soft);
+  vertical-align:top;
+  color:var(--kv-ink);
+  text-transform:none;
+  letter-spacing:0;
+  font-size:var(--kvp-secondary);
+}
+.kvp-table tr:last-child td,.kvp-table tr:last-child th{border-bottom:0}
 .kvp-table th:last-child,.kvp-table td:last-child{padding-right:0}
-.kvp-table .kvp-num{white-space:nowrap;font-variant-numeric:tabular-nums}
+.kvp-table .kvp-num{
+  white-space:nowrap;
+  font-variant-numeric:tabular-nums;
+  font-weight:700;
+  color:var(--kv-ink-deep);
+}
 
 /* Citations. Every figure on this page carries a superscript that lands in a
    numbered source list at the foot of its own section. */
@@ -433,14 +447,14 @@ a{color:inherit}
 .kvp-fn:hover,.kvp-fn:focus-visible{color:var(--kv-tan)}
 .kvp-sources{
   margin:var(--kvp-space-block) 0 0;
-  padding:var(--kvp-space-head) 0 0 1.4rem;
-  border-top:1px solid var(--kvp-rule-soft);
-  font-size:var(--kvp-micro);
+  padding:var(--kvp-space-card) 0 0 20px;
+  border-top:1px solid var(--kvp-border);
+  font-size:var(--kvp-cite);
   line-height:1.6;
   color:var(--kvp-muted);
   overflow-wrap:anywhere;
 }
-.kvp-sources li{margin-bottom:.35rem}
+.kvp-sources li{margin-bottom:4px}
 .kvp-sources li::marker{color:var(--kv-brown)}
 
 /* --- back link ---------------------------------------------------------- */
@@ -450,13 +464,13 @@ a{color:inherit}
    both, and reads as a bookmark on a document rather than a floating button. */
 .kvp-back{
   position:fixed;
-  top:clamp(.75rem,2vw,1.25rem);
-  left:clamp(.75rem,2vw,1.25rem);
+  top:20px;
+  left:20px;
   z-index:20;
   display:inline-flex;
   align-items:center;
-  gap:.4rem;
-  padding:.5rem .95rem .5rem .7rem;
+  gap:8px;
+  padding:8px 16px 8px 12px;
   border:1px solid var(--kvp-border);
   border-radius:999px;
   background:var(--kv-cream);
@@ -470,8 +484,8 @@ a{color:inherit}
 }
 .kvp-back:hover,.kvp-back:focus-visible{color:var(--kv-brown);border-color:var(--kv-tan)}
 .kvp-back svg{
-  width:.85em;
-  height:.85em;
+  width:15px;
+  height:15px;
   flex:none;
   transition:transform .2s ease;
 }
@@ -479,19 +493,17 @@ a{color:inherit}
 
 /* --- cover -------------------------------------------------------------- */
 
-/* Title page. Full-bleed photograph, warm scrim, everything on the document's
-   left axis. */
+/* Title page. Full-bleed photograph, warm scrim, type on the document's own
+   left axis so the h1 lines up with every h2 below it.
+
+   THE COVER STATES NO FIGURE, and neither does anything else before section 7.
+   The reader reaches the number having already seen what it buys. */
 .kvp-cover{
   position:relative;
   isolation:isolate;
   display:flex;
   align-items:flex-end;
-  min-height:min(88svh,46rem);
-  /* NOT on the block scale, deliberately: this is the cover plate's own
-     bleed height -- how much photograph sits above the type -- not a gap
-     between two blocks in the document. The rhythm INSIDE the cover is on
-     the scale; the plate itself is a hero. */
-  padding-block:clamp(6rem,14vw,9rem) clamp(2.5rem,6vw,4rem);
+  min-height:min(72vh,580px);
   background:var(--kv-ink-deep);
   color:var(--kv-cream);
   overflow:hidden;
@@ -522,40 +534,46 @@ a{color:inherit}
       color-mix(in srgb,var(--kv-ink-deep) 55%,transparent),
       transparent 70%);
 }
-.kvp-cover__inner{position:relative}
+.kvp-cover__inner{
+  position:relative;
+  width:100%;
+  max-width:var(--kvp-wrap);
+  margin-inline:auto;
+  padding:40px clamp(20px,5vw,40px) clamp(36px,5vw,52px);
+}
 .kvp-cover__title{
   font-size:var(--kvp-h1);
-  line-height:.92;
-  letter-spacing:-.025em;
-  margin:var(--kvp-space-head) 0 0;
+  line-height:1.08;
+  letter-spacing:-.02em;
+  margin:0 0 14px;
   color:var(--kv-cream);
+  text-wrap:balance;
 }
 .kvp-cover__sub{
-  max-width:46ch;
-  margin:var(--kvp-space-head) 0 0;
-  font-size:var(--kvp-lede);
-  line-height:1.42;
-  color:color-mix(in srgb,var(--kv-cream) 86%,transparent);
+  max-width:54ch;
+  margin:0 0 24px;
+  font-size:17px;
+  line-height:1.55;
+  color:color-mix(in srgb,var(--kv-cream) 84%,transparent);
 }
 .kvp-cover__link{
   display:inline-flex;
   align-items:center;
-  gap:.55rem;
-  margin-top:var(--kvp-space-block);
-  padding:.7rem 1.3rem;
+  gap:8px;
+  margin:0 0 22px;
+  padding:11px 20px;
   border-radius:999px;
   background:var(--kv-tan);
   color:var(--kv-ink-deep);
-  font-size:var(--kvp-small);
+  font-size:var(--kvp-body);
   font-weight:700;
-  letter-spacing:.01em;
   text-decoration:none;
   transition:background .2s ease;
 }
 .kvp-cover__link:hover,.kvp-cover__link:focus-visible{
   background:color-mix(in srgb,var(--kv-tan) 78%,white);
 }
-.kvp-cover__link svg{width:.95em;height:.95em;flex:none;transition:transform .2s ease}
+.kvp-cover__link svg{width:15px;height:15px;flex:none;transition:transform .2s ease}
 .kvp-cover__link:hover svg{transform:translateX(3px)}
 
 /* Contact bar: who sent this, and how to reach them. Translucent chips, so
@@ -563,19 +581,18 @@ a{color:inherit}
 .kvp-contact{
   display:flex;
   flex-wrap:wrap;
-  gap:.5rem;
-  margin-top:var(--kvp-space-block);
+  gap:var(--kvp-space-row);
 }
 .kvp-contact__item{
   display:inline-flex;
   align-items:baseline;
-  gap:.45rem;
-  padding:.5rem .9rem;
+  gap:6px;
+  padding:8px 14px;
   border:1px solid color-mix(in srgb,var(--kv-cream) 32%,transparent);
   border-radius:999px;
   background:color-mix(in srgb,var(--kv-cream) 12%,transparent);
   color:var(--kv-cream);
-  font-size:var(--kvp-small);
+  font-size:var(--kvp-secondary);
   line-height:1.3;
   text-decoration:none;
   overflow-wrap:anywhere;
@@ -586,85 +603,64 @@ a.kvp-contact__item:hover,a.kvp-contact__item:focus-visible{
   border-color:var(--kv-tan);
 }
 .kvp-contact__tag{
-  font-size:var(--kvp-micro);
+  font-size:var(--kvp-micro-sm);
   font-weight:700;
   letter-spacing:var(--kvp-track);
   text-transform:uppercase;
   color:var(--kv-tan);
   flex:none;
 }
-.kvp-contact__item--lead{font-family:var(--kv-serif);font-size:1rem}
+.kvp-contact__item--lead{font-family:var(--kv-serif);font-size:var(--kvp-note)}
 
 /* --- section system ----------------------------------------------------- */
 
-/* A section is: a kicker, an h2, an optional note, then its components.
-   Bands alternate ground through --kvp-ground so table affordances keep
-   matching the surface behind them. */
-.kvp-section{
-  padding-block:var(--kvp-space-section);
-  background:var(--kvp-ground);
-}
-.kvp-section--band{--kvp-ground:var(--kv-cream-deep)}
-.kvp-section--dark{
-  --kvp-ground:var(--kv-ink-deep);
-  --kvp-surface:color-mix(in srgb,var(--kv-ink-deep) 86%,var(--kv-cream));
-  --kvp-border:color-mix(in srgb,var(--kv-tan) 30%,transparent);
-  --kvp-border-soft:color-mix(in srgb,var(--kv-tan) 18%,transparent);
-  --kvp-muted:color-mix(in srgb,var(--kv-cream) 78%,transparent);
-  --kvp-rule:color-mix(in srgb,var(--kv-tan) 55%,transparent);
-  --kvp-rule-soft:color-mix(in srgb,var(--kv-tan) 28%,transparent);
-  color:var(--kv-cream);
-}
-.kvp-section--dark .kvp-h2,
-.kvp-section--dark .kvp-h3,
-.kvp-section--dark .kvp-lede,
-.kvp-section--dark .kvp-quote__fig{color:var(--kv-cream)}
-.kvp-section--dark .kvp-eyebrow,
-.kvp-section--dark .kvp-quote__label,
-.kvp-section--dark .kvp-quote__meta,
-.kvp-section--dark .kvp-specs__key,
-.kvp-section--dark .kvp-table th,
-.kvp-section--dark .kvp-table caption{color:var(--kv-tan)}
-
-.kvp-section__head{margin-bottom:var(--kvp-space-block)}
-
+/* A section is: a kicker, an h2, a note, then its components. No grounds and
+   no bands -- in an 800px document column a full-bleed band is impossible and
+   an inset one is just another card. Cream throughout, cards on top. */
 .kvp-h2{
   font-size:var(--kvp-h2);
-  line-height:1.1;
-  letter-spacing:-.02em;
+  line-height:1.25;
+  letter-spacing:-.015em;
+  margin:0 0 var(--kvp-space-head);
   color:var(--kv-ink-deep);
-  max-width:24ch;
   text-wrap:balance;
 }
-.kvp-h2 + .kvp-lede{margin-top:var(--kvp-space-head)}
 .kvp-h3{
   font-size:var(--kvp-h3);
-  line-height:1.25;
+  line-height:1.3;
+  margin:0 0 var(--kvp-space-head);
   color:var(--kv-ink-deep);
 }
+
+/* The head block owns no margin of its own: the kicker, the h2 and the note
+   each carry theirs, so the interval from an h2 to its note is 8px and from
+   the head to the content is 24px in EVERY section. The last-child rule is
+   the safety net for a head that has no note -- it still ends 24px clear. */
+.kvp-section__head{margin:0}
+.kvp-section__head > :last-child{margin-bottom:var(--kvp-space-block)}
 
 /* Vertical rhythm between blocks inside a section, so later sections do not
    each invent their own margins. */
 .kvp-block{margin-top:var(--kvp-space-block)}
-.kvp-block--tight{margin-top:var(--kvp-space-head)}
+.kvp-block--tight{margin-top:var(--kvp-space-card)}
 
 /* --- feature block ------------------------------------------------------ */
 
-/* The homepage walkthrough. Each block pairs one real asset off the live site
+/* The build walkthrough. Each block pairs one real asset off the live site
    with the copy describing that feature, so the reader can check every claim
    against the page they have already scrolled. */
 .kvp-features{display:flex;flex-direction:column;gap:var(--kvp-space-card)}
 
 .kvp-feature{
   display:grid;
-  grid-template-columns:clamp(140px,17vw,190px) 1fr;
-  gap:clamp(1rem,2.4vw,1.5rem);
+  grid-template-columns:190px 1fr;
+  gap:22px;
   align-items:center;
   background:var(--kvp-surface);
   border:1px solid var(--kvp-border);
   border-radius:var(--kvp-radius);
   box-shadow:var(--kvp-shadow);
-  padding:clamp(1rem,2.2vw,1.35rem);
+  padding:var(--kvp-card-pad);
 }
 
 /* Photographic media: portrait plate, cropped, ringed in tan. */
@@ -687,7 +683,6 @@ a.kvp-contact__item:hover,a.kvp-contact__item:focus-visible{
   object-fit:cover;
   display:block;
 }
-.kvp-feature__media--contain img{object-fit:contain}
 
 /* Slow drift, for a photograph that benefits from it. Opt in, never default. */
 .kvp-feature__media--drift img{animation:kvp-kenburns 11s ease-in-out infinite alternate}
@@ -696,52 +691,23 @@ a.kvp-contact__item:hover,a.kvp-contact__item:focus-visible{
   to{transform:scale(1.08) translateY(-2%)}
 }
 
-/* Hover-swap, for the two places where a second asset genuinely shows a
-   second state. Never decorative. */
-.kvp-feature__media--swap{cursor:pointer;outline-offset:3px}
-.kvp-feature__media--swap .kvp-feature__media-alt{opacity:0;transition:opacity .42s ease}
-.kvp-feature__media--swap:hover .kvp-feature__media-alt,
-.kvp-feature__media--swap:focus-visible .kvp-feature__media-alt{opacity:1}
-
-/* DRAWING MODE. Floor plates, site layouts and location maps are wide and
-   dense: in the 190px portrait rail they are unreadable, and a cover crop
-   throws away the legend that makes them worth showing. So the drawing goes
-   full width ACROSS the card, contained on its own ground, with the copy
-   beneath it. Photographs keep the default side-by-side rail. */
-.kvp-feature--plan{grid-template-columns:1fr}
-.kvp-feature--plan .kvp-feature__media{
-  aspect-ratio:16/9;
-  background:var(--kv-cream-deep);
-  box-shadow:inset 0 0 0 1px var(--kvp-border);
-}
-.kvp-feature--plan .kvp-feature__media img{
-  object-fit:contain;
-  padding:clamp(.4rem,1.2vw,.75rem);
-}
-/* The drawing links to the full asset -- a real affordance for something this
-   dense, not decoration. */
-a.kvp-feature__media{display:block;text-decoration:none;transition:box-shadow .2s ease}
-a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
-  box-shadow:inset 0 0 0 1px var(--kv-tan),0 0 0 2px var(--kv-tan);
-}
-
 .kvp-feature__copy{min-width:0}
 .kvp-feature__tag{
   display:inline-block;
-  margin:0 0 .6rem;
-  padding:.2em .7em .25em;
+  margin:0 0 var(--kvp-space-head);
+  padding:3px 10px;
   border:1px solid var(--kv-tan);
   border-radius:999px;
-  font-size:var(--kvp-micro);
+  font-size:var(--kvp-micro-sm);
   font-weight:700;
-  letter-spacing:var(--kvp-track);
+  letter-spacing:.08em;
   text-transform:uppercase;
   color:var(--kv-brown);
 }
 .kvp-feature__name{
-  margin:0 0 .35rem;
+  margin:0 0 6px;
   font-family:var(--kv-sans);
-  font-size:clamp(1rem,.95rem + .25vw,1.1rem);
+  font-size:16px;
   font-weight:700;
   line-height:1.3;
   color:var(--kv-ink-deep);
@@ -749,26 +715,17 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
 .kvp-feature__desc{
   margin:0;
   max-width:var(--kvp-measure);
-  font-size:var(--kvp-small);
-  line-height:1.65;
+  font-size:var(--kvp-body);
+  line-height:1.6;
   color:var(--kvp-muted);
 }
-.kvp-feature__hint{
-  margin:.6rem 0 0;
-  font-size:var(--kvp-micro);
-  font-weight:700;
-  letter-spacing:.04em;
-  color:var(--kv-brown);
-}
 
-/* Below the phone breakpoint the rail stops being a rail: 140px of image
-   beside 150px of copy crushes both. The block stacks, and the portrait plate
-   is capped so it does not blow up to the full card width. Drawings keep the
-   full width -- that is the whole point of --plan. */
+/* Below the phone breakpoint the rail stops being a rail: 190px of image
+   beside 100px of copy crushes both. The block stacks, and the portrait plate
+   is capped so it does not blow up to the full card width. */
 @media(max-width:640px){
-  .kvp-feature{grid-template-columns:1fr}
+  .kvp-feature{grid-template-columns:1fr;gap:var(--kvp-space-card)}
   .kvp-feature__media{max-width:200px}
-  .kvp-feature--plan .kvp-feature__media{max-width:none}
 }
 
 /* --- built plates ------------------------------------------------------- */
@@ -785,22 +742,22 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
    sheet -- cream-deep ground, hairline, no shadow, nothing ink-deep -- so
    that the agent widget stays the one designed object here.
 
-   They use the full-width --drawn mode for the same reason --plan exists: a
-   row of chips is unreadable in a 190px portrait rail. */
+   They run full width across the card for the same reason the floor plate
+   used to: a row of chips is unreadable in a 190px portrait rail. */
 .kvp-feature--drawn{grid-template-columns:1fr}
 
 .kvp-feature__plate{
   background:var(--kv-cream-deep);
   border:1px solid var(--kvp-border);
   border-radius:var(--kvp-radius-sm);
-  padding:clamp(.9rem,2.4vw,1.25rem);
+  padding:var(--kvp-card-pad);
 }
 .kvp-plate__q{
   margin:0;
   font-family:var(--kv-serif);
   font-weight:300;
   font-optical-sizing:auto;
-  font-size:clamp(1rem,.94rem + .32vw,1.2rem);
+  font-size:var(--kvp-h3);
   line-height:1.35;
   letter-spacing:-.01em;
   color:var(--kv-ink-deep);
@@ -811,11 +768,11 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
   display:flex;
   flex-wrap:wrap;
   align-items:center;
-  gap:.4rem .5rem;
+  gap:8px;
 }
-.kvp-plate__q + .kvp-plate__flow{margin-top:var(--kvp-space-head)}
+.kvp-plate__q + .kvp-plate__flow{margin-top:var(--kvp-space-card)}
 .kvp-plate__from{
-  font-size:var(--kvp-micro);
+  font-size:var(--kvp-micro-sm);
   font-weight:700;
   letter-spacing:var(--kvp-track);
   text-transform:uppercase;
@@ -823,11 +780,11 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
 }
 .kvp-plate__arrow{color:var(--kv-tan);line-height:1}
 .kvp-plate__chip{
-  padding:.25em .7em .3em;
+  padding:3px 10px;
   border:1px solid var(--kv-tan);
   border-radius:999px;
   background:var(--kvp-surface);
-  font-size:var(--kvp-micro);
+  font-size:var(--kvp-micro-sm);
   font-weight:700;
   letter-spacing:.04em;
   color:var(--kv-brown);
@@ -838,13 +795,13 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
    green -- no colour on this page comes from outside the seven brand tokens. */
 .kvp-plate__msg{
   max-width:min(100%,24rem);
-  margin:var(--kvp-space-head) 0 0;
-  padding:.55rem .85rem;
+  margin:var(--kvp-space-card) 0 0;
+  padding:9px 14px;
   background:var(--kvp-surface);
   border:1px solid var(--kvp-border);
   border-radius:var(--kvp-radius-sm);
   border-end-start-radius:4px;
-  font-size:var(--kvp-small);
+  font-size:var(--kvp-secondary);
   line-height:1.5;
   color:var(--kv-ink-deep);
 }
@@ -852,30 +809,39 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
 /* --- market row --------------------------------------------------------- */
 
 /* One card per competitor. Our row takes the tan border, the cream-deep ground
-   and no shadow, so it reads as the answer without shouting. */
+   and no shadow, so it reads as the answer without shouting.
+
+   THIS IS THE ONE SECTION ABOVE THE PRICE WHERE A RUPEE FIGURE APPEARS, and
+   only because every figure in it is a published third-party rate carrying a
+   footnote. Our own row therefore has no figure -- .kvp-market-row__price--held
+   holds that slot with "Quoted at the end" instead. Do not put a number
+   there. */
 .kvp-market{display:flex;flex-direction:column;gap:var(--kvp-space-card)}
 .kvp-market-row{
   background:var(--kvp-surface);
   border:1px solid var(--kvp-border);
   border-radius:var(--kvp-radius);
   box-shadow:var(--kvp-shadow);
-  padding:clamp(1rem,2.2vw,1.25rem);
+  padding:var(--kvp-card-pad);
 }
 .kvp-market-row--us{
   border:2px solid var(--kv-tan);
   background:var(--kv-cream-deep);
   box-shadow:none;
+  /* The 2px border would otherwise push this row 1px narrower than its
+     neighbours and knock the whole stack off one axis. */
+  padding:15px;
 }
 .kvp-market-row__head{
   display:grid;
   grid-template-columns:1fr auto;
   align-items:start;
-  column-gap:1rem;
-  row-gap:.25rem;
+  column-gap:16px;
+  row-gap:4px;
   margin-bottom:var(--kvp-space-card);
 }
 .kvp-market-row__name{
-  font-size:var(--kvp-small);
+  font-size:var(--kvp-body);
   font-weight:700;
   line-height:1.35;
   color:var(--kv-ink-deep);
@@ -883,7 +849,7 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
 .kvp-market-row--us .kvp-market-row__name{
   font-family:var(--kv-serif);
   font-weight:300;
-  font-size:1.15rem;
+  font-size:16px;
   color:var(--kv-brown);
 }
 .kvp-market-row__price{
@@ -893,16 +859,21 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
   font-variant-numeric:tabular-nums;
   white-space:nowrap;
   text-align:right;
+  padding-top:2px;
 }
-.kvp-market-row--us .kvp-market-row__price{color:var(--kv-brown);font-weight:700}
-.kvp-market-row__body{display:grid;grid-template-columns:1fr;gap:.75rem 1.5rem}
+.kvp-market-row__price--held{
+  color:var(--kv-brown);
+  font-weight:700;
+  font-style:italic;
+}
+.kvp-market-row__body{display:grid;grid-template-columns:1fr;gap:var(--kvp-space-card) 24px}
 @media(min-width:640px){
   .kvp-market-row__body--split{grid-template-columns:1fr 1fr}
 }
 .kvp-market-row__label{
   display:block;
-  margin-bottom:.25rem;
-  font-size:var(--kvp-micro);
+  margin-bottom:4px;
+  font-size:var(--kvp-micro-sm);
   font-weight:700;
   letter-spacing:.06em;
   text-transform:uppercase;
@@ -911,29 +882,23 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
 .kvp-market-row__label--win{color:var(--kv-brown)}
 .kvp-market-row__text{
   margin:0;
-  font-size:var(--kvp-small);
-  line-height:1.6;
+  font-size:var(--kvp-secondary);
+  line-height:1.55;
   color:var(--kvp-muted);
-}
-.kvp-market-row__eg{
-  display:block;
-  margin-top:.4rem;
-  font-style:italic;
-  font-size:var(--kvp-micro);
-  opacity:.85;
 }
 /* Standing alone as the last child of a row, __eg is the verdict line: the
    one sentence saying when THAT option is genuinely the right call. Every
    row carries one, in the same voice and at the same weight -- the symmetry
    is the argument, so it cannot be a caption on two rows and a headline on
-   the third. Ruled off the comparison grid above it, and brought up to the
-   body size the grid uses; the italic and the inherited ink stay. */
-.kvp-market-row__body + .kvp-market-row__eg{
-  margin-top:var(--kvp-space-card);
-  padding-top:.85rem;
+   the third. Ruled off the comparison grid above it. */
+.kvp-market-row__eg{
+  margin:var(--kvp-space-card) 0 0;
+  padding-top:var(--kvp-space-card);
   border-top:1px solid var(--kvp-border-soft);
-  font-size:var(--kvp-small);
-  line-height:1.6;
+  font-style:italic;
+  font-size:var(--kvp-secondary);
+  line-height:1.55;
+  color:var(--kvp-muted);
 }
 
 /* MEASURED at 330px: the head is 1fr auto with a nowrap price, and the
@@ -948,78 +913,76 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
 
 /* --- impact row --------------------------------------------------------- */
 
-/* A large tan Fraunces numeral, then the claim, key phrase in full ink.
-   One citation line under the group -- never an uncited figure. */
-.kvp-impact{display:flex;flex-direction:column;gap:var(--kvp-space-card)}
+/* A 22px tan Fraunces numeral, then the claim, key phrase in full ink.
+   One citation list under the group -- never an uncited figure. */
+.kvp-impact{display:flex;flex-direction:column;gap:var(--kvp-space-row)}
 .kvp-impact-row{
   display:flex;
   align-items:baseline;
-  gap:1rem;
-  padding:.9rem 1.1rem;
+  gap:16px;
+  padding:var(--kvp-card-pad);
   background:var(--kvp-surface);
   border:1px solid var(--kvp-border);
   border-radius:var(--kvp-radius-sm);
 }
 .kvp-impact-row__num{
   flex:none;
-  min-width:4.5rem;
+  min-width:68px;
   font-family:var(--kv-serif);
   font-weight:300;
   font-optical-sizing:auto;
-  font-size:clamp(1.35rem,1.15rem + .7vw,1.75rem);
-  line-height:1.1;
+  font-size:var(--kvp-num);
+  line-height:1.15;
   letter-spacing:-.015em;
   color:var(--kv-tan);
   font-variant-numeric:tabular-nums;
 }
-/* THE PAGE'S ONE RUST ELEMENT. SPENT: section 5, the 917-minute average
-   first-reply time -- the single figure that states the problem being solved.
-   Used once, budget closed. */
+/* THE PAGE'S ONE RUST ELEMENT. SPENT: the 917-minute average first-reply time
+   -- the single figure that states the problem being solved. Used once,
+   budget closed. */
 .kvp-impact-row--alert .kvp-impact-row__num{color:var(--kv-rust)}
 /* The citation sits ON the numeral, so the figure itself is visibly cited
    rather than the sentence beside it. .kvp-fn is sized in em, so against a
-   1.75rem numeral its .62em would render larger than the body copy; scaled
-   here to match the footnote marks in running text. */
-.kvp-impact-row__num .kvp-fn{font-size:.34em;vertical-align:.7em}
+   22px numeral its .62em would render larger than the body copy; scaled here
+   to match the footnote marks in running text. */
+.kvp-impact-row__num .kvp-fn{font-size:.4em;vertical-align:.7em}
 .kvp-impact-row__text{
   margin:0;
-  font-size:var(--kvp-small);
-  line-height:1.6;
+  font-size:var(--kvp-secondary);
+  line-height:1.55;
   color:var(--kvp-muted);
 }
 .kvp-impact-row__text strong{color:var(--kv-ink);font-weight:600}
 @media(max-width:520px){
-  .kvp-impact-row{flex-direction:column;gap:.35rem}
+  .kvp-impact-row{flex-direction:column;gap:4px}
 }
 
 /* --- the price card ----------------------------------------------------- */
 
-/* THE ONE PRICE COMPONENT ON THIS PAGE, and it is used four times: the website
-   quote, the AI agent's setup fee, and both cards of the side-by-side at the
-   foot of section 4. One component means the agent's price reads as a figure
-   comparable with the build's, rather than as a headline price and a footnote
-   -- which is exactly what the client asked for.
+/* THE ONE PRICE COMPONENT ON THIS PAGE, and all four of its uses are in
+   section 7: the website quote, the agent's setup fee, and both cards of the
+   side-by-side. One component means the agent's price reads as a figure
+   comparable with the build's, rather than as a headline and a footnote.
+
+   THE FIGURE IS 28px. Not 60. This is the closing line of a quiet document --
+   a receipt, not a billboard -- and on an 800px column a display-size number
+   reads as a discount banner. It is still the largest thing in the body of
+   the page (the h2 is 25px), and by a deliberate half-step rather than a
+   shout. Do not enlarge it.
 
    THERE IS NO DERIVATION LINE, and there must never be one. The quote is a
    researched Gurgaon baseline x 1.2, but that working is internal: showing a
    client the arithmetic behind their own quote invites them to argue the
    multiplier instead of judging the price. What sits under the figure is the
-   timeline and the terms.
-
-   MEASURED against the rest of the page: the figure is 3.8rem at desktop,
-   against 2.6rem for the largest h2 and 5rem for the cover headline. So it is
-   the largest thing on the page after the cover headline, and by a clear step
-   -- which is the whole point of retiring the tier ladder. Nothing else
-   competes with it inside the card: the label above it is micro, the meta line
-   below it is micro, and the note is small. */
+   timeline and the terms. */
 .kvp-quote{
   background:var(--kvp-surface);
-  /* 2px on BOTH variants. --accent changes the colour, never the width: a 1px
+  /* 1px on BOTH variants. --accent changes the colour, never the width: a 1px
      card beside a 2px one is a 1px baseline error in .kvp-compare. */
-  border:2px solid var(--kvp-border);
+  border:1px solid var(--kvp-border);
   border-radius:var(--kvp-radius);
   box-shadow:var(--kvp-shadow);
-  padding:clamp(1.35rem,3vw,2rem);
+  padding:var(--kvp-card-pad);
 }
 .kvp-quote--accent{border-color:var(--kv-tan)}
 
@@ -1036,21 +999,20 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
   font-family:var(--kv-serif);
   font-weight:300;
   font-optical-sizing:auto;
-  font-size:clamp(2.4rem,1.4rem + 3.1vw,3.8rem);
-  line-height:.95;
-  letter-spacing:-.03em;
+  font-size:var(--kvp-fig);
+  line-height:1.1;
+  letter-spacing:-.02em;
   color:var(--kv-ink-deep);
   font-variant-numeric:tabular-nums;
   /* A longer figure wraps inside the card rather than widening the page. */
   overflow-wrap:break-word;
 }
-/* The timeline, or what kind of money this is. Ruled off with the 2px tan the
-   old receipt carried above its price. */
+/* The timeline, or what kind of money this is. Ruled off in tan. */
 .kvp-quote__meta{
   margin:var(--kvp-space-head) 0 0;
   padding-bottom:var(--kvp-space-head);
   border-bottom:2px solid var(--kv-tan);
-  font-size:var(--kvp-micro);
+  font-size:var(--kvp-micro-sm);
   font-weight:700;
   letter-spacing:var(--kvp-track);
   text-transform:uppercase;
@@ -1059,8 +1021,8 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
 .kvp-quote__note{
   margin:var(--kvp-space-head) 0 0;
   max-width:var(--kvp-measure);
-  font-size:var(--kvp-small);
-  line-height:1.6;
+  font-size:var(--kvp-secondary);
+  line-height:1.55;
   color:var(--kvp-muted);
 }
 
@@ -1080,19 +1042,18 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
    Two things would still skew it, so do neither: giving one card a padding or
    a border width the other does not have (see .kvp-quote), and letting the
    parent's row-gap through into the cards. The gap is columns-only above the
-   breakpoint; vertical rhythm inside the cards is the elements' own margins,
-   which are the same tokens the single card in section 2 uses. */
+   breakpoint; vertical rhythm inside the cards is the elements' own margins. */
 .kvp-compare{
   display:grid;
   grid-template-columns:1fr;
-  gap:var(--kvp-space-card);
+  gap:var(--kvp-space-price);
 }
 @media(min-width:700px){
   .kvp-compare{
     grid-template-columns:1fr 1fr;
     grid-template-rows:auto auto auto auto;
     row-gap:0;
-    column-gap:var(--kvp-space-card);
+    column-gap:var(--kvp-space-price);
   }
   .kvp-compare > .kvp-quote{
     grid-row:1 / -1;
@@ -1103,24 +1064,28 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
 
 /* --- the agent, illustrated ---------------------------------------------- */
 
-/* Section 4's centrepiece, and the one place on this page where the boldness
+/* Section 3's centrepiece, and the one place on this page where the boldness
    is spent. The product being sold does not exist yet, so there is nothing to
    photograph, and a stock chatbot picture would be a lie on a document that
-   has spent five sections earning trust with citations. So the widget is
-   BUILT: real markup, in the page's own type and palette, showing the thing
-   working.
+   has spent its length earning trust with citations. So the widget is BUILT:
+   real markup, in the page's own type and palette, showing the thing working.
 
    It is the only ink-deep object on the cream pages -- the one screen in a
    paper document, which is exactly what a chat widget is. Everything else in
-   the section is deliberately the quietest thing on the sheet (a .kvp-list, a
-   .kvp-table, two .kvp-quote cards) so that this is what the reader
-   remembers -- and the built plates in section 3 are held down to cream-deep
-   hairlines for the same reason.
+   the section is deliberately the quietest thing on the sheet, so that this is
+   what the reader remembers.
 
    IT CARRIES ITS LABEL TWICE, and both are load-bearing rather than
    decorative: .kvp-agent__flag sits INSIDE the frame, so a cropped screenshot
    of the widget is still marked as an illustration, and .kvp-agent__cap
    states it in full underneath. Do not remove either one.
+
+   THE TRANSCRIPT AND ITS PAYOFF ARE STACKED, not side by side. The old sheet
+   split them into two columns above an 820px VIEWPORT, but the column is now
+   800px wide whatever the viewport does, so that split gave the payoff panel
+   about 250px -- too narrow for three labelled fields. Stacked, the causal
+   story still reads in order: here is the conversation, here is what it left
+   on the sales team's desk.
 
    No new colour: the plate is --kv-ink-deep, the same ground as the cover, so
    the document's two dark moments are its opening and its centrepiece. */
@@ -1142,8 +1107,8 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
   flex-wrap:wrap;
   align-items:center;
   justify-content:space-between;
-  gap:.5rem .75rem;
-  padding:.8rem clamp(.9rem,2.4vw,1.35rem);
+  gap:8px 12px;
+  padding:12px var(--kvp-card-pad);
   border-bottom:1px solid color-mix(in srgb,var(--kv-tan) 26%,transparent);
   background:color-mix(in srgb,var(--kv-cream) 5%,transparent);
 }
@@ -1151,17 +1116,17 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
   font-family:var(--kv-serif);
   font-weight:300;
   font-optical-sizing:auto;
-  font-size:1.05rem;
+  font-size:16px;
   letter-spacing:-.01em;
   color:var(--kv-cream);
 }
 /* THE LABEL, inside the frame. MEASURED: tan on ink-deep is 6.9:1, so it
    clears AA at this size rather than being a whispered disclaimer. */
 .kvp-agent__flag{
-  padding:.25em .7em .3em;
+  padding:3px 10px;
   border:1px solid color-mix(in srgb,var(--kv-tan) 60%,transparent);
   border-radius:999px;
-  font-size:var(--kvp-micro);
+  font-size:var(--kvp-micro-sm);
   font-weight:700;
   letter-spacing:var(--kvp-track);
   text-transform:uppercase;
@@ -1169,34 +1134,29 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
   white-space:nowrap;
 }
 
-/* The conversation, and beside it what the conversation produced. Side by side
-   on a wide screen so the causal relationship is spatial -- the left column
-   writes the right one -- and stacked below it. minmax(0,...) on both tracks:
-   a grid child defaults to min-content, and one long unbroken token in a
-   bubble would otherwise widen the track and push the BODY sideways. */
+/* minmax(0,...) on the track: a grid child defaults to min-content, and one
+   long unbroken token in a bubble would otherwise widen it and push the BODY
+   sideways. */
 .kvp-agent__body{display:grid;grid-template-columns:minmax(0,1fr)}
-@media(min-width:820px){
-  .kvp-agent__body{grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr)}
-}
 
 /* The transcript is an ordered list, because that is what a transcript is. */
 .kvp-agent__log{
   list-style:none;
   margin:0;
-  padding:clamp(.9rem,2.6vw,1.4rem);
+  padding:var(--kvp-card-pad);
   display:flex;
   flex-direction:column;
   gap:var(--kvp-space-card);
 }
-.kvp-msg{max-width:min(100%,32rem)}
+.kvp-msg{max-width:min(100%,30rem)}
 .kvp-msg--buyer{margin-left:auto}
 /* No avatar column and no timestamp column: at 330px a fixed rail beside a
    bubble is what breaks a chat layout. Speaker and time are one flowing line
    above the bubble instead, so they wrap like anything else. */
 .kvp-msg__who{
   display:block;
-  margin-bottom:.3rem;
-  font-size:var(--kvp-micro);
+  margin-bottom:4px;
+  font-size:var(--kvp-micro-sm);
   font-weight:700;
   letter-spacing:var(--kvp-track);
   text-transform:uppercase;
@@ -1205,9 +1165,9 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
 .kvp-msg--buyer .kvp-msg__who{text-align:right}
 .kvp-msg__body{
   margin:0;
-  padding:.7rem .95rem .75rem;
+  padding:10px 14px;
   border-radius:var(--kvp-radius-sm);
-  font-size:var(--kvp-small);
+  font-size:var(--kvp-secondary);
   line-height:1.55;
   overflow-wrap:anywhere;
 }
@@ -1231,36 +1191,30 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
 .kvp-agent__file{
   display:inline-flex;
   align-items:center;
-  gap:.5rem;
+  gap:8px;
   max-width:100%;
-  margin-top:.6rem;
-  padding:.45rem .8rem;
+  margin-top:8px;
+  padding:6px 12px;
   border:1px solid color-mix(in srgb,var(--kv-tan) 45%,transparent);
   border-radius:999px;
-  font-size:var(--kvp-micro);
+  font-size:var(--kvp-micro-sm);
   font-weight:700;
   letter-spacing:.03em;
   color:var(--kv-tan);
   overflow-wrap:anywhere;
 }
-.kvp-agent__file svg{width:.95em;height:.95em;flex:none}
+.kvp-agent__file svg{width:13px;height:13px;flex:none}
 
 /* The payoff. Deeper ground, so it reads as the machinery rather than as more
    conversation -- this is the half a competitor's screenshot does not have. */
 .kvp-agent__out{
-  padding:clamp(.9rem,2.6vw,1.4rem);
+  padding:var(--kvp-card-pad);
   border-top:1px solid color-mix(in srgb,var(--kv-tan) 26%,transparent);
   background:color-mix(in srgb,var(--kv-ink) 62%,var(--kv-ink-deep));
 }
-@media(min-width:820px){
-  .kvp-agent__out{
-    border-top:0;
-    border-inline-start:1px solid color-mix(in srgb,var(--kv-tan) 26%,transparent);
-  }
-}
 .kvp-agent__out-title{
   margin:0 0 var(--kvp-space-card);
-  font-size:var(--kvp-micro);
+  font-size:var(--kvp-micro-sm);
   font-weight:700;
   letter-spacing:var(--kvp-track);
   text-transform:uppercase;
@@ -1268,20 +1222,20 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
 }
 .kvp-agent__fields{
   display:grid;
-  gap:.85rem 1.25rem;
+  gap:var(--kvp-space-card) 20px;
   grid-template-columns:repeat(auto-fit,minmax(min(100%,11rem),1fr));
 }
 .kvp-agent__k{
   display:block;
-  margin-bottom:.15rem;
-  font-size:var(--kvp-micro);
+  margin-bottom:2px;
+  font-size:var(--kvp-micro-sm);
   letter-spacing:.05em;
   text-transform:uppercase;
   color:color-mix(in srgb,var(--kv-cream) 62%,transparent);
 }
 .kvp-agent__v{
   display:block;
-  font-size:var(--kvp-small);
+  font-size:var(--kvp-secondary);
   font-weight:600;
   line-height:1.4;
   color:var(--kv-cream);
@@ -1292,8 +1246,8 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
    as the description of the thing above rather than as stray body copy. */
 .kvp-agent__cap{
   max-width:var(--kvp-measure);
-  margin:var(--kvp-space-head) 0 0;
-  font-size:var(--kvp-small);
+  margin:var(--kvp-space-card) 0 0;
+  font-size:var(--kvp-secondary);
   line-height:1.6;
   color:var(--kvp-muted);
 }
@@ -1305,14 +1259,14 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
   background:var(--kv-cream-deep);
   border:1px solid var(--kvp-border-soft);
   border-radius:var(--kvp-radius);
-  padding:clamp(2rem,5vw,3rem) clamp(1.25rem,4vw,2.5rem);
+  padding:40px 28px;
   text-align:center;
 }
-.kvp-cta-final .kvp-h2{max-width:none;margin-inline:auto}
+.kvp-cta-final .kvp-kicker{margin-bottom:var(--kvp-space-head)}
 .kvp-cta-final__sub{
   max-width:46ch;
-  margin:var(--kvp-space-head) auto 0;
-  font-size:var(--kvp-small);
+  margin:0 auto;
+  font-size:var(--kvp-note);
   line-height:1.6;
   color:var(--kvp-muted);
 }
@@ -1326,13 +1280,13 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
 .kvp-btn{
   display:inline-flex;
   align-items:center;
-  gap:.5rem;
-  padding:.8rem 1.5rem;
+  gap:8px;
+  padding:13px 24px;
   border:1px solid transparent;
   border-radius:999px;
   background:var(--kv-ink-deep);
   color:var(--kv-cream);
-  font-size:var(--kvp-small);
+  font-size:var(--kvp-body);
   font-weight:700;
   text-decoration:none;
   box-shadow:var(--kvp-shadow);
@@ -1366,12 +1320,12 @@ a.kvp-feature__media:hover,a.kvp-feature__media:focus-visible{
 @media print{
   .kvp-back{display:none}
   body{background:none}
-  .kvp-cover{min-height:auto;color:var(--kv-ink);background:none;padding-block:0 2rem}
+  .kvp-cover{min-height:auto;color:var(--kv-ink);background:none}
   .kvp-cover__img,.kvp-cover__scrim{display:none}
   .kvp-cover__title,.kvp-cover__sub{color:var(--kv-ink)}
   .kvp-cover__link{display:none}
   .kvp-contact__item{color:var(--kv-ink);border-color:var(--kv-brown);background:none}
-  .kvp-section{padding-block:1.5rem;background:none}
+  .kvp-wrap > .kvp-section{margin:24px 0}
   .kvp-feature,.kvp-quote,.kvp-market-row,.kvp-impact-row,
   .kvp-specs__row,.kvp-table tr,.kvp-agent__frame{break-inside:avoid;box-shadow:none}
   /* The one dark object on the page, laid back onto paper rather than printed
