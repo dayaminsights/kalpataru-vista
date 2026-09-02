@@ -112,9 +112,11 @@ The monthly retainer covers LLM tokens, hosting, monthly prompt tuning and the d
 
 Two recurring things, and they are **deliberately different products**. Write them so no reader thinks they are being charged twice for one job.
 
-| | Free period | After |
+**Neither is a standing monthly fee, and that is the point.**
+
+| | Free | After |
 |---|---|---|
-| **Hosting & care** — keeping the site up: VPS, SSL, CDN, daily backups, uptime | 6 months | Rs 4,000 to Rs 6,000 per month, month to month, no lock-in |
+| **Hosting** — keeping the site up: SSL, CDN, daily backups, uptime | while assets stay under **5 GB** | only the server size actually needed, quoted first |
 | **Support & maintenance** — changing the site: content edits, new sections, fixes, new work | 3 months | Rs 3,000 per hour |
 
 **The domain is the client's.** They buy and own it; we point it at the site. Say this plainly rather than leaving it to be discovered — an unstated assumption about who buys the domain is exactly the kind of thing that sours a handover.
